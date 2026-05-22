@@ -19,3 +19,4 @@ notes.txt
 config.yml
 *.excalidraw
 *.drawio*
+/scripts
