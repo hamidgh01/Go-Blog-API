@@ -7,12 +7,25 @@ import (
 )
 
 type Config struct {
-	Server ServerConf
+	Server   ServerConf
+	Postgres PostgresConf
 }
 
 type ServerConf struct {
 	Host string
 	Port int
+}
+type PostgresConf struct {
+	Host     string
+	Port     int
+	User     string
+	Password string
+	DBName   string
+	// SSLMode         string
+	// MaxIdleConns    int
+	// MaxOpenConns    int
+	// ConnMaxLifetime int
+	// TimeZone        string
 }
 
 var cfg *Config

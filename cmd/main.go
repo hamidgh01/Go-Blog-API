@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"Go-Blog-API/config"
+	"Go-Blog-API/internal/infra/database"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
@@ -21,6 +22,12 @@ func serve() {
 	if err != nil {
 		log.Fatal("failed to init configurations. reason:", err)
 	}
+
+	db, err := database.InitDB(&cfg.Postgres)
+	if err != nil {
+		log.Fatal("failed to establish database connection. origin: ", err)
+	}
+	defer db.Close()
 
 	app := gin.Default()
 

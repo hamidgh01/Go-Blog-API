@@ -1,3 +1,15 @@
 Server:
   host: 127.0.0.1
   port: 8000
+
+Postgres:
+  host: localhost
+  port: 5432
+  user: your_username
+  password: your_password
+  dbName: your_db_name
+  sslMode: disable
+  maxIdleConns: 15
+  maxOpenConns: 100
+  connMaxLifetime: 5
+  timezone: Asia/Tehran
