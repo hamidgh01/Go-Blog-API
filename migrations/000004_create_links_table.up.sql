@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS links (
+    id BIGSERIAL PRIMARY KEY,
+    title VARCHAR(32) NOT NULL,
+    url VARCHAR NOT NULL,
+    userID BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_links_userID ON links (userID);
