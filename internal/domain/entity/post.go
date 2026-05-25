@@ -24,4 +24,4 @@ type Post struct {
 	ModifiedAt       sql.NullTime // sql: TIMESTAMP WITH TIME ZONE
 	FirstPublishedAt sql.NullTime // sql: TIMESTAMP WITH TIME ZONE
 	UserID           uint64       // sql: BIGINT NOT NULL DEFAULT 0 REFERENCES users(id) ON DELETE SET DEFAULT
-}
+} // composite index: composite_idx_posts_userID_pubAt ON posts (userID, firstPublishedAt)
