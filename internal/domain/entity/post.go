@@ -14,6 +14,13 @@ const (
 	DL PostStatus = "deleted-by-author"
 )
 
+// Entity(Table): Post (posts)
+// Relations:
+// _ N:1 (Many to One) with 'User'
+// _ N:N (Many to Many) with 'User' (like-system) -> via 'PostLikesM2M' association table
+// _ 1:N (One to Many) with 'Comment'
+// _ N:N (Many to Many) with 'Tag' -> via 'PostTagsM2M' association table
+// _ N:N (Many to Many) with 'List' -> via 'SavedPostsM2M' association table
 type Post struct {
 	ID               uint64       // sql: BIGSERIAL PRIMARY KEY (automatically indexed)
 	Title            string       // sql: VARCHAR(200) NOT NULL (indexed)
@@ -26,6 +33,7 @@ type Post struct {
 	UserID           uint64       // sql: BIGINT NOT NULL DEFAULT 0 REFERENCES users(id) ON DELETE SET DEFAULT
 } // composite index: composite_idx_posts_userID_pubAt ON posts (userID, firstPublishedAt)
 
+// 'PostLikesM2M' association table -> M2M between 'User' and 'Post' (like-system)
 type PostLikesM2M struct {
 	PostID  uint64    // sql: BIGINT NOT NULL REFERENCES posts(id) ON DELETE CASCADE
 	UserID  uint64    // sql: BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE

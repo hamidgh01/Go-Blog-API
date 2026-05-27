@@ -13,6 +13,16 @@ const (
 	DEL CommentStatus = "deleted-by-commenter"
 )
 
+// Entity(Table): Comment (comments)
+// Relations:
+// _ N:1 (Many to One) with 'User'
+// _ N:1 (Many to One) with 'Post'
+// _ Self-Referenced with 'Comment' itself (a `comment` to a post can have some `replies`)
+// Notes:
+// parent of a comment can be another 'comment' or a 'post'. so for a comment:
+// if parent is a 'post' --> CommentParentID will be NULL
+// if parent is another 'comment' --> PostParentID will be NULL
+// (this is why CommentParentID & PostParentID are nullable)
 type Comment struct {
 	ID              uint64       // sql: BIGSERIAL PRIMARY KEY (automatically indexed)
 	Content         string       // sql: VARCHAR(1500) NOT NULL
