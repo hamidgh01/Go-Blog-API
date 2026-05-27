@@ -1,14 +1,12 @@
 package commands
 
 import (
-	"fmt"
 	"log"
-	"net/http"
 
 	"Go-Blog-API/config"
+	server "Go-Blog-API/internal/http"
 	"Go-Blog-API/internal/infra/database"
 
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 )
 
@@ -31,20 +29,11 @@ func serve() {
 
 	db, err := database.InitDB(&cfg.Postgres)
 	if err != nil {
-		log.Fatal("failed to establish database connection. origin: ", err)
+		log.Fatal("failed to establish database connection. reason: ", err)
 	}
 	defer db.Close()
 
-	app := gin.Default()
-
-	app.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "hello world!"})
-	})
-
-	app.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "pong"})
-	})
-
-	address := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
-	app.Run(address)
+	if err := server.InitAndRun(cfg); err != nil {
+		log.Fatalf("failed to run server. reason: %v", err)
+	}
 }
