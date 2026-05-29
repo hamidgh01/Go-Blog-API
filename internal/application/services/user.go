@@ -48,7 +48,7 @@ func (u *UserService) UpdatePassword(
 }
 
 func (u *UserService) UpdateEnabled(
-	ctx context.Context, pk uint64, data *dto.UpdatePasswordRequest,
+	ctx context.Context, pk uint64, data *dto.UpdateEnabledRequest,
 ) (*dto.UserResponse, *service_errors.ServiceError) {
 	return nil, nil
 }
