@@ -19,6 +19,22 @@ func NewRouter(r *gin.RouterGroup) *Router {
 func (r *Router) RegisterRoutes() {
 	r.router.GET("/", index)
 	r.router.GET("/ping", ping)
+
+	users := r.router.Group("/users")
+	{
+		users.POST("")
+		users.PATCH("/username/:id")
+		users.PATCH("/email/:id")
+		users.PATCH("/bio/:id")
+		users.PATCH("/password/:id")
+		// reset password
+		users.PATCH("/enabled/:id")
+		users.DELETE("/:id")
+		// users.GET("") // list (needs filter for pagination)
+		users.GET("/:id")
+		users.GET("/:username")
+		users.GET("/:email")
+	}
 }
 
 func index(c *gin.Context) {
