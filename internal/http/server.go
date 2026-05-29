@@ -5,6 +5,7 @@ import (
 
 	"Go-Blog-API/config"
 	"Go-Blog-API/internal/http/router"
+	"Go-Blog-API/internal/http/validations"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,11 @@ func InitAndRun(cfg *config.Config) error {
 	server := &Server{
 		engine: gin.Default(),
 		cfg:    cfg,
+	}
+
+	// register custom validators
+	if err := validations.RegisterCustomValidators(); err != nil {
+		return fmt.Errorf("failed to register custom validators. origin: %w", err)
 	}
 
 	// register routes
