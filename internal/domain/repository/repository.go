@@ -18,3 +18,12 @@ type UserRepository interface {
 	GetByUsername(ctx context.Context, username string) (*entity.User, error)
 	GetByEmail(ctx context.Context, email string) (*entity.User, error)
 }
+
+type PostRepository interface {
+	creator[entity.Post]
+	updater[entity.Post]
+	UpdateStatus(ctx context.Context, pk uint64, data *entity.Post) (*entity.Post, error)
+	UpdatePrivacy(ctx context.Context, pk uint64, data *entity.Post) (*entity.Post, error)
+	deleter
+	getterByID[entity.Post]
+}

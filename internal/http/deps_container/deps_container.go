@@ -13,12 +13,15 @@ import (
 type Container struct {
 	// Repositories
 	UserRepository repository.UserRepository
+	PostRepository repository.PostRepository
 
 	// Services
 	UserService *services.UserService
+	PostService *services.PostService
 
 	// Handlers
 	UserHandler *handlers.UserHandler
+	PostHandler *handlers.PostHandler
 
 	// Middlewares
 }

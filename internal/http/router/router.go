@@ -25,17 +25,32 @@ func (r *Router) RegisterRoutes() {
 	users := r.router.Group("/users")
 	{
 		users.POST("", r.dependencies.UserHandler.Create)
-		users.PATCH("/username/:id", r.dependencies.UserHandler.UpdateUsername)
-		users.PATCH("/email/:id", r.dependencies.UserHandler.UpdateEmail)
-		users.PATCH("/bio/:id", r.dependencies.UserHandler.UpdateBio)
-		users.PATCH("/password/:id", r.dependencies.UserHandler.UpdatePassword)
+		users.PATCH("/:id/username", r.dependencies.UserHandler.UpdateUsername)
+		users.PATCH("/:id/username", r.dependencies.UserHandler.UpdateUsername)
+		users.PATCH("/:id/email", r.dependencies.UserHandler.UpdateEmail)
+		users.PATCH("/:id/bio", r.dependencies.UserHandler.UpdateBio)
+		users.PATCH("/:id/password", r.dependencies.UserHandler.UpdatePassword)
 		// reset password
-		users.PATCH("/enabled/:id", r.dependencies.UserHandler.UpdateEnabled)
+		users.PATCH("/:id/enabled", r.dependencies.UserHandler.UpdateEnabled)
 		users.DELETE("/:id", r.dependencies.UserHandler.Delete)
 		// users.GET("") // list (needs filter for pagination)
 		users.GET("/:id", r.dependencies.UserHandler.GetByID)
 		users.GET("/username=:username", r.dependencies.UserHandler.GetByUsername) // ToDo: check and standardize this
 		users.GET("/email=:email", r.dependencies.UserHandler.GetByEmail)          // ToDo: check and standardize this
+	}
+
+	posts := r.router.Group("/posts")
+	{
+		posts.POST("", r.dependencies.PostHandler.Create)
+		posts.PUT("/:id", r.dependencies.PostHandler.Update)
+		posts.PATCH("/:id/privacy", r.dependencies.PostHandler.UpdatePrivacy)
+		posts.PATCH("/:id/publish", r.dependencies.PostHandler.Publish)
+		posts.PATCH("/:id/reject", r.dependencies.PostHandler.Reject)
+		posts.PATCH("/:id/republish", r.dependencies.PostHandler.Republish)
+		posts.PATCH("/:id/delete", r.dependencies.PostHandler.DeleteAtUserRequest)
+		posts.DELETE("/:id", r.dependencies.PostHandler.Delete)
+		posts.GET("/:id", r.dependencies.PostHandler.GetByID)
+		// posts.GET("", r.dependencies.PostHandler.GetList)
 	}
 }
 

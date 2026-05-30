@@ -15,6 +15,10 @@ type creator[TEntity TDBEntities] interface {
 	Create(ctx context.Context, entity *TEntity) (*TEntity, error)
 }
 
+type updater[TEntity TDBEntities] interface {
+	Update(ctx context.Context, pk uint64, data *TEntity) (*TEntity, error)
+}
+
 type deleter interface {
 	Delete(ctx context.Context, pk uint64) error
 }
