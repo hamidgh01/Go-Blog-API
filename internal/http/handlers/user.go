@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"Go-Blog-API/internal/application/services"
-	"Go-Blog-API/internal/domain/rules"
+	"Go-Blog-API/internal/domain"
 	"Go-Blog-API/internal/http/dto"
 	"Go-Blog-API/internal/http/helpers"
 
@@ -56,12 +56,12 @@ func (h *UserHandler) GetByID(c *gin.Context) {
 
 func (h *UserHandler) GetByUsername(c *gin.Context) {
 	username := c.Param("username")
-	if username == "" || rules.CheckUsernamePattern(username) {
+	if username == "" || domain.CheckUsernamePattern(username) {
 		c.AbortWithStatusJSON(
 			http.StatusBadRequest,
 			helpers.GenerateErrorResponse(
 				fmt.Sprintf("invalid path parameter: '%s'", username),
-				gin.H{"description": fmt.Sprintf("input must be a valid username. %s", rules.UsernamePatternDescription)},
+				gin.H{"description": fmt.Sprintf("input must be a valid username. %s", domain.UsernamePatternDescription)},
 			),
 		)
 		return

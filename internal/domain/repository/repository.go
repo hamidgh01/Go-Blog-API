@@ -26,4 +26,5 @@ type PostRepository interface {
 	UpdatePrivacy(ctx context.Context, pk uint64, data *entity.Post) (*entity.Post, error)
 	deleter
 	getterByID[entity.Post]
+	listGetterByFK[entity.Post]
 }

@@ -3,7 +3,7 @@ package validations
 import (
 	"errors"
 
-	"Go-Blog-API/internal/domain/rules"
+	"Go-Blog-API/internal/domain"
 
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
@@ -34,7 +34,7 @@ func usernameValidator(f validator.FieldLevel) bool {
 		return false
 	}
 
-	return rules.CheckUsernamePattern(value)
+	return domain.CheckUsernamePattern(value)
 }
 
 func passwordValidator(f validator.FieldLevel) bool {
@@ -43,7 +43,7 @@ func passwordValidator(f validator.FieldLevel) bool {
 		return false
 	}
 
-	return rules.CheckPasswordPattern(value)
+	return domain.CheckPasswordPattern(value)
 }
 
 func tagValidator(f validator.FieldLevel) bool {
@@ -52,5 +52,5 @@ func tagValidator(f validator.FieldLevel) bool {
 		return false
 	}
 
-	return rules.CheckTagPattern(value)
+	return domain.CheckTagPattern(value)
 }

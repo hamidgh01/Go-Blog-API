@@ -1,9 +1,10 @@
 package validations
 
 import (
-	"Go-Blog-API/internal/domain/rules"
 	"errors"
 	"fmt"
+
+	"Go-Blog-API/internal/domain"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -27,6 +28,9 @@ func translateValidationErrorToReadableMessage(err validator.FieldError) Transla
 	case "nefield":
 		msg = fmt.Sprintf("%s and %s should not be same.", field, err.Param())
 
+	case "eq":
+		msg = fmt.Sprintf("%s should be equal to: %s.", field, err.Param())
+
 	// use these for length
 	case "min":
 		msg = fmt.Sprintf("%s is too short (min=%s).", field, err.Param())
@@ -45,12 +49,17 @@ func translateValidationErrorToReadableMessage(err validator.FieldError) Transla
 
 	case "email":
 		msg = fmt.Sprintf("'%s' is not a valid email address.", err.Value())
+	case "url":
+		msg = fmt.Sprintf("'%s' is not a valid url.", err.Value())
 	case "strong_password":
-		msg = fmt.Sprintf("'%s' is not a valid password. %s", err.Value(), rules.PasswordPatternDescription)
+		msg = fmt.Sprintf("'%s' is not a valid password. %s", err.Value(), domain.PasswordPatternDescription)
 	case "username_pattern":
-		msg = fmt.Sprintf("'%s' is not a valid username. %s", err.Value(), rules.UsernamePatternDescription)
+		msg = fmt.Sprintf("'%s' is not a valid username. %s", err.Value(), domain.UsernamePatternDescription)
 	case "tag_pattern":
-		msg = fmt.Sprintf("'%s' is not a valid tag. %s", err.Value(), rules.TagPatternDescription)
+		msg = fmt.Sprintf("'%s' is not a valid tag. %s", err.Value(), domain.TagPatternDescription)
+
+	case "oneof":
+		msg = fmt.Sprintf("'%s' is not a valid input for %s. input should be one of: %s", err.Value(), field, err.Param())
 
 	default:
 		msg = fmt.Sprintf("there is error at field '%s'.", field)

@@ -26,7 +26,6 @@ func (r *Router) RegisterRoutes() {
 	{
 		users.POST("", r.dependencies.UserHandler.Create)
 		users.PATCH("/:id/username", r.dependencies.UserHandler.UpdateUsername)
-		users.PATCH("/:id/username", r.dependencies.UserHandler.UpdateUsername)
 		users.PATCH("/:id/email", r.dependencies.UserHandler.UpdateEmail)
 		users.PATCH("/:id/bio", r.dependencies.UserHandler.UpdateBio)
 		users.PATCH("/:id/password", r.dependencies.UserHandler.UpdatePassword)
