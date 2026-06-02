@@ -19,6 +19,8 @@ type List struct {
 	ModifiedAt  sql.NullTime // sql: TIMESTAMP WITH TIME ZONE
 	UserID      uint64       // sql: BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE (indexed)
 	// NOTE: `UserID` here is the `id` of the user who owns this list
+	// FK:
+	User *User
 }
 
 // 'SavedPostsM2M' association table -> M2M between 'List' and 'Post'

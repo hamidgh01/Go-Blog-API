@@ -64,17 +64,17 @@ func NewUpdateEnabledRequest() *UpdateEnabledRequest { return new(UpdateEnabledR
 // -----------------------------------------------------------------------------
 // Response DTOs
 
-type UserOut struct {
+type UserBrief struct {
 	ID       uint64 `json:"id"`
 	Username string `json:"name,omitempty"`
 }
 
-func ToUserOut(u *entity.User) *UserOut {
-	return &UserOut{ID: u.ID, Username: u.Username}
+func ToUserBrief(u *entity.User) *UserBrief {
+	return &UserBrief{ID: u.ID, Username: u.Username}
 }
 
-type UserResponse struct {
-	*UserOut
+type UserDetails struct {
+	*UserBrief
 	Email      string    `json:"email"`
 	Bio        string    `json:"bio"`
 	Enabled    bool      `json:"enabled"`
@@ -82,9 +82,9 @@ type UserResponse struct {
 	ModifiedAt time.Time `json:"modified_at"`
 }
 
-func ToUserResponse(u *entity.User) *UserResponse {
-	return &UserResponse{
-		UserOut:    ToUserOut(u),
+func ToUserDetails(u *entity.User) *UserDetails {
+	return &UserDetails{
+		UserBrief:  ToUserBrief(u),
 		Email:      u.Email,
 		Bio:        u.Bio,
 		Enabled:    u.Enabled,
@@ -93,13 +93,23 @@ func ToUserResponse(u *entity.User) *UserResponse {
 	}
 }
 
-type UsersList []UserOut
-
-func ToUserList(users []*entity.User) *UsersList {
-	var usersList UsersList
-	for _, u := range users {
-		usersList = append(usersList, *ToUserOut(u))
-	}
-
-	return &usersList
+type UserDetailsWithCountOfReferencedObjects struct {
+	*UserDetails
+	RefObjCounts     map[entity.CountKey]int `json:"referenced_objects_count"`
+	FollowedByViewer bool                    `json:"followed_by_viewer"`
+	// (later)
+	// [option: recent] all (5) pined & 5 recent posts (5+5=10)
+	// [option: popular] 10 popular posts (most likes)
 }
+
+func ToUserDetailsWithCountOfReferencedObjects(
+	u *entity.User, refObjCounts map[entity.CountKey]int, followedByViewer bool,
+) *UserDetailsWithCountOfReferencedObjects {
+	return &UserDetailsWithCountOfReferencedObjects{
+		UserDetails:      ToUserDetails(u),
+		RefObjCounts:     refObjCounts,
+		FollowedByViewer: followedByViewer,
+	}
+}
+
+type UsersList []*UserBrief

@@ -10,9 +10,10 @@ import (
 // Request DTOs
 
 type CreatePostRequest struct {
-	Title   string `json:"title" binding:"required,min=3,max=250"`
-	Content string `json:"content,omitempty"`
-	Status  string `json:"status,omitempty" binding:"oneof=draft published"`
+	Title     string `json:"title" binding:"required,max=200"`
+	Content   string `json:"content,omitempty"`
+	Status    string `json:"status,omitempty" binding:"oneof=draft published"`
+	IsPrivate bool   `json:"is_private,omitempty"`
 }
 
 func NewCreatePostRequest() *CreatePostRequest {
@@ -47,44 +48,60 @@ func NewUpdatePostPrivacyRequest() *UpdatePostPrivacyRequest {
 // -----------------------------------------------------------------------------
 // Response DTOs
 
-type PostOut struct {
-	ID            uint64    `json:"id"`
-	Title         string    `json:"title"`
-	CreatedAt     time.Time `json:"created_at"`
-	ModifiedAt    time.Time `json:"modified_at"`
-	UserID        uint64    `json:"user_id"`
-	User          *UserOut  `json:"user"`
-	SavedByViewer bool      `json:"saved_by_viewer"`
+type PostBrief struct {
+	ID               uint64     `json:"id"`
+	Title            string     `json:"title"`
+	CreatedAt        time.Time  `json:"created_at"`
+	ModifiedAt       time.Time  `json:"modified_at"`
+	FirstPublishedAt time.Time  `json:"first_published_at"`
+	User             *UserBrief `json:"user"`
 }
 
-func ToPostOut(p *entity.Post, userOut *UserOut, savedByViewer bool) *PostOut {
-	return &PostOut{
-		ID:            p.ID,
-		Title:         p.Title,
-		CreatedAt:     p.CreatedAt,
-		ModifiedAt:    p.ModifiedAt.Time,
-		UserID:        p.UserID,
-		User:          userOut,
+func ToPostBrief(p *entity.Post) *PostBrief {
+	return &PostBrief{
+		ID:               p.ID,
+		Title:            p.Title,
+		CreatedAt:        p.CreatedAt,
+		ModifiedAt:       p.ModifiedAt.Time,
+		FirstPublishedAt: p.FirstPublishedAt.Time,
+		User:             ToUserBrief(p.User),
+	}
+}
+
+type PostDetails struct {
+	*PostBrief
+	Content   string `json:"content,omitempty"`
+	IsPrivate bool   `json:"is_private"`
+	Status    string `json:"status"`
+}
+
+func ToPostDetails(p *entity.Post) *PostDetails {
+	return &PostDetails{
+		PostBrief: ToPostBrief(p),
+		Content:   p.Content,
+		IsPrivate: p.IsPrivate,
+		Status:    string(p.Status),
+	}
+}
+
+type PostDetailsWithCountOfReferencedObjects struct {
+	*PostDetails
+	RefObjCounts  map[entity.CountKey]int `json:"referenced_objects_count"`
+	LikeCount     int                     `json:"like_count"`
+	LikedByViewer bool                    `json:"like_by_viewer"`
+	SavedByViewer bool                    `json:"saved_by_viewer"`
+}
+
+func ToPostDetailsWithCountOfReferencedObjects(
+	p *entity.Post, refObjCounts map[entity.CountKey]int, likeCount int, likedByViewer bool, savedByViewer bool,
+) *PostDetailsWithCountOfReferencedObjects {
+	return &PostDetailsWithCountOfReferencedObjects{
+		PostDetails:   ToPostDetails(p),
+		RefObjCounts:  refObjCounts,
+		LikeCount:     likeCount,
+		LikedByViewer: likedByViewer,
 		SavedByViewer: savedByViewer,
 	}
 }
 
-type PostDetailsResponse struct {
-	*PostOut
-	Content       string `json:"content,omitempty"`
-	LikeCount     int    `json:"like_count"`
-	LikedByViewer bool   `json:"like_by_viewer"`
-}
-
-func ToPostDetailsResponse(
-	p *entity.Post, userOut *UserOut, savedByViewer bool, likeCount int, likedByViewer bool,
-) *PostDetailsResponse {
-	return &PostDetailsResponse{
-		PostOut:       ToPostOut(p, userOut, savedByViewer),
-		Content:       p.Content,
-		LikeCount:     likeCount,
-		LikedByViewer: likedByViewer,
-	}
-}
-
-type PostsListResponse []*PostOut
+type PostsList []*PostBrief

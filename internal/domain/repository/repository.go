@@ -17,6 +17,7 @@ type UserRepository[TEntity e.TDBEntities] interface {
 
 	// ExistEmail(...)
 	// ExistUsername(...)
+	// VerifyLoginRequest(...)
 
 	deleter
 

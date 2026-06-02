@@ -8,4 +8,6 @@ type Link struct {
 	Title  string // sql: VARCHAR(32) NOT NULL
 	Url    string // sql: VARCHAR NOT NULL
 	UserID uint64 // sql: BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE (indexed)
+	// FK:
+	User *User
 }
