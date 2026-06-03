@@ -3,10 +3,11 @@ package repository
 import (
 	"context"
 
+	d "Go-Blog-API/internal/domain"
 	e "Go-Blog-API/internal/domain/entity"
 )
 
-type UserRepository[TEntity e.TDBEntities] interface {
+type UserRepository interface {
 	creator[e.User]
 
 	UpdateUsername(ctx context.Context, pk uint64, username string) (*e.User, error)
@@ -25,7 +26,16 @@ type UserRepository[TEntity e.TDBEntities] interface {
 	GetByUsername(ctx context.Context, username string) (*e.User, error)
 	GetByEmail(ctx context.Context, email string) (*e.User, error)
 	getterByIDWithCountOfAllReferencedObjects[e.User]
-	referredObjectListGetterByFK[TEntity] // tables referred User: all of other tables
+
+	// get list of other sources (have FK to a `User`)
+	GetPosts(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)
+	GetLists(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.List], error)
+	GetSavedLists(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.List], error)
+	GetComments(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Comment], error)
+	GetLikes(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)
+	GetFollowers(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.User], error)
+	GetFollowings(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.User], error)
+	GetLinks(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Link], error)
 }
 
 type LinkRepository interface {
@@ -35,7 +45,7 @@ type LinkRepository interface {
 	getterByID[e.Link]
 }
 
-type PostRepository[TEntity e.TDBEntities] interface {
+type PostRepository interface {
 	creator[e.Post]
 
 	updater[e.Post]
@@ -46,18 +56,24 @@ type PostRepository[TEntity e.TDBEntities] interface {
 
 	getterByID[e.Post]
 	getterByIDWithCountOfAllReferencedObjects[e.Post]
-	referredObjectListGetterByFK[TEntity] // tables referred Post: comments, likes, tags, lists
+
+	// get list of other sources (have FK to a `Post`)
+	GetComments(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Comment], error)
+	GetLikes(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.User], error)
+	GetListsThatSavedThisPost(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.List], error)
+	GetTags(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Tag], error)
 }
 
 type TagRepository interface {
-	creator[e.Tag]
-	BalkCreate(ctx context.Context, entity []*e.Tag) ([]*e.Tag, error)
+	Create(ctx context.Context, entity []*e.Tag) ([]*e.Tag, error)
 
 	getterByID[e.Tag]
-	GetByName(ctx context.Context, name string) (*e.User, error)
+	GetByName(ctx context.Context, name string) (*e.Tag, error)
 	getterByIDWithCountOfAllReferencedObjects[e.Tag]
 	GetByNameWithCountOfAllReferencedObjects(ctx context.Context, name string) (*e.DBEntityWithCountOfReferencedObjects[e.Tag], error)
-	referredObjectListGetterByFK[e.Post] // tags table is only referenced by posts table (via PostTagsM2M)
+
+	// `Tag` is only referenced by `Post` (via `PostTagsM2M`)
+	GetPosts(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)
 }
 
 type CommentRepository interface {
@@ -70,10 +86,12 @@ type CommentRepository interface {
 
 	getterByID[e.Comment]
 	getterByIDWithCountOfAllReferencedObjects[e.Comment]
-	referredObjectListGetterByFK[e.Comment] // comments table is only referenced by itself (its replies)
+
+	// `Comment` is only referenced by itself (its Replies)
+	GetReplies(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Comment], error)
 }
 
-type listRepository[TEntity e.TDBEntities] interface {
+type ListRepository interface {
 	creator[e.List]
 
 	updater[e.List]
@@ -83,5 +101,8 @@ type listRepository[TEntity e.TDBEntities] interface {
 
 	getterByID[e.List]
 	getterByIDWithCountOfAllReferencedObjects[e.List]
-	referredObjectListGetterByFK[TEntity] // tables referred List: posts (SavedPostsM2M), users (UsersSavedListsM2M)
+
+	// get list of other sources (have FK to a `List`) (`Post` via `SavedPostsM2M`, `User` via `UsersSavedListsM2M`)
+	GetSavedPosts(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)
+	GetUsersWhoSaved(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.User], error)
 }

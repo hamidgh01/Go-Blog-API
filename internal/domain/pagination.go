@@ -36,10 +36,10 @@ type PagedList[TEntity entity.TDBEntities] struct {
 	PreviousPage    int        `json:"previous_page,omitempty"`
 	HasNextPage     bool       `json:"has_next_page"`
 	NextPage        int        `json:"next_page,omitempty"`
-	Items           *[]TEntity `json:"items"`
+	Items           []*TEntity `json:"items"`
 }
 
-func Paginate[TEntity entity.TDBEntities](items *[]TEntity, totalRows int, page int, size int) *PagedList[TEntity] {
+func Paginate[TEntity entity.TDBEntities](items []*TEntity, totalRows int, page int, size int) *PagedList[TEntity] {
 	pl := &PagedList[TEntity]{
 		Page:      page,
 		Size:      size,

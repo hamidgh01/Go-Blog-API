@@ -5,20 +5,6 @@ type TDBEntities interface {
 		Tag | PostTagsM2M | List | SavedPostsM2M | UsersSavedListsM2M
 }
 
-type ReferencedObjectKey string
-
-const (
-	LINKS       ReferencedObjectKey = "links"
-	POSTS       ReferencedObjectKey = "posts"
-	TAGS        ReferencedObjectKey = "tags"
-	POSTS_TAGS  ReferencedObjectKey = "posts_tags_m2m"
-	COMMENTS    ReferencedObjectKey = "comments"
-	LISTS       ReferencedObjectKey = "lists"
-	SAVED_POSTS ReferencedObjectKey = "saved_posts_m2m"
-	SAVED_LISTS ReferencedObjectKey = "users_saved_list_m2m"
-	LIKES       ReferencedObjectKey = "post_likes_m2m"
-)
-
 type CountKey string
 
 const (
