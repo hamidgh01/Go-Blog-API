@@ -32,3 +32,4 @@ type FollowsM2M struct {
 	Followed   uint64    // sql: BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE (indexed -separately-)
 	FollowedAt time.Time // sql: TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp
 } // PRIMARY KEY (followed_by, followed)
+// CONSTRAINT cant_follow_yourself CHECK (followed_by != followed);

@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS follows_m2m (
     followed_at TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp,
 
     PRIMARY KEY (followed_by, followed)
+    -- NOTE: a CHECK constraint added to this table in the next migration
 );
 
 -- this index will help with queries that filter or join by followed alone (e.g. fetching followers of a user)
