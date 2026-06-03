@@ -5,20 +5,12 @@ import "Go-Blog-API/internal/domain/entity"
 // -----------------------------------------------------------------------------
 // Request DTOs
 
-type CreateTagRequest struct {
-	Name string `json:"name" binding:"required,tag_pattern"`
+type CreateTagsRequest struct {
+	Tags []string `json:"tags" binding:"required,unique,min=1,max=10,dive,tag_pattern"`
 }
 
-func NewCreateTagRequest() *CreateTagRequest {
-	return new(CreateTagRequest)
-}
-
-type BulkCreateTagRequest struct {
-	Name []string `json:"name" binding:"required,unique,min=1,max=10,dive,tag_pattern"`
-}
-
-func NewBulkCreateTagRequest() *BulkCreateTagRequest {
-	return new(BulkCreateTagRequest)
+func NewCreateTagsRequest() *CreateTagsRequest {
+	return new(CreateTagsRequest)
 }
 
 // -----------------------------------------------------------------------------
@@ -37,3 +29,11 @@ func ToTagDetails(t *entity.Tag) *TagDetails {
 }
 
 type TagsList []*TagDetails
+
+func ToTagsList(tags []*entity.Tag) TagsList {
+	tagsList := make(TagsList, len(tags))
+	for _, tag := range tags {
+		tagsList = append(tagsList, ToTagDetails(tag))
+	}
+	return tagsList
+}

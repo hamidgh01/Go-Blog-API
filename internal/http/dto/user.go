@@ -113,3 +113,11 @@ func ToUserDetailsWithCountOfReferencedObjects(
 }
 
 type UsersList []*UserBrief
+
+func ToUsersList(users []*entity.User) UsersList {
+	usersList := make(UsersList, len(users))
+	for _, user := range users {
+		usersList = append(usersList, ToUserBrief(user))
+	}
+	return usersList
+}
