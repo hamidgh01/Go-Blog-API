@@ -7,8 +7,10 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/handlers"
+	redisInfra "github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/hashing"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/jwt"
+
 	"github.com/redis/go-redis/v9"
 )
 
@@ -18,10 +20,11 @@ type Container struct {
 	UserRepository repository.UserRepository
 	PostRepository repository.PostRepository
 
-	// Security
-	JwtManager     *jwt.JWTManager
-	PasswordHasher *hashing.PasswordHasher
-	// Revoker or RevokingManager
+	// other infrastructure services (security, caching, etc.)
+	JwtManager          *jwt.JWTManager
+	PasswordHasher      *hashing.PasswordHasher
+	TokenRevoker        *redisInfra.TokenRevoker
+	UserDisabledChecker *redisInfra.UserDisabledChecker
 
 	// Services
 	UserService *services.UserService
