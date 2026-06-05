@@ -3,10 +3,10 @@ package server
 import (
 	"fmt"
 
-	"Go-Blog-API/config"
-	"Go-Blog-API/internal/http/deps_container"
-	"Go-Blog-API/internal/http/router"
-	"Go-Blog-API/internal/http/validations"
+	"github.com/hamidgh01/Go-Blog-API/config"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/deps_container"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/router"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/validations"
 
 	"github.com/gin-gonic/gin"
 )

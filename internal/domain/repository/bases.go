@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	e "Go-Blog-API/internal/domain/entity"
+	e "github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 )
 
 type creator[TEntity e.TDBEntities] interface {

@@ -3,10 +3,10 @@ package commands
 import (
 	"log"
 
-	"Go-Blog-API/config"
-	server "Go-Blog-API/internal/http"
-	"Go-Blog-API/internal/http/deps_container"
-	"Go-Blog-API/internal/infra/database"
+	"github.com/hamidgh01/Go-Blog-API/config"
+	server "github.com/hamidgh01/Go-Blog-API/internal/http"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/deps_container"
+	"github.com/hamidgh01/Go-Blog-API/internal/infra/database"
 
 	"github.com/spf13/cobra"
 )

@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"Go-Blog-API/internal/application/service_errors"
-	"Go-Blog-API/internal/http/generics"
-	"Go-Blog-API/internal/http/helpers"
-	"Go-Blog-API/internal/http/validations"
+	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/helpers"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/validations"
 
 	"github.com/gin-gonic/gin"
 )

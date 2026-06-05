@@ -3,8 +3,8 @@ package repository
 import (
 	"context"
 
-	d "Go-Blog-API/internal/domain"
-	e "Go-Blog-API/internal/domain/entity"
+	d "github.com/hamidgh01/Go-Blog-API/internal/domain"
+	e "github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 )
 
 type UserRepository interface {

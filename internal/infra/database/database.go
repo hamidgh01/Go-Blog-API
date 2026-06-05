@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	"Go-Blog-API/config"
+	"github.com/hamidgh01/Go-Blog-API/config"
 
 	_ "github.com/lib/pq"
 )

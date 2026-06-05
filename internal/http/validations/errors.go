@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"Go-Blog-API/internal/domain"
+	"github.com/hamidgh01/Go-Blog-API/internal/domain"
 
 	"github.com/go-playground/validator/v10"
 )

@@ -3,10 +3,10 @@ package deps_container
 import (
 	"database/sql"
 
-	"Go-Blog-API/config"
-	"Go-Blog-API/internal/application/services"
-	"Go-Blog-API/internal/domain/repository"
-	"Go-Blog-API/internal/http/handlers"
+	"github.com/hamidgh01/Go-Blog-API/config"
+	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
+	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/handlers"
 )
 
 // Container holds all application dependencies

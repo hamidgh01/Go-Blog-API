@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"Go-Blog-API/internal/http/deps_container"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/deps_container"
 
 	"github.com/gin-gonic/gin"
 )

@@ -5,7 +5,7 @@ import (
 	"log"
 	"strconv"
 
-	"Go-Blog-API/config"
+	"github.com/hamidgh01/Go-Blog-API/config"
 
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"

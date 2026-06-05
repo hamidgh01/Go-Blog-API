@@ -3,7 +3,7 @@ package dto
 import (
 	"time"
 
-	"Go-Blog-API/internal/domain/entity"
+	"github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 )
 
 // -----------------------------------------------------------------------------

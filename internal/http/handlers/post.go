@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"Go-Blog-API/internal/application/services"
-	"Go-Blog-API/internal/http/dto"
-	"Go-Blog-API/internal/http/helpers"
+	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/helpers"
 
 	"github.com/gin-gonic/gin"
 )

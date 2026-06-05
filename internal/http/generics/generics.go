@@ -1,6 +1,6 @@
 package generics
 
-import "Go-Blog-API/internal/http/dto"
+import "github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 
 type CreateRequestTypes interface {
 	dto.CreateUserRequest |

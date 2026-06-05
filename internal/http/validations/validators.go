@@ -3,7 +3,7 @@ package validations
 import (
 	"errors"
 
-	"Go-Blog-API/internal/domain"
+	"github.com/hamidgh01/Go-Blog-API/internal/domain"
 
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"

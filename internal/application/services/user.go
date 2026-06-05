@@ -3,9 +3,9 @@ package services
 import (
 	"context"
 
-	"Go-Blog-API/internal/application/service_errors"
-	"Go-Blog-API/internal/domain/repository"
-	"Go-Blog-API/internal/http/dto"
+	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
+	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 )
 
 type UserService struct {
@@ -19,37 +19,37 @@ func NewUserService(r repository.UserRepository) *UserService {
 
 func (u *UserService) Create(
 	ctx context.Context, data *dto.CreateUserRequest,
-) (*dto.UserResponse, *service_errors.ServiceError) {
+) (*dto.UserDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (u *UserService) UpdateUsername(
 	ctx context.Context, pk uint64, data *dto.UpdateUsernameRequest,
-) (*dto.UserResponse, *service_errors.ServiceError) {
+) (*dto.UserDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (u *UserService) UpdateEmail(
 	ctx context.Context, pk uint64, data *dto.UpdateEmailRequest,
-) (*dto.UserResponse, *service_errors.ServiceError) {
+) (*dto.UserDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (u *UserService) UpdateBio(
 	ctx context.Context, pk uint64, data *dto.UpdateBioRequest,
-) (*dto.UserResponse, *service_errors.ServiceError) {
+) (*dto.UserDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (u *UserService) UpdatePassword(
 	ctx context.Context, pk uint64, data *dto.UpdatePasswordRequest,
-) (*dto.UserResponse, *service_errors.ServiceError) {
+) (*dto.UserDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (u *UserService) UpdateEnabled(
 	ctx context.Context, pk uint64, data *dto.UpdateEnabledRequest,
-) (*dto.UserResponse, *service_errors.ServiceError) {
+) (*dto.UserDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
@@ -61,18 +61,18 @@ func (u *UserService) Delete(ctx context.Context, pk uint64) *service_errors.Ser
 
 func (u *UserService) GetByID(
 	ctx context.Context, pk uint64,
-) (*dto.UserResponse, *service_errors.ServiceError) {
+) (*dto.UserDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (u *UserService) GetByUsername(
 	ctx context.Context, username string,
-) (*dto.UserResponse, *service_errors.ServiceError) {
+) (*dto.UserDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (u *UserService) GetByEmail(
 	ctx context.Context, email string,
-) (*dto.UserResponse, *service_errors.ServiceError) {
+) (*dto.UserDetails, *service_errors.ServiceError) {
 	return nil, nil
 }

@@ -1,4 +1,4 @@
-module Go-Blog-API
+module github.com/hamidgh01/Go-Blog-API
 
 go 1.25.7
 
