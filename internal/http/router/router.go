@@ -22,6 +22,14 @@ func (r *Router) RegisterRoutes() {
 	r.router.GET("/", index)
 	r.router.GET("/ping", ping)
 
+	auth := r.router.Group("")
+	{
+		auth.POST("/register", r.dependencies.AuthHandler.Register)
+		auth.POST("/login", r.dependencies.AuthHandler.Login)
+		auth.GET("/logout", r.dependencies.AuthHandler.Logout)
+		auth.GET("/renew-tokens", r.dependencies.AuthHandler.RenewTokens)
+	}
+
 	users := r.router.Group("/users")
 	{
 		users.POST("", r.dependencies.UserHandler.Create)

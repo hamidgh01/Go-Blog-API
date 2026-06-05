@@ -59,7 +59,7 @@ func update[TRequest generics.UpdateRequestTypes, TResponse generics.OutputTypes
 	NewUpdateObjRequestDTOFunc func() *TRequest,
 	updataObjService func(ctx context.Context, pk uint64, data *TRequest) (*TResponse, *service_errors.ServiceError),
 ) {
-	pk, err := extractIDPathParam(c)
+	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
 	if err != nil {
 		return
 	}
@@ -100,7 +100,7 @@ func update[TRequest generics.UpdateRequestTypes, TResponse generics.OutputTypes
 }
 
 func delete(c *gin.Context, deleteObjService func(ctx context.Context, pk uint64) *service_errors.ServiceError) {
-	pk, err := extractIDPathParam(c)
+	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
 	if err != nil {
 		return
 	}
@@ -121,7 +121,7 @@ func getByID[TResponse generics.OutputTypes](
 	c *gin.Context,
 	getObjByIDService func(ctx context.Context, pk uint64) (*TResponse, *service_errors.ServiceError),
 ) {
-	pk, err := extractIDPathParam(c)
+	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
 	if err != nil {
 		return
 	}
@@ -141,7 +141,7 @@ func getByID[TResponse generics.OutputTypes](
 	)
 }
 
-func extractIDPathParam(c *gin.Context) (uint64, error) {
+func extractIDPathParamOrAbortWithStatusBadRequest(c *gin.Context) (uint64, error) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil || id == 0 {
 		c.AbortWithStatusJSON(

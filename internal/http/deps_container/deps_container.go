@@ -31,6 +31,7 @@ type Container struct {
 	UserDisabledChecker *redisInfra.UserDisabledChecker
 
 	// Services
+	AuthService    *services.AuthService
 	UserService    *services.UserService
 	PostService    *services.PostService
 	CommentService *services.CommentService
@@ -39,6 +40,7 @@ type Container struct {
 	ListService    *services.ListService
 
 	// Handlers
+	AuthHandler    *handlers.AuthHandler
 	UserHandler    *handlers.UserHandler
 	PostHandler    *handlers.PostHandler
 	CommentHandler *handlers.CommentHandler

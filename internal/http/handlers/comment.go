@@ -28,7 +28,7 @@ func (h *CommentHandler) Update(c *gin.Context) {
 }
 
 func (h *CommentHandler) updateCommentStatus(c *gin.Context, status string) {
-	pk, err := extractIDPathParam(c)
+	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
 	if err != nil {
 		return
 	}

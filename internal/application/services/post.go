@@ -54,25 +54,25 @@ func (p *PostService) GetByID(
 // -----------------------------------------------------------------------------
 // other sources that has FK to `Post`
 
-func (c *CommentService) GetComments(
+func (p *PostService) GetComments(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.CommentList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (c *CommentService) GetLikes(
+func (p *PostService) GetLikes(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (c *CommentService) GetTags(
+func (p *PostService) GetTags(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.TagsList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (c *CommentService) GetLists(
+func (p *PostService) GetLists(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
 	return nil, nil

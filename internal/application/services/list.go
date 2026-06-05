@@ -17,29 +17,29 @@ func NewListService(r repository.ListRepository) *ListService {
 	return &ListService{repo: r}
 }
 
-func (c *ListService) Create(
+func (l *ListService) Create(
 	ctx context.Context, data *dto.CreateListRequest,
 ) (*dto.ListDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (c *ListService) Update(
+func (l *ListService) Update(
 	ctx context.Context, pk uint64, data *dto.UpdateListRequest,
 ) (*dto.ListDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (c *ListService) UpdatePrivacy(
+func (l *ListService) UpdatePrivacy(
 	ctx context.Context, pk uint64, data *dto.UpdateListPrivacyRequest,
 ) (*dto.ListDetails, *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (c *ListService) Delete(ctx context.Context, pk uint64) *service_errors.ServiceError {
+func (l *ListService) Delete(ctx context.Context, pk uint64) *service_errors.ServiceError {
 	return nil
 }
 
-func (c *ListService) GetByID(
+func (l *ListService) GetByID(
 	ctx context.Context, pk uint64,
 ) (*dto.ListDetails, *service_errors.ServiceError) {
 	return nil, nil
@@ -48,13 +48,13 @@ func (c *ListService) GetByID(
 // -----------------------------------------------------------------------------
 // other sources that has FK to `List`
 
-func (c *ListService) GetSavedPosts(
+func (l *ListService) GetSavedPosts(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.PostsList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (c *ListService) GetUsersWhoSaved(
+func (l *ListService) GetUsersWhoSaved(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
 	return nil, nil

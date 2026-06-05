@@ -81,49 +81,49 @@ func (u *UserService) GetByEmail(
 // -----------------------------------------------------------------------------
 // other sources that has FK to `User`
 
-func (h *UserService) GetPosts(
+func (u *UserService) GetPosts(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.PostsList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (h *UserService) GetLists(
+func (u *UserService) GetLists(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (h *UserService) GetSavedLists(
+func (u *UserService) GetSavedLists(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (h *UserService) GetComments(
+func (u *UserService) GetComments(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.CommentList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (h *UserService) GetLikes(
+func (u *UserService) GetLikes(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.PostsList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (h *UserService) GetFollowers(
+func (u *UserService) GetFollowers(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (h *UserService) GetFollowings(
+func (u *UserService) GetFollowings(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
-func (h *UserService) GetLinks(
+func (u *UserService) GetLinks(
 	ctx context.Context, fk uint64,
 ) (*generics.PagedList[dto.LinksList], *service_errors.ServiceError) {
 	return nil, nil

@@ -32,7 +32,7 @@ func (h *PostHandler) UpdatePrivacy(c *gin.Context) {
 }
 
 func (h *PostHandler) updatePostStatus(c *gin.Context, status string) {
-	pk, err := extractIDPathParam(c)
+	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
 	if err != nil {
 		return
 	}
