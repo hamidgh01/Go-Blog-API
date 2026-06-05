@@ -7,6 +7,7 @@ import (
 	server "github.com/hamidgh01/Go-Blog-API/internal/http"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/deps_container"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/database"
+	"github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 
 	"github.com/spf13/cobra"
 )
@@ -35,8 +36,15 @@ func serve() {
 	}
 	defer db.Close()
 
+	// establish redis connection
+	redisClient, err := redis.InitRedis(&cfg.Redis)
+	if err != nil {
+		log.Fatal("failed to establish redis connection. reason: ", err)
+	}
+	defer redisClient.Close()
+
 	// initialize container with all dependencies
-	dependencyContainer := deps_container.NewContainer(cfg, db)
+	dependencyContainer := deps_container.NewContainer(cfg, db, redisClient)
 
 	// init and run server
 	if err := server.InitAndRun(cfg, dependencyContainer); err != nil {

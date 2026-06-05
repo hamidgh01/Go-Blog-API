@@ -34,7 +34,8 @@ func InitDB(dbConf *config.PostgresConf) (*sql.DB, error) {
 	defer cancel()
 
 	if err := db.PingContext(ctx); err != nil {
-		return nil, err
+		db.Close()
+		return nil, fmt.Errorf("postgres ping failed: %w", err)
 	}
 
 	// sqlDB.SetMaxIdleConns(cfg.Postgres.MaxIdleConns)

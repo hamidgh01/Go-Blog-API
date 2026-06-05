@@ -7,6 +7,9 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/handlers"
+	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/hashing"
+	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/jwt"
+	"github.com/redis/go-redis/v9"
 )
 
 // Container holds all application dependencies
@@ -14,6 +17,11 @@ type Container struct {
 	// Repositories
 	UserRepository repository.UserRepository
 	PostRepository repository.PostRepository
+
+	// Security
+	JwtManager     *jwt.JWTManager
+	PasswordHasher *hashing.PasswordHasher
+	// Revoker or RevokingManager
 
 	// Services
 	UserService *services.UserService
@@ -27,6 +35,6 @@ type Container struct {
 }
 
 // NewContainer creates and wires all dependencies
-func NewContainer(cfg *config.Config, db *sql.DB) *Container {
+func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) *Container {
 	return &Container{}
 }

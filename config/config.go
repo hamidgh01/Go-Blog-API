@@ -9,12 +9,15 @@ import (
 type Config struct {
 	Server   ServerConf
 	Postgres PostgresConf
+	Jwt      JwtConf
+	Redis    RedisConf
 }
 
 type ServerConf struct {
 	Host string
 	Port int
 }
+
 type PostgresConf struct {
 	Host     string
 	Port     int
@@ -26,6 +29,20 @@ type PostgresConf struct {
 	// MaxOpenConns    int
 	// ConnMaxLifetime int
 	// TimeZone        string
+}
+
+type RedisConf struct {
+	Host     string
+	Port     int
+	Password string
+	DB       int
+}
+
+type JwtConf struct {
+	AccessSecret                 string
+	RefreshSecret                string
+	AccessTokenExpirationMinutes int
+	RefreshTokenExpirationDays   int
 }
 
 var cfg *Config
