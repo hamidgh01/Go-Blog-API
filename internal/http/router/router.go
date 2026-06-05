@@ -36,6 +36,25 @@ func (r *Router) RegisterRoutes() {
 		users.GET("/:id", r.dependencies.UserHandler.GetByID)
 		users.GET("/username=:username", r.dependencies.UserHandler.GetByUsername) // ToDo: check and standardize this
 		users.GET("/email=:email", r.dependencies.UserHandler.GetByEmail)          // ToDo: check and standardize this
+
+		// outer sources (related to User):
+		users.GET("/:id/posts", r.dependencies.UserHandler.GetPosts)
+		users.GET("/:id/lists", r.dependencies.UserHandler.GetLists)
+		users.GET("/:id/saved-lists", r.dependencies.UserHandler.GetSavedLists)
+		users.GET("/:id/comments", r.dependencies.UserHandler.GetComments)
+		users.GET("/:id/likes", r.dependencies.UserHandler.GetLikes)
+		users.GET("/:id/followers", r.dependencies.UserHandler.GetFollowers)
+		users.GET("/:id/followings", r.dependencies.UserHandler.GetFollowings)
+		users.GET("/:id/links", r.dependencies.UserHandler.GetLinks)
+	}
+
+	links := r.router.Group("/links")
+	{
+		links.POST("", r.dependencies.LinkHandler.Create)
+		links.PUT("/:id", r.dependencies.LinkHandler.Update)
+		links.DELETE("/:id", r.dependencies.LinkHandler.Delete)
+		links.GET("/:id", r.dependencies.LinkHandler.GetByID)
+		// links.GET("", r.dependencies.LinkHandler.GetList)
 	}
 
 	posts := r.router.Group("/posts")
@@ -50,6 +69,52 @@ func (r *Router) RegisterRoutes() {
 		posts.DELETE("/:id", r.dependencies.PostHandler.Delete)
 		posts.GET("/:id", r.dependencies.PostHandler.GetByID)
 		// posts.GET("", r.dependencies.PostHandler.GetList)
+
+		// outer sources (related to Post):
+		posts.GET("/:id/comments", r.dependencies.PostHandler.GetComments)
+		posts.GET("/:id/likes", r.dependencies.PostHandler.GetLikes)
+		posts.GET("/:id/tags", r.dependencies.PostHandler.GetTags)
+		posts.GET("/:id/lists", r.dependencies.PostHandler.GetLists)
+	}
+
+	tags := r.router.Group("/tags")
+	{
+		tags.POST("", r.dependencies.TagHandler.Create)
+		tags.GET("/:id", r.dependencies.TagHandler.GetByID)
+		tags.GET("/name=:name", r.dependencies.TagHandler.GetByName) // ToDo: check and standardize this
+		// tags.GET("", r.dependencies.TagHandler.GetList)
+
+		// outer sources (related to Tag):
+		tags.GET("/:id/posts", r.dependencies.TagHandler.GetPosts)
+	}
+
+	comments := r.router.Group("/comments")
+	{
+		comments.POST("", r.dependencies.CommentHandler.Create)
+		comments.PUT("/:id", r.dependencies.CommentHandler.Update)
+		comments.PATCH("/:id/hide", r.dependencies.CommentHandler.Hide)
+		comments.PATCH("/:id/republish", r.dependencies.CommentHandler.Republish)
+		comments.PATCH("/:id/delete", r.dependencies.CommentHandler.DeleteAtUserRequest)
+		comments.DELETE("/:id", r.dependencies.CommentHandler.Delete)
+		comments.GET("/:id", r.dependencies.CommentHandler.GetByID)
+		// comments.GET("", r.dependencies.CommentHandler.GetList)
+
+		// outer sources (related to Comment):
+		comments.GET("/:id/replies", r.dependencies.CommentHandler.GetReplies)
+	}
+
+	lists := r.router.Group("/lists")
+	{
+		lists.POST("", r.dependencies.ListHandler.Create)
+		lists.PUT("/:id", r.dependencies.ListHandler.Update)
+		lists.PATCH("/:id/...", r.dependencies.ListHandler.UpdatePrivacy)
+		lists.DELETE("/:id", r.dependencies.ListHandler.Delete)
+		lists.GET("/:id", r.dependencies.ListHandler.GetByID)
+		// lists.GET("", r.dependencies.ListHandler.GetList)
+
+		// outer sources (related to List):
+		lists.GET("/:id/saved-posts", r.dependencies.ListHandler.GetSavedPosts)
+		lists.GET("/:id/users-who-saved", r.dependencies.ListHandler.GetUsersWhoSaved)
 	}
 }
 

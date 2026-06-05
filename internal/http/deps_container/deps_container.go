@@ -17,8 +17,12 @@ import (
 // Container holds all application dependencies
 type Container struct {
 	// Repositories
-	UserRepository repository.UserRepository
-	PostRepository repository.PostRepository
+	UserRepository    repository.UserRepository
+	PostRepository    repository.PostRepository
+	CommentRepository repository.CommentRepository
+	TagRepository     repository.TagRepository
+	LinkRepository    repository.LinkRepository
+	ListRepository    repository.ListRepository
 
 	// other infrastructure services (security, caching, etc.)
 	JwtManager          *jwt.JWTManager
@@ -27,12 +31,20 @@ type Container struct {
 	UserDisabledChecker *redisInfra.UserDisabledChecker
 
 	// Services
-	UserService *services.UserService
-	PostService *services.PostService
+	UserService    *services.UserService
+	PostService    *services.PostService
+	CommentService *services.CommentService
+	TagService     *services.TagService
+	LinkService    *services.LinkService
+	ListService    *services.ListService
 
 	// Handlers
-	UserHandler *handlers.UserHandler
-	PostHandler *handlers.PostHandler
+	UserHandler    *handlers.UserHandler
+	PostHandler    *handlers.PostHandler
+	CommentHandler *handlers.CommentHandler
+	TagHandler     *handlers.TagHandler
+	LinkHandler    *handlers.LinkHandler
+	ListHandler    *handlers.ListHandler
 
 	// Middlewares
 }

@@ -67,7 +67,7 @@ func (h *UserHandler) GetByUsername(c *gin.Context) {
 		return
 	}
 
-	objResponse, serviceErr := h.service.GetByUsername(c, username)
+	userDetails, serviceErr := h.service.GetByUsername(c, username)
 	if serviceErr != nil {
 		c.AbortWithStatusJSON(
 			serviceErr.Code(),
@@ -78,7 +78,7 @@ func (h *UserHandler) GetByUsername(c *gin.Context) {
 
 	c.JSON(
 		http.StatusOK,
-		helpers.GenerateSuccessfulResponse("object fetched successfully.", objResponse), // typeName
+		helpers.GenerateSuccessfulResponse("object fetched successfully.", userDetails), // typeName
 	)
 }
 
@@ -95,7 +95,7 @@ func (h *UserHandler) GetByEmail(c *gin.Context) {
 		return
 	}
 
-	objResponse, serviceErr := h.service.GetByEmail(c, email)
+	userDetails, serviceErr := h.service.GetByEmail(c, email)
 	if serviceErr != nil {
 		c.AbortWithStatusJSON(
 			serviceErr.Code(),
@@ -106,6 +106,41 @@ func (h *UserHandler) GetByEmail(c *gin.Context) {
 
 	c.JSON(
 		http.StatusOK,
-		helpers.GenerateSuccessfulResponse("object fetched successfully.", objResponse), // typeName
+		helpers.GenerateSuccessfulResponse("object fetched successfully.", userDetails), // typeName
 	)
+}
+
+// -----------------------------------------------------------------------------
+// other sources that has FK to `User`
+
+func (h *UserHandler) GetPosts(c *gin.Context) {
+	// to implement later
+}
+
+func (h *UserHandler) GetLists(c *gin.Context) {
+	// to implement later
+}
+
+func (h *UserHandler) GetSavedLists(c *gin.Context) {
+	// to implement later
+}
+
+func (h *UserHandler) GetComments(c *gin.Context) {
+	// to implement later
+}
+
+func (h *UserHandler) GetLikes(c *gin.Context) {
+	// to implement later
+}
+
+func (h *UserHandler) GetFollowers(c *gin.Context) {
+	// to implement later
+}
+
+func (h *UserHandler) GetFollowings(c *gin.Context) {
+	// to implement later
+}
+
+func (h *UserHandler) GetLinks(c *gin.Context) {
+	// to implement later
 }

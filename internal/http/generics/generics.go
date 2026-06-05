@@ -60,3 +60,15 @@ type OutputListTypes interface {
 		dto.ListOfSavedPosts | dto.ListOfListsAPostSavedIn |
 		dto.ListOfSavedLists | dto.ListOfUsersWhoSavedAList
 }
+
+type PagedList[TOutputList OutputListTypes] struct {
+	Page            int         `json:"page"`
+	Size            int         `json:"size"`
+	TotalRows       int         `json:"total_rows"`
+	TotalPages      int         `json:"total_pages"`
+	HasPreviousPage bool        `json:"has_previous_page"`
+	PreviousPage    int         `json:"previous_page,omitempty"`
+	HasNextPage     bool        `json:"has_next_page"`
+	NextPage        int         `json:"next_page,omitempty"`
+	Items           TOutputList `json:"items"`
+}

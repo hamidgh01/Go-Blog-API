@@ -6,6 +6,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
 )
 
 type PostService struct {
@@ -47,5 +48,32 @@ func (p *PostService) Delete(ctx context.Context, pk uint64) *service_errors.Ser
 func (p *PostService) GetByID(
 	ctx context.Context, pk uint64,
 ) (*dto.PostDetails, *service_errors.ServiceError) {
+	return nil, nil
+}
+
+// -----------------------------------------------------------------------------
+// other sources that has FK to `Post`
+
+func (c *CommentService) GetComments(
+	ctx context.Context, fk uint64,
+) (*generics.PagedList[dto.CommentList], *service_errors.ServiceError) {
+	return nil, nil
+}
+
+func (c *CommentService) GetLikes(
+	ctx context.Context, fk uint64,
+) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
+	return nil, nil
+}
+
+func (c *CommentService) GetTags(
+	ctx context.Context, fk uint64,
+) (*generics.PagedList[dto.TagsList], *service_errors.ServiceError) {
+	return nil, nil
+}
+
+func (c *CommentService) GetLists(
+	ctx context.Context, fk uint64,
+) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
 	return nil, nil
 }

@@ -78,3 +78,22 @@ func (h *PostHandler) Delete(c *gin.Context) {
 func (h *PostHandler) GetByID(c *gin.Context) {
 	getByID(c, h.service.GetByID)
 }
+
+// -----------------------------------------------------------------------------
+// other sources that has FK to `Post`
+
+func (h *PostHandler) GetComments(c *gin.Context) {
+	// to implement later
+}
+
+func (h *PostHandler) GetLikes(c *gin.Context) {
+	// to implement later
+}
+
+func (h *PostHandler) GetTags(c *gin.Context) {
+	// to implement later
+}
+
+func (h *PostHandler) GetLists(c *gin.Context) {
+	// to implement later
+}
