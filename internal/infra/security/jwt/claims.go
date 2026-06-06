@@ -19,16 +19,17 @@ type Claims struct {
 	Type   TokenType `json:"type"`
 }
 
-func newClaims(userID uint64, jti string, tokenType TokenType, tokenTTL time.Duration) *Claims {
-	now := time.Now()
+func newClaims(userID uint64, jti string, tokenType TokenType, tokenTTL time.Duration) (*Claims, time.Time) {
+	expirationTime := time.Now().Add(tokenTTL)
+
 	return &Claims{
 		UserID: userID,
 		Type:   tokenType,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(now.Add(tokenTTL)),
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
 			ID:        jti,
 		},
-	}
+	}, expirationTime
 }
 
 func (c *Claims) GetJTI() string {
@@ -37,6 +38,10 @@ func (c *Claims) GetJTI() string {
 
 func (c *Claims) GetUserID() uint64 {
 	return c.UserID
+}
+
+func (c *Claims) GetExpiresAt() time.Time {
+	return c.ExpiresAt.Time
 }
 
 func (c *Claims) GetTokenType() TokenType {

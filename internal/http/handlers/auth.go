@@ -50,7 +50,7 @@ func (h *AuthHandler) Register(c *gin.Context) {
 	}
 
 	c.JSON(
-		http.StatusOK,
+		http.StatusCreated,
 		helpers.GenerateSuccessfulResponse("user registered successfully.", successfulRegisteredData),
 	)
 }

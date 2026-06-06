@@ -37,19 +37,23 @@ func generateJTI() (string, error) {
 	return hex.EncodeToString(b), nil
 }
 
-func (m *JWTManager) GenerateAccessToken(userID uint64) (accessToken string, err error) {
-	claims := newClaims(userID, "", ACCESS, m.accessTTL)
-	return createJWT(claims, m.accessSecret, &m.signingAlgorithm)
+func (m *JWTManager) GenerateAccessToken(userID uint64) (string, time.Time, error) {
+	claims, expirationTime := newClaims(userID, "", ACCESS, m.accessTTL)
+	accessToken, err := createJWT(claims, m.accessSecret, &m.signingAlgorithm)
+
+	return accessToken, expirationTime, err
 }
 
-func (m *JWTManager) GenerateRefreshToken(userID uint64) (refreshToken string, err error) {
+func (m *JWTManager) GenerateRefreshToken(userID uint64) (string, time.Time, error) {
 	jti, err := generateJTI()
 	if err != nil {
-		return "", fmt.Errorf("failed to generate jti: %w", err)
+		return "", time.Time{}, fmt.Errorf("failed to generate jti: %w", err)
 	}
 
-	claims := newClaims(userID, jti, REFRESH, m.refreshTTL)
-	return createJWT(claims, m.refreshSecret, &m.signingAlgorithm)
+	claims, expirationTime := newClaims(userID, jti, REFRESH, m.refreshTTL)
+	refreshToken, err := createJWT(claims, m.refreshSecret, &m.signingAlgorithm)
+
+	return refreshToken, expirationTime, err
 }
 
 func (m *JWTManager) ParseAccessToken(tokenString string) (*Claims, error) {
