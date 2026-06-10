@@ -74,5 +74,5 @@ func (h *CommentHandler) GetByID(c *gin.Context) {
 // other sources that has FK to `Comment`
 
 func (h *CommentHandler) GetReplies(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetReplies)
 }

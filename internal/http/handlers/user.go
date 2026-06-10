@@ -114,33 +114,33 @@ func (h *UserHandler) GetByEmail(c *gin.Context) {
 // other sources that has FK to `User`
 
 func (h *UserHandler) GetPosts(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetPosts)
 }
 
 func (h *UserHandler) GetLists(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetLists)
 }
 
 func (h *UserHandler) GetSavedLists(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetSavedLists)
 }
 
 func (h *UserHandler) GetComments(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetComments)
 }
 
 func (h *UserHandler) GetLikes(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetLikes)
 }
 
 func (h *UserHandler) GetFollowers(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetFollowers)
 }
 
 func (h *UserHandler) GetFollowings(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetFollowings)
 }
 
 func (h *UserHandler) GetLinks(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetLinks)
 }

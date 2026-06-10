@@ -39,9 +39,9 @@ func (h *ListHandler) GetByID(c *gin.Context) {
 // other sources that has FK to `List`
 
 func (h *ListHandler) GetSavedPosts(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetSavedPosts)
 }
 
 func (h *ListHandler) GetUsersWhoSaved(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetUsersWhoSaved)
 }

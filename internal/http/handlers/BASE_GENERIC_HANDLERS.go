@@ -7,6 +7,7 @@ import (
 	"strconv"
 
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
+	"github.com/hamidgh01/Go-Blog-API/internal/domain"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/helpers"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/validations"
@@ -138,6 +139,47 @@ func getByID[TResponse generics.OutputTypes](
 	c.JSON(
 		http.StatusOK,
 		helpers.GenerateSuccessfulResponse("object fetched successfully.", objResponse), // typeName
+	)
+}
+
+func getListOfOuterResourceByFK[TResponse generics.OutputListTypes](
+	c *gin.Context,
+	getOfOuterResourceByFKService func(
+		ctx context.Context, fk uint64, page *domain.PaginationQueryParams,
+	) (*generics.PagedList[TResponse], *service_errors.ServiceError),
+) {
+	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
+	if err != nil {
+		return
+	}
+
+	pageRequest := new(domain.PaginationQueryParams)
+	if err := c.ShouldBindQuery(pageRequest); err != nil {
+		c.AbortWithStatusJSON(
+			http.StatusBadRequest,
+			helpers.GenerateErrorResponse(
+				fmt.Sprintf(
+					"invalid query parameters: size='%s', page='%s'",
+					c.Params.ByName("size"), c.Params.ByName("page"),
+				),
+				gin.H{"description": "both 'size' and 'page' must be a valid integer"},
+			),
+		)
+		return
+	}
+
+	data, serviceErr := getOfOuterResourceByFKService(c, pk, pageRequest)
+	if serviceErr != nil {
+		c.AbortWithStatusJSON(
+			serviceErr.Code(),
+			helpers.GenerateErrorResponse(serviceErr.Message(), nil),
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusOK,
+		helpers.GenerateSuccessfulResponse("objects fetched successfully.", data), // typeName
 	)
 }
 

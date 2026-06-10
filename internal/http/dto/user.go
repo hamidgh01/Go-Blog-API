@@ -66,7 +66,7 @@ func NewUpdateEnabledRequest() *UpdateEnabledRequest { return new(UpdateEnabledR
 
 type UserBrief struct {
 	ID       uint64 `json:"id"`
-	Username string `json:"name,omitempty"`
+	Username string `json:"username"`
 }
 
 func ToUserBrief(u *entity.User) *UserBrief {

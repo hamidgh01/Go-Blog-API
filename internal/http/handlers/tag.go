@@ -60,5 +60,5 @@ func (h *TagHandler) GetByName(c *gin.Context) {
 // other sources that has FK to `Tag`
 
 func (h *TagHandler) GetPosts(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetPosts)
 }

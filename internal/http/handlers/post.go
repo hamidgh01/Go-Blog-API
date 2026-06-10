@@ -83,17 +83,17 @@ func (h *PostHandler) GetByID(c *gin.Context) {
 // other sources that has FK to `Post`
 
 func (h *PostHandler) GetComments(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetComments)
 }
 
 func (h *PostHandler) GetLikes(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetLikes)
 }
 
 func (h *PostHandler) GetTags(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetTags)
 }
 
 func (h *PostHandler) GetLists(c *gin.Context) {
-	// to implement later
+	getListOfOuterResourceByFK(c, h.service.GetLists)
 }

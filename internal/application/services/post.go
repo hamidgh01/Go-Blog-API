@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
+	d "github.com/hamidgh01/Go-Blog-API/internal/domain"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
@@ -55,25 +56,25 @@ func (p *PostService) GetByID(
 // other sources that has FK to `Post`
 
 func (p *PostService) GetComments(
-	ctx context.Context, fk uint64,
+	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.CommentList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (p *PostService) GetLikes(
-	ctx context.Context, fk uint64,
+	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (p *PostService) GetTags(
-	ctx context.Context, fk uint64,
+	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.TagsList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (p *PostService) GetLists(
-	ctx context.Context, fk uint64,
+	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
 	return nil, nil
 }

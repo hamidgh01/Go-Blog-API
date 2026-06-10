@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
+	d "github.com/hamidgh01/Go-Blog-API/internal/domain"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
@@ -49,7 +50,7 @@ func (c *CommentService) GetByID(
 // other sources that has FK to `Comment`
 
 func (c *CommentService) GetReplies(
-	ctx context.Context, fk uint64,
+	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.CommentList], *service_errors.ServiceError) {
 	return nil, nil
 }
