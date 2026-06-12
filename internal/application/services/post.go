@@ -26,20 +26,26 @@ func (p *PostService) Create(
 
 func (p *PostService) Update(
 	ctx context.Context, pk uint64, data *dto.UpdatePostRequest,
-) (*dto.PostDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
+}
+
+func (p *PostService) PublishDraftPost(
+	ctx context.Context, pk uint64, data *dto.UpdatePostStatusRequest,
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (p *PostService) UpdateStatus(
 	ctx context.Context, pk uint64, data *dto.UpdatePostStatusRequest,
-) (*dto.PostDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (p *PostService) UpdatePrivacy(
 	ctx context.Context, pk uint64, data *dto.UpdatePostPrivacyRequest,
-) (*dto.PostDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (p *PostService) Delete(ctx context.Context, pk uint64) *service_errors.ServiceError {

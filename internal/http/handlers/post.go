@@ -1,12 +1,8 @@
 package handlers
 
 import (
-	"fmt"
-	"net/http"
-
 	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
-	"github.com/hamidgh01/Go-Blog-API/internal/http/helpers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,44 +27,24 @@ func (h *PostHandler) UpdatePrivacy(c *gin.Context) {
 	update(c, dto.NewUpdatePostPrivacyRequest, h.service.UpdatePrivacy)
 }
 
-func (h *PostHandler) updatePostStatus(c *gin.Context, status string) {
-	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
-	if err != nil {
-		return
-	}
-
-	data := &dto.UpdatePostStatusRequest{Status: status}
-
-	postResponse, serviceErr := h.service.UpdateStatus(c, pk, data)
-	if serviceErr != nil {
-		c.AbortWithStatusJSON(
-			serviceErr.Code(),
-			helpers.GenerateErrorResponse(serviceErr.Message(), nil),
-		)
-		return
-	}
-
-	c.JSON(
-		http.StatusAccepted,
-		helpers.GenerateSuccessfulResponse(
-			fmt.Sprintf("post %s successfully.", status), postResponse),
-	)
-}
-
 func (h *PostHandler) Publish(c *gin.Context) {
-	h.updatePostStatus(c, "published")
+	requestDTO := &dto.UpdatePostStatusRequest{Status: "published"}
+	updateStatusEnum(c, requestDTO, h.service.PublishDraftPost)
 }
 
 func (h *PostHandler) Reject(c *gin.Context) {
-	h.updatePostStatus(c, "rejected")
+	requestDTO := &dto.UpdatePostStatusRequest{Status: "rejected"}
+	updateStatusEnum(c, requestDTO, h.service.UpdateStatus)
 }
 
 func (h *PostHandler) Republish(c *gin.Context) {
-	h.updatePostStatus(c, "published")
+	requestDTO := &dto.UpdatePostStatusRequest{Status: "published"}
+	updateStatusEnum(c, requestDTO, h.service.UpdateStatus)
 }
 
 func (h *PostHandler) DeleteAtUserRequest(c *gin.Context) {
-	h.updatePostStatus(c, "deleted")
+	requestDTO := &dto.UpdatePostStatusRequest{Status: "deleted"}
+	updateStatusEnum(c, requestDTO, h.service.UpdateStatus)
 }
 
 func (h *PostHandler) Delete(c *gin.Context) {

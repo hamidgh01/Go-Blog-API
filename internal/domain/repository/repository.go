@@ -8,19 +8,21 @@ import (
 )
 
 type UserRepository interface {
-	creator[e.User]
+	Create(ctx context.Context, entity *e.User) (*e.User, error)
 
-	UpdateUsername(ctx context.Context, pk uint64, username string) (*e.User, error)
-	UpdateEmail(ctx context.Context, pk uint64, email string) (*e.User, error)
-	UpdateBio(ctx context.Context, pk uint64, bio string) (*e.User, error)
-	UpdatePassword(ctx context.Context, pk uint64, password string) (*e.User, error)
-	UpdateEnabled(ctx context.Context, pk uint64, enabled bool) (*e.User, error)
-
-	// ExistEmail(...)
-	// ExistUsername(...)
-	// VerifyLoginRequest(...)
+	UpdateUsername(ctx context.Context, pk uint64, username string) error
+	UpdateEmail(ctx context.Context, pk uint64, email string) error
+	UpdateBio(ctx context.Context, pk uint64, bio string) error
+	UpdatePassword(ctx context.Context, pk uint64, password string) error
+	UpdateEnabled(ctx context.Context, pk uint64, enabled bool) error
 
 	deleter
+
+	CheckUsernameExists(ctx context.Context, username string) (bool, error)
+	CheckEmailExists(ctx context.Context, email string) (bool, error)
+	CheckIsEnabled(ctx context.Context, pk uint64) (bool, error)
+	CheckIsSuperuser(ctx context.Context, pk uint64) (bool, error)
+	// VerifyLoginRequest(...)
 
 	getterByID[e.User]
 	GetByUsername(ctx context.Context, username string) (*e.User, error)
@@ -43,14 +45,17 @@ type LinkRepository interface {
 	updater[e.Link]
 	deleter
 	getterByID[e.Link]
+
+	ownerIDGetter
 }
 
 type PostRepository interface {
-	creator[e.Post]
+	Create(ctx context.Context, entity *e.Post, status e.PostStatus, userID uint64) (*e.Post, error)
 
 	updater[e.Post]
-	UpdateStatus(ctx context.Context, pk uint64, data *e.Post) (*e.Post, error)
-	UpdatePrivacy(ctx context.Context, pk uint64, data *e.Post) (*e.Post, error)
+	PublishDraftPost(ctx context.Context, pk uint64) error
+	UpdateStatus(ctx context.Context, pk uint64, status e.PostStatus) error
+	UpdatePrivacy(ctx context.Context, pk uint64, isPrivate bool) error
 
 	deleter
 
@@ -62,10 +67,12 @@ type PostRepository interface {
 	GetLikes(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.User], error)
 	GetListsThatSavedThisPost(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.List], error)
 	GetTags(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Tag], error)
+
+	ownerIDGetter
 }
 
 type TagRepository interface {
-	Create(ctx context.Context, entity []*e.Tag) ([]*e.Tag, error)
+	Create(ctx context.Context, entities []*e.Tag) ([]*e.Tag, error)
 
 	getterByID[e.Tag]
 	GetByName(ctx context.Context, name string) (*e.Tag, error)
@@ -80,7 +87,7 @@ type CommentRepository interface {
 	creator[e.Comment]
 
 	updater[e.Comment]
-	UpdateStatus(ctx context.Context, pk uint64, data *e.Comment) (*e.Comment, error)
+	UpdateStatus(ctx context.Context, pk uint64, status e.CommentStatus) error
 
 	deleter
 
@@ -89,13 +96,15 @@ type CommentRepository interface {
 
 	// `Comment` is only referenced by itself (its Replies)
 	GetReplies(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Comment], error)
+
+	ownerIDGetter
 }
 
 type ListRepository interface {
 	creator[e.List]
 
 	updater[e.List]
-	UpdatePrivacy(ctx context.Context, pk uint64, data *e.Link) (*e.Link, error)
+	UpdatePrivacy(ctx context.Context, pk uint64, isPrivate bool) error
 
 	deleter
 
@@ -105,4 +114,6 @@ type ListRepository interface {
 	// get list of other sources (have FK to a `List`) (`Post` via `SavedPostsM2M`, `User` via `UsersSavedListsM2M`)
 	GetSavedPosts(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)
 	GetUsersWhoSaved(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.User], error)
+
+	ownerIDGetter
 }

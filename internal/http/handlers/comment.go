@@ -1,12 +1,8 @@
 package handlers
 
 import (
-	"fmt"
-	"net/http"
-
 	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
-	"github.com/hamidgh01/Go-Blog-API/internal/http/helpers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,39 +23,19 @@ func (h *CommentHandler) Update(c *gin.Context) {
 	update(c, dto.NewUpdateCommentRequest, h.service.Update)
 }
 
-func (h *CommentHandler) updateCommentStatus(c *gin.Context, status string) {
-	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
-	if err != nil {
-		return
-	}
-
-	data := &dto.UpdateCommentStatusRequest{Status: status}
-	commentDetails, serviceErr := h.service.UpdateStatus(c, pk, data)
-	if serviceErr != nil {
-		c.AbortWithStatusJSON(
-			serviceErr.Code(),
-			helpers.GenerateErrorResponse(serviceErr.Message(), nil),
-		)
-		return
-	}
-
-	c.JSON(
-		http.StatusAccepted,
-		helpers.GenerateSuccessfulResponse(
-			fmt.Sprintf("comment %s successfully.", status), commentDetails),
-	)
-}
-
 func (h *CommentHandler) Hide(c *gin.Context) {
-	h.updateCommentStatus(c, "rejected")
+	requestDTO := &dto.UpdateCommentStatusRequest{Status: "hidden"}
+	updateStatusEnum(c, requestDTO, h.service.UpdateStatus)
 }
 
 func (h *CommentHandler) Republish(c *gin.Context) {
-	h.updateCommentStatus(c, "published")
+	requestDTO := &dto.UpdateCommentStatusRequest{Status: "published"}
+	updateStatusEnum(c, requestDTO, h.service.UpdateStatus)
 }
 
 func (h *CommentHandler) DeleteAtUserRequest(c *gin.Context) {
-	h.updateCommentStatus(c, "deleted")
+	requestDTO := &dto.UpdateCommentStatusRequest{Status: "deleted"}
+	updateStatusEnum(c, requestDTO, h.service.UpdateStatus)
 }
 
 func (h *CommentHandler) Delete(c *gin.Context) {

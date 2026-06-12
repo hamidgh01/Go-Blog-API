@@ -26,14 +26,14 @@ func (l *ListService) Create(
 
 func (l *ListService) Update(
 	ctx context.Context, pk uint64, data *dto.UpdateListRequest,
-) (*dto.ListDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (l *ListService) UpdatePrivacy(
 	ctx context.Context, pk uint64, data *dto.UpdateListPrivacyRequest,
-) (*dto.ListDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (l *ListService) Delete(ctx context.Context, pk uint64) *service_errors.ServiceError {

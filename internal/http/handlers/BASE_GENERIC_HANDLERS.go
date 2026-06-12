@@ -51,14 +51,14 @@ func create[TRequest generics.CreateRequestTypes, TResponse generics.OutputTypes
 
 	c.JSON(
 		http.StatusCreated,
-		helpers.GenerateSuccessfulResponse("object created successfully.", objResponse), // typeName
+		helpers.GenerateSuccessfulResponse("object created successfully.", objResponse),
 	)
 }
 
-func update[TRequest generics.UpdateRequestTypes, TResponse generics.OutputTypes](
+func update[TRequest generics.UpdateRequestTypes](
 	c *gin.Context,
 	NewUpdateObjRequestDTOFunc func() *TRequest,
-	updataObjService func(ctx context.Context, pk uint64, data *TRequest) (*TResponse, *service_errors.ServiceError),
+	updataObjService func(ctx context.Context, pk uint64, data *TRequest) *service_errors.ServiceError,
 ) {
 	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
 	if err != nil {
@@ -85,7 +85,7 @@ func update[TRequest generics.UpdateRequestTypes, TResponse generics.OutputTypes
 		return
 	}
 
-	objResponse, serviceErr := updataObjService(c, pk, data)
+	serviceErr := updataObjService(c, pk, data)
 	if serviceErr != nil {
 		c.AbortWithStatusJSON(
 			serviceErr.Code(),
@@ -96,7 +96,32 @@ func update[TRequest generics.UpdateRequestTypes, TResponse generics.OutputTypes
 
 	c.JSON(
 		http.StatusAccepted,
-		helpers.GenerateSuccessfulResponse("object updated successfully.", objResponse), // typeName
+		helpers.GenerateSuccessfulResponse("object updated successfully.", nil),
+	)
+}
+
+func updateStatusEnum[TRequest generics.UpdateRequestTypes](
+	c *gin.Context,
+	updateStatusRequestDTO *TRequest,
+	updateStatusService func(ctx context.Context, pk uint64, data *TRequest) *service_errors.ServiceError,
+) {
+	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
+	if err != nil {
+		return
+	}
+
+	serviceErr := updateStatusService(c, pk, updateStatusRequestDTO)
+	if serviceErr != nil {
+		c.AbortWithStatusJSON(
+			serviceErr.Code(),
+			helpers.GenerateErrorResponse(serviceErr.Message(), nil),
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusAccepted,
+		helpers.GenerateSuccessfulResponse("object updated successfully.", nil),
 	)
 }
 
@@ -115,7 +140,7 @@ func delete(c *gin.Context, deleteObjService func(ctx context.Context, pk uint64
 		return
 	}
 
-	c.JSON(http.StatusAccepted, helpers.GenerateSuccessfulResponse("object deleted successfully.", nil)) // typeName
+	c.JSON(http.StatusAccepted, helpers.GenerateSuccessfulResponse("object deleted successfully.", nil))
 }
 
 func getByID[TResponse generics.OutputTypes](
@@ -138,7 +163,7 @@ func getByID[TResponse generics.OutputTypes](
 
 	c.JSON(
 		http.StatusOK,
-		helpers.GenerateSuccessfulResponse("object fetched successfully.", objResponse), // typeName
+		helpers.GenerateSuccessfulResponse("object fetched successfully.", objResponse),
 	)
 }
 
@@ -179,7 +204,7 @@ func getListOfOuterResourceByFK[TResponse generics.OutputListTypes](
 
 	c.JSON(
 		http.StatusOK,
-		helpers.GenerateSuccessfulResponse("objects fetched successfully.", data), // typeName
+		helpers.GenerateSuccessfulResponse("objects fetched successfully.", data),
 	)
 }
 

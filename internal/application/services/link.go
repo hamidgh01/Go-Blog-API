@@ -24,8 +24,8 @@ func (l *LinkService) Create(
 
 func (l *LinkService) Update(
 	ctx context.Context, pk uint64, data *dto.UpdateLinkRequest,
-) (*dto.LinkDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (l *LinkService) Delete(ctx context.Context, pk uint64) *service_errors.ServiceError {

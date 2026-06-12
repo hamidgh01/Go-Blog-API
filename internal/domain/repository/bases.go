@@ -7,11 +7,11 @@ import (
 )
 
 type creator[TEntity e.TDBEntities] interface {
-	Create(ctx context.Context, entity *TEntity) (*TEntity, error)
+	Create(ctx context.Context, entity *TEntity, userID uint64) (*TEntity, error)
 }
 
 type updater[TEntity e.TDBEntities] interface {
-	Update(ctx context.Context, pk uint64, data *TEntity) (*TEntity, error)
+	Update(ctx context.Context, pk uint64, data *TEntity) error
 }
 
 type deleter interface {
@@ -20,6 +20,10 @@ type deleter interface {
 
 type getterByID[TEntity e.TDBEntities] interface {
 	GetByID(ctx context.Context, pk uint64) (*TEntity, error)
+}
+
+type ownerIDGetter interface {
+	GetOwnerID(ctx context.Context, pk uint64) (uint64, error)
 }
 
 // get an object and the count all referenced objects that is related to the object.

@@ -27,32 +27,32 @@ func (u *UserService) Create(
 
 func (u *UserService) UpdateUsername(
 	ctx context.Context, pk uint64, data *dto.UpdateUsernameRequest,
-) (*dto.UserDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (u *UserService) UpdateEmail(
 	ctx context.Context, pk uint64, data *dto.UpdateEmailRequest,
-) (*dto.UserDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (u *UserService) UpdateBio(
 	ctx context.Context, pk uint64, data *dto.UpdateBioRequest,
-) (*dto.UserDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (u *UserService) UpdatePassword(
 	ctx context.Context, pk uint64, data *dto.UpdatePasswordRequest,
-) (*dto.UserDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (u *UserService) UpdateEnabled(
 	ctx context.Context, pk uint64, data *dto.UpdateEnabledRequest,
-) (*dto.UserDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (u *UserService) Delete(ctx context.Context, pk uint64) *service_errors.ServiceError {

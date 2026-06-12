@@ -26,14 +26,14 @@ func (c *CommentService) Create(
 
 func (c *CommentService) Update(
 	ctx context.Context, pk uint64, data *dto.UpdateCommentRequest,
-) (*dto.CommentDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (c *CommentService) UpdateStatus(
 	ctx context.Context, pk uint64, data *dto.UpdateCommentStatusRequest,
-) (*dto.CommentDetails, *service_errors.ServiceError) {
-	return nil, nil
+) *service_errors.ServiceError {
+	return nil
 }
 
 func (c *CommentService) Delete(ctx context.Context, pk uint64) *service_errors.ServiceError {
