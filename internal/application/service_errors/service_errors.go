@@ -27,13 +27,8 @@ func (s *ServiceError) Error() string {
 
 var (
 	// User
-	EmailExists        = newServiceError(http.StatusConflict, "email already exists")
-	UsernameExists     = newServiceError(http.StatusConflict, "username already exists")
 	InvalidCredentials = newServiceError(http.StatusUnauthorized, "invalid credentials")
 	PermissionDenied   = newServiceError(http.StatusForbidden, "permission denied")
-
-	// DB
-	RecordNotFound = newServiceError(http.StatusNotFound, "object not found")
 
 	// server
 	InternalServerError = newServiceError(http.StatusInternalServerError, "internal server error")
