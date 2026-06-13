@@ -30,7 +30,7 @@ func (h *TagHandler) GetByID(c *gin.Context) {
 
 func (h *TagHandler) GetByName(c *gin.Context) {
 	name := c.Param("name")
-	if name == "" || domain.CheckTagPattern(name) {
+	if name == "" || !domain.CheckTagPattern(name) {
 		c.AbortWithStatusJSON(
 			http.StatusBadRequest,
 			helpers.GenerateErrorResponse(

@@ -44,7 +44,8 @@ func serve() {
 	defer redisClient.Close()
 
 	// initialize container with all dependencies
-	dependencyContainer := deps_container.NewContainer(cfg, db, redisClient)
+	dependencyContainer, repositoryCleanup := deps_container.NewContainer(cfg, db, redisClient)
+	defer repositoryCleanup()
 
 	// init and run server
 	if err := server.InitAndRun(cfg, dependencyContainer); err != nil {

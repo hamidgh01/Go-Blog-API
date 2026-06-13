@@ -18,7 +18,7 @@ type setPasswordOperation struct {
 type CreateUserRequest struct {
 	Username    string `json:"username" binding:"required,min=3,max=64,username_pattern"`
 	Email       string `json:"email" binding:"required,email"`
-	AcceptTerms bool   `json:"accept_terms" binding:"required,eq=true"`
+	AcceptTerms *bool   `json:"accept_terms" binding:"required,eq=true"`
 	setPasswordOperation
 }
 
@@ -56,7 +56,7 @@ type ResetPasswordRequest struct {
 func NewResetPasswordRequest() *ResetPasswordRequest { return new(ResetPasswordRequest) }
 
 type UpdateEnabledRequest struct {
-	Enabled bool `json:"enabled" binding:"required"`
+	Enabled *bool `json:"enabled" binding:"required"`
 }
 
 func NewUpdateEnabledRequest() *UpdateEnabledRequest { return new(UpdateEnabledRequest) }
@@ -76,21 +76,29 @@ func ToUserBrief(u *entity.User) *UserBrief {
 type UserDetails struct {
 	*UserBrief
 	Email      string    `json:"email"`
-	Bio        string    `json:"bio"`
+	Bio        string    `json:"bio,omitempty"`
 	Enabled    bool      `json:"enabled"`
 	CreatedAt  time.Time `json:"created_at"`
-	ModifiedAt time.Time `json:"modified_at"`
+	ModifiedAt time.Time `json:"modified_at,omitzero"`
 }
 
 func ToUserDetails(u *entity.User) *UserDetails {
-	return &UserDetails{
-		UserBrief:  ToUserBrief(u),
-		Email:      u.Email,
-		Bio:        u.Bio,
-		Enabled:    u.Enabled,
-		CreatedAt:  u.CreatedAt,
-		ModifiedAt: u.ModifiedAt.Time,
+	userDetails := &UserDetails{
+		UserBrief: ToUserBrief(u),
+		Email:     u.Email,
+		Enabled:   u.Enabled,
+		CreatedAt: u.CreatedAt,
 	}
+
+	if u.Bio.Valid {
+		userDetails.Bio = u.Bio.String
+	}
+
+	if u.ModifiedAt.Valid {
+		userDetails.ModifiedAt = u.ModifiedAt.Time
+	}
+
+	return userDetails
 }
 
 type UserDetailsWithCountOfReferencedObjects struct {

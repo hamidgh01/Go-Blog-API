@@ -11,7 +11,7 @@ type PasswordHasher struct {
 	cost int
 }
 
-func NewPasswordHasher(cost int) *PasswordHasher {
+func NewPasswordHasher() *PasswordHasher {
 	return &PasswordHasher{cost: bcrypt.DefaultCost}
 }
 

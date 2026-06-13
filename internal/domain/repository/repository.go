@@ -22,6 +22,7 @@ type UserRepository interface {
 	CheckEmailExists(ctx context.Context, email string) (bool, error)
 	CheckIsEnabled(ctx context.Context, pk uint64) (bool, error)
 	CheckIsSuperuser(ctx context.Context, pk uint64) (bool, error)
+	GetHashedPassword(ctx context.Context, pk uint64) (string, error)
 	// VerifyLoginRequest(...)
 
 	getterByID[e.User]

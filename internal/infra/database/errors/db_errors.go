@@ -12,11 +12,11 @@ type UniqueViolationError struct {
 
 var _ error = (*UniqueViolationError)(nil)
 
-func newUniqueViolationError(msg string) *UniqueViolationError {
-	return &UniqueViolationError{message: msg}
+func newUniqueViolationError(msg string) UniqueViolationError {
+	return UniqueViolationError{message: msg}
 }
 
-func (s *UniqueViolationError) Error() string {
+func (s UniqueViolationError) Error() string {
 	return s.message
 }
 
@@ -33,11 +33,11 @@ type ForeignKeyViolationError struct {
 
 var _ error = (*ForeignKeyViolationError)(nil)
 
-func newForeignKeyViolationError(msg string) *ForeignKeyViolationError {
-	return &ForeignKeyViolationError{message: msg}
+func newForeignKeyViolationError(msg string) ForeignKeyViolationError {
+	return ForeignKeyViolationError{message: msg}
 }
 
-func (s *ForeignKeyViolationError) Error() string {
+func (s ForeignKeyViolationError) Error() string {
 	return s.message
 }
 
@@ -61,11 +61,11 @@ type RecordNotFoundError struct {
 
 var _ error = (*RecordNotFoundError)(nil)
 
-func NewRecordNotFoundError(msg string) *RecordNotFoundError {
-	return &RecordNotFoundError{message: msg}
+func NewRecordNotFoundError(msg string) RecordNotFoundError {
+	return RecordNotFoundError{message: msg}
 }
 
-func (s *RecordNotFoundError) Error() string {
+func (s RecordNotFoundError) Error() string {
 	return s.message
 }
 
@@ -78,11 +78,11 @@ type UnexpectedDBError struct {
 
 var _ error = (*UnexpectedDBError)(nil)
 
-func newUnexpectedDBError(err error) *UnexpectedDBError {
-	return &UnexpectedDBError{err: err, message: err.Error()}
+func newUnexpectedDBError(err error) UnexpectedDBError {
+	return UnexpectedDBError{err: err, message: err.Error()}
 }
 
-func (s *UnexpectedDBError) Error() string {
+func (s UnexpectedDBError) Error() string {
 	return s.message
 }
 

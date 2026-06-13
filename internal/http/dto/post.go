@@ -13,7 +13,7 @@ type CreatePostRequest struct {
 	Title     string `json:"title" binding:"required,max=200"`
 	Content   string `json:"content,omitempty"`
 	Status    string `json:"status,omitempty" binding:"oneof=draft published"`
-	IsPrivate bool   `json:"is_private,omitempty"`
+	IsPrivate *bool   `json:"is_private,omitempty"`
 }
 
 func NewCreatePostRequest() *CreatePostRequest {
@@ -21,7 +21,7 @@ func NewCreatePostRequest() *CreatePostRequest {
 }
 
 type UpdatePostRequest struct {
-	Title   string `json:"title,omitempty" binding:"min=3,max=250"`
+	Title   string `json:"title" binding:"required,max=200"`
 	Content string `json:"content,omitempty"`
 }
 
@@ -38,7 +38,7 @@ func NewUpdatePostStatusRequest() *UpdatePostStatusRequest {
 }
 
 type UpdatePostPrivacyRequest struct {
-	IsPrivate bool `json:"is_private" binding:"required"`
+	IsPrivate *bool `json:"is_private" binding:"required"`
 }
 
 func NewUpdatePostPrivacyRequest() *UpdatePostPrivacyRequest {
@@ -52,20 +52,28 @@ type PostBrief struct {
 	ID               uint64     `json:"id"`
 	Title            string     `json:"title"`
 	CreatedAt        time.Time  `json:"created_at"`
-	ModifiedAt       time.Time  `json:"modified_at"`
-	FirstPublishedAt time.Time  `json:"first_published_at"`
+	ModifiedAt       time.Time  `json:"modified_at,omitzero"`
+	FirstPublishedAt time.Time  `json:"first_published_at,omitzero"`
 	User             *UserBrief `json:"user"`
 }
 
 func ToPostBrief(p *entity.Post) *PostBrief {
-	return &PostBrief{
-		ID:               p.ID,
-		Title:            p.Title,
-		CreatedAt:        p.CreatedAt,
-		ModifiedAt:       p.ModifiedAt.Time,
-		FirstPublishedAt: p.FirstPublishedAt.Time,
-		User:             ToUserBrief(p.User),
+	postBrief := &PostBrief{
+		ID:        p.ID,
+		Title:     p.Title,
+		CreatedAt: p.CreatedAt,
+		User:      ToUserBrief(p.User),
 	}
+
+	if p.ModifiedAt.Valid {
+		postBrief.ModifiedAt = p.ModifiedAt.Time
+	}
+
+	if p.FirstPublishedAt.Valid {
+		postBrief.ModifiedAt = p.FirstPublishedAt.Time
+	}
+
+	return postBrief
 }
 
 type PostDetails struct {
@@ -76,12 +84,17 @@ type PostDetails struct {
 }
 
 func ToPostDetails(p *entity.Post) *PostDetails {
-	return &PostDetails{
+	postDetails := &PostDetails{
 		PostBrief: ToPostBrief(p),
-		Content:   p.Content,
 		IsPrivate: p.IsPrivate,
 		Status:    string(p.Status),
 	}
+
+	if p.Content.Valid {
+		postDetails.Content = p.Content.String
+	}
+
+	return postDetails
 }
 
 type PostDetailsWithCountOfReferencedObjects struct {

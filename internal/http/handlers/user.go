@@ -44,6 +44,62 @@ func (h *UserHandler) UpdateEnabled(c *gin.Context) {
 	update(c, dto.NewUpdateEnabledRequest, h.service.UpdateEnabled)
 }
 
+func (h *UserHandler) CheckUsernameExists(c *gin.Context) {
+	username := c.Query("q")
+	if username == "" || !domain.CheckUsernamePattern(username) {
+		c.AbortWithStatusJSON(
+			http.StatusBadRequest,
+			helpers.GenerateErrorResponse(
+				fmt.Sprintf("invalid query parameter: '%s'", username),
+				gin.H{"description": fmt.Sprintf("input must be a valid username. %s", domain.UsernamePatternDescription)},
+			),
+		)
+		return
+	}
+
+	exists, serviceErr := h.service.CheckUsernameExists(c, username)
+	if serviceErr != nil {
+		c.AbortWithStatusJSON(
+			serviceErr.Code(),
+			helpers.GenerateErrorResponse(serviceErr.Message(), nil),
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusOK,
+		helpers.GenerateSuccessfulResponse("username existence checked successfully.", gin.H{"exists": exists}),
+	)
+}
+
+func (h *UserHandler) CheckEmailExists(c *gin.Context) {
+	email := c.Query("q")
+	if email == "" { // check email pattern
+		c.AbortWithStatusJSON(
+			http.StatusBadRequest,
+			helpers.GenerateErrorResponse(
+				fmt.Sprintf("invalid query parameter: '%s'", email),
+				gin.H{"description": "input must be a valid email address"},
+			),
+		)
+		return
+	}
+
+	exists, serviceErr := h.service.CheckEmailExists(c, email)
+	if serviceErr != nil {
+		c.AbortWithStatusJSON(
+			serviceErr.Code(),
+			helpers.GenerateErrorResponse(serviceErr.Message(), nil),
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusOK,
+		helpers.GenerateSuccessfulResponse("email existence checked successfully.", gin.H{"exists": exists}),
+	)
+}
+
 func (h *UserHandler) Delete(c *gin.Context) {
 	delete(c, h.service.Delete)
 }
@@ -56,7 +112,7 @@ func (h *UserHandler) GetByID(c *gin.Context) {
 
 func (h *UserHandler) GetByUsername(c *gin.Context) {
 	username := c.Param("username")
-	if username == "" || domain.CheckUsernamePattern(username) {
+	if username == "" || !domain.CheckUsernamePattern(username) {
 		c.AbortWithStatusJSON(
 			http.StatusBadRequest,
 			helpers.GenerateErrorResponse(

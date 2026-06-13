@@ -42,7 +42,7 @@ type CommentDetails struct {
 	ID              uint64     `json:"id"`
 	Content         string     `json:"content"`
 	CreatedAt       time.Time  `json:"created_at"`
-	ModifiedAt      time.Time  `json:"modified_at"`
+	ModifiedAt      time.Time  `json:"modified_at,omitzero"`
 	Status          string     `json:"status"`
 	User            *UserBrief `json:"user"`
 	PostParentID    uint64     `json:"post_parent_id,omitempty"`
@@ -52,12 +52,15 @@ type CommentDetails struct {
 
 func ToCommentDetails(c *entity.Comment) *CommentDetails {
 	cd := &CommentDetails{
-		ID:         c.ID,
-		Content:    c.Content,
-		CreatedAt:  c.CreatedAt,
-		ModifiedAt: c.ModifiedAt.Time,
-		Status:     string(c.Status),
-		User:       ToUserBrief(c.User),
+		ID:        c.ID,
+		Content:   c.Content,
+		CreatedAt: c.CreatedAt,
+		Status:    string(c.Status),
+		User:      ToUserBrief(c.User),
+	}
+
+	if c.ModifiedAt.Valid {
+		cd.ModifiedAt = c.ModifiedAt.Time
 	}
 
 	if c.PostParentID == 0 {

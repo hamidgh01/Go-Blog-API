@@ -12,7 +12,7 @@ import (
 type CreateListRequest struct {
 	Title       string `json:"title" binding:"required,max=100"`
 	Description string `json:"description,omitempty" binding:"max=1000"`
-	IsPrivate   bool   `json:"is_private,omitempty"`
+	IsPrivate   *bool   `json:"is_private"`
 }
 
 func NewCreateListRequest() *CreateListRequest {
@@ -20,9 +20,9 @@ func NewCreateListRequest() *CreateListRequest {
 }
 
 type UpdateListRequest struct {
-	Title     string `json:"title,omitempty" binding:"max=250"`
-	Content   string `json:"content,omitempty" binding:"max=1000"`
-	IsPrivate bool   `json:"is_private,omitempty"`
+	Title       string `json:"title" binding:"required,max=100"`
+	Description string `json:"description,omitempty" binding:"max=1000"`
+	IsPrivate   *bool   `json:"is_private"`
 }
 
 func NewUpdateListRequest() *UpdateListRequest {
@@ -30,7 +30,7 @@ func NewUpdateListRequest() *UpdateListRequest {
 }
 
 type UpdateListPrivacyRequest struct {
-	IsPrivate bool `json:"is_private" binding:"required"`
+	IsPrivate *bool `json:"is_private" binding:"required"`
 }
 
 func NewUpdateListPrivacyRequest() *UpdateListPrivacyRequest {
@@ -45,19 +45,24 @@ type ListBrief struct {
 	Title      string     `json:"title"`
 	IsPrivate  bool       `json:"is_private,omitempty"`
 	CreatedAt  time.Time  `json:"created_at"`
-	ModifiedAt time.Time  `json:"modified_at"`
+	ModifiedAt time.Time  `json:"modified_at,omitzero"`
 	User       *UserBrief `json:"user"`
 }
 
 func ToListBrief(l *entity.List) *ListBrief {
-	return &ListBrief{
-		ID:         l.ID,
-		Title:      l.Title,
-		IsPrivate:  l.IsPrivate,
-		CreatedAt:  l.CreatedAt,
-		ModifiedAt: l.ModifiedAt.Time,
-		User:       ToUserBrief(l.User),
+	listBrief := &ListBrief{
+		ID:        l.ID,
+		Title:     l.Title,
+		IsPrivate: l.IsPrivate,
+		CreatedAt: l.CreatedAt,
+		User:      ToUserBrief(l.User),
 	}
+
+	if l.ModifiedAt.Valid {
+		listBrief.ModifiedAt = l.ModifiedAt.Time
+	}
+
+	return listBrief
 }
 
 type ListDetails struct {
@@ -66,10 +71,13 @@ type ListDetails struct {
 }
 
 func ToListDetails(l *entity.List) *ListDetails {
-	return &ListDetails{
-		ListBrief:   ToListBrief(l),
-		Description: l.Description,
+	listDetails := &ListDetails{ListBrief: ToListBrief(l)}
+
+	if l.Description.Valid {
+		listDetails.Description = l.Description.String
 	}
+
+	return listDetails
 }
 
 type ListDetailsWithCountOfReferencedObjects struct {

@@ -27,6 +27,7 @@ func (s *ServiceError) Error() string {
 
 var (
 	// User
+	InvalidOldPassword = newServiceError(http.StatusBadRequest, "old password is invalid")
 	InvalidCredentials = newServiceError(http.StatusUnauthorized, "invalid credentials")
 	PermissionDenied   = newServiceError(http.StatusForbidden, "permission denied")
 

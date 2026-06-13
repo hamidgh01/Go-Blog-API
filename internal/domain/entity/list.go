@@ -11,13 +11,13 @@ import (
 // _ N:N (Many to Many) with 'User' (who-saved-this-list) -> via 'UsersSavedListsM2M' association table
 // _ N:N (Many to Many) with 'Post' -> via 'SavedPostsM2M' association table
 type List struct {
-	ID          uint64       // sql: BIGSERIAL PRIMARY KEY (automatically indexed)
-	Title       string       // sql: VARCHAR(100) NOT NULL
-	Description string       // sql: VARCHAR(1000)
-	IsPrivate   bool         // sql: BOOLEAN DEFAULT true
-	CreatedAt   time.Time    // sql: TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp
-	ModifiedAt  sql.NullTime // sql: TIMESTAMP WITH TIME ZONE
-	UserID      uint64       // sql: BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE (indexed)
+	ID          uint64         // sql: BIGSERIAL PRIMARY KEY (automatically indexed)
+	Title       string         // sql: VARCHAR(100) NOT NULL
+	Description sql.NullString // sql: VARCHAR(1000)
+	IsPrivate   bool           // sql: BOOLEAN DEFAULT true
+	CreatedAt   time.Time      // sql: TIMESTAMP WITH TIME ZONE DEFAULT current_timestamp
+	ModifiedAt  sql.NullTime   // sql: TIMESTAMP WITH TIME ZONE
+	UserID      uint64         // sql: BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE (indexed)
 	// NOTE: `UserID` here is the `id` of the user who owns this list
 	// FK:
 	User *User

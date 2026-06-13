@@ -15,8 +15,8 @@ func NewCreateLinkRequest() *CreateLinkRequest {
 }
 
 type UpdateLinkRequest struct {
-	Title string `json:"title,omitempty" binding:"max=32"`
-	Url   string `json:"url,omitempty" binding:"url"`
+	Title string `json:"title" binding:"required,max=32"`
+	Url   string `json:"url" binding:"required,url"`
 }
 
 func NewUpdateLinkRequest() *UpdateLinkRequest {

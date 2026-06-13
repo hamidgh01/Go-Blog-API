@@ -44,6 +44,8 @@ func (r *Router) RegisterRoutes() {
 		users.GET("/:id", r.dependencies.UserHandler.GetByID)
 		users.GET("/username=:username", r.dependencies.UserHandler.GetByUsername) // ToDo: check and standardize this
 		users.GET("/email=:email", r.dependencies.UserHandler.GetByEmail)          // ToDo: check and standardize this
+		users.GET("/exists/username", r.dependencies.UserHandler.CheckUsernameExists)
+		users.GET("/exists/email", r.dependencies.UserHandler.CheckEmailExists)
 
 		// outer sources (related to User):
 		users.GET("/:id/posts", r.dependencies.UserHandler.GetPosts)

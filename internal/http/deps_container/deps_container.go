@@ -7,6 +7,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/handlers"
+	"github.com/hamidgh01/Go-Blog-API/internal/infra/database/postgres_repository"
 	redisInfra "github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/hashing"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/jwt"
@@ -52,6 +53,35 @@ type Container struct {
 }
 
 // NewContainer creates and wires all dependencies
-func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) *Container {
-	return &Container{}
+func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Container, func()) {
+	// initialize repositories
+	userRepo := postgres_repository.NewUserRepository(db)
+
+	// initialize infrastructure services
+	jwtManager := jwt.NewJWTManager(&cfg.Jwt)
+	passwordHasher := hashing.NewPasswordHasher()
+	tokenRevoker := redisInfra.NewTokenRevoker(redis)
+	UserDisabledChecker := redisInfra.NewUserDisabledChecker(redis)
+
+	// initialize services
+	userService := services.NewUserService(userRepo, passwordHasher, UserDisabledChecker)
+
+	// initialize handlers
+	userHandler := handlers.NewUserHandler(userService)
+
+	// middlewares
+	// ...
+
+	return &Container{
+		UserRepository: userRepo,
+
+		JwtManager:          jwtManager,
+		PasswordHasher:      passwordHasher,
+		TokenRevoker:        tokenRevoker,
+		UserDisabledChecker: UserDisabledChecker,
+
+		UserService: userService,
+
+		UserHandler: userHandler,
+	}, postgres_repository.CloseAllPreparedStatements
 }
