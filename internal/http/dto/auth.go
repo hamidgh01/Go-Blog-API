@@ -3,8 +3,8 @@ package dto
 // auth operations:
 
 type LoginRequest struct {
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=8,max=64"`
+	Identifier string `identifier:"email" binding:"required,email|username_pattern"`
+	Password   string `json:"password" binding:"required,min=8,max=64,strong_password"`
 }
 
 func NewLoginRequest() *LoginRequest { return new(LoginRequest) }

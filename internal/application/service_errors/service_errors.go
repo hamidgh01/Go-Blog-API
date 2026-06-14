@@ -26,9 +26,12 @@ func (s *ServiceError) Error() string {
 }
 
 var (
-	// User
+	// User and Authentication
 	InvalidOldPassword = newServiceError(http.StatusBadRequest, "old password is invalid")
 	InvalidCredentials = newServiceError(http.StatusUnauthorized, "invalid credentials")
+	InvalidToken       = newServiceError(http.StatusUnauthorized, "token is invalid")
+	TokenExpired       = newServiceError(http.StatusUnauthorized, "token is expired")
+	TokenBlacklisted   = newServiceError(http.StatusUnauthorized, "token is blacklisted")
 	PermissionDenied   = newServiceError(http.StatusForbidden, "permission denied")
 
 	// server

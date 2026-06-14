@@ -11,7 +11,6 @@ import (
 var (
 	ErrUnexpectedSigningMethod = errors.New("unexpected signing method")
 	ErrInvalidToken            = errors.New("invalid token")
-	ErrTokenExpired            = errors.New("token expired")
 )
 
 func createJWT(claims *Claims, secretKey []byte, signingAlg *jwt.SigningMethodHMAC) (string, error) {
@@ -51,7 +50,7 @@ func parseJWT(tokenStr string, secretKey []byte, expectedSigningAlg *jwt.Signing
 
 	expirationTS := claims.GetExpiresAt().Unix()
 	if expirationTS < time.Now().Unix() {
-		return nil, ErrTokenExpired
+		return nil, jwt.ErrTokenExpired
 	}
 
 	return claims, nil

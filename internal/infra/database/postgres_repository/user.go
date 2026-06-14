@@ -93,7 +93,18 @@ func (r *userRepository) GetHashedPassword(ctx context.Context, pk uint64) (stri
 	return hashedPassword.(string), err
 }
 
-// func (r *userRepository) VerifyLoginRequest(...) {}
+func (r *userRepository) GetUserForLoginVerification(ctx context.Context, identifier string) (*e.User, error) {
+	var user = &e.User{}
+	err := getUserForLoginVerificationStmt.QueryRowContext(ctx, identifier).Scan(&user.ID, &user.Username, &user.Password)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, dbErrors.NewRecordNotFoundError("User not found")
+		}
+		return nil, dbErrors.GetDBError(err)
+	}
+
+	return user, nil
+}
 
 func (r *userRepository) GetByID(ctx context.Context, pk uint64) (*e.User, error) {
 	row := getUserByIDStmt.QueryRowContext(ctx, pk)

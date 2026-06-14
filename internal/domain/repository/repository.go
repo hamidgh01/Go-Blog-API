@@ -23,7 +23,7 @@ type UserRepository interface {
 	CheckIsEnabled(ctx context.Context, pk uint64) (bool, error)
 	CheckIsSuperuser(ctx context.Context, pk uint64) (bool, error)
 	GetHashedPassword(ctx context.Context, pk uint64) (string, error)
-	// VerifyLoginRequest(...)
+	GetUserForLoginVerification(ctx context.Context, identifier string) (*e.User, error)
 
 	getterByID[e.User]
 	GetByUsername(ctx context.Context, username string) (*e.User, error)

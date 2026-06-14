@@ -47,12 +47,13 @@ var (
 	// delete
 	deleteUserQuery = "DELETE FROM users WHERE id = $1"
 
-	// checking
-	checkUsernameExistsQuery = "SELECT id FROM users WHERE username = $1"
-	checkEmailExistsQuery    = "SELECT id FROM users WHERE email = $1"
-	checkIsEnabledQuery      = "SELECT enabled FROM users WHERE id = $1"
-	checkIsSuperuserQuery    = "SELECT isSuperuser FROM users WHERE id = $1"
-	getHashedPasswordQuery   = "SELECT password FROM users WHERE id = $1"
+	// checking and others
+	checkUsernameExistsQuery     = "SELECT id FROM users WHERE username = $1"
+	checkEmailExistsQuery        = "SELECT id FROM users WHERE email = $1"
+	checkIsEnabledQuery          = "SELECT enabled FROM users WHERE id = $1"
+	checkIsSuperuserQuery        = "SELECT isSuperuser FROM users WHERE id = $1"
+	getHashedPasswordQuery       = "SELECT password FROM users WHERE id = $1"
+	getUserForLoginVerificationQ = "SELECT id, username, password FROM users WHERE email = $1 OR username = $1"
 
 	// read
 	getUserByIDQuery       = fmt.Sprintf("SELECT %s FROM users WHERE id = $1", DETAILED_USER_FIELDS)
@@ -75,11 +76,12 @@ var (
 	deleteUserStmt *sql.Stmt
 
 	// checking
-	checkUsernameExistsStmt *sql.Stmt
-	checkEmailExistsStmt    *sql.Stmt
-	checkIsEnabledStmt      *sql.Stmt
-	checkIsSuperuserStmt    *sql.Stmt
-	getHashedPasswordStmt   *sql.Stmt
+	checkUsernameExistsStmt         *sql.Stmt
+	checkEmailExistsStmt            *sql.Stmt
+	checkIsEnabledStmt              *sql.Stmt
+	checkIsSuperuserStmt            *sql.Stmt
+	getHashedPasswordStmt           *sql.Stmt
+	getUserForLoginVerificationStmt *sql.Stmt
 
 	// read
 	getUserByIDStmt       *sql.Stmt
@@ -107,6 +109,7 @@ func prepareAllUserStatements(db *sql.DB) {
 	checkIsEnabledStmt = prepareStatement(db, "checkIsEnabled", checkIsEnabledQuery)
 	checkIsSuperuserStmt = prepareStatement(db, "checkIsSuperuser", checkIsSuperuserQuery)
 	getHashedPasswordStmt = prepareStatement(db, "getHashedPassword", getHashedPasswordQuery)
+	getUserForLoginVerificationStmt = prepareStatement(db, "getUserForLoginVerification", getUserForLoginVerificationQ)
 
 	// read
 	getUserByIDStmt = prepareStatement(db, "getUserByID", getUserByIDQuery)
@@ -127,6 +130,7 @@ func closeAllUserStatements() {
 	checkIsEnabledStmt.Close()
 	checkIsSuperuserStmt.Close()
 	getHashedPasswordStmt.Close()
+	getUserForLoginVerificationStmt.Close()
 	getUserByIDStmt.Close()
 	getUserByUsernameStmt.Close()
 	getUserByEmailStmt.Close()

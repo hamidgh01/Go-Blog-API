@@ -64,9 +64,11 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	UserDisabledChecker := redisInfra.NewUserDisabledChecker(redis)
 
 	// initialize services
+	authService := services.NewAuthService(userRepo, passwordHasher, jwtManager, tokenRevoker, &cfg.Server)
 	userService := services.NewUserService(userRepo, passwordHasher, UserDisabledChecker)
 
 	// initialize handlers
+	authHandler := handlers.NewAuthHandler(authService)
 	userHandler := handlers.NewUserHandler(userService)
 
 	// middlewares
@@ -80,8 +82,10 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 		TokenRevoker:        tokenRevoker,
 		UserDisabledChecker: UserDisabledChecker,
 
+		AuthService: authService,
 		UserService: userService,
 
+		AuthHandler: authHandler,
 		UserHandler: userHandler,
 	}, postgres_repository.CloseAllPreparedStatements
 }
