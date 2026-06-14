@@ -19,11 +19,12 @@ import (
 )
 
 type AuthService struct {
-	userRepo     repository.UserRepository
-	pswHasher    *hashing.PasswordHasher
-	jwtMgr       *jwt.JWTManager
-	tokenRevoker *redis.TokenRevoker
-	serverConf   *config.ServerConf
+	userRepo      repository.UserRepository
+	pswHasher     *hashing.PasswordHasher
+	jwtMgr        *jwt.JWTManager
+	tokenRevoker  *redis.TokenRevoker
+	userInfoCache *redis.UserInfoCache
+	serverConf    *config.ServerConf
 }
 
 func NewAuthService(
@@ -31,9 +32,10 @@ func NewAuthService(
 	p *hashing.PasswordHasher,
 	j *jwt.JWTManager,
 	r *redis.TokenRevoker,
+	uic *redis.UserInfoCache,
 	c *config.ServerConf,
 ) *AuthService {
-	return &AuthService{userRepo: u, pswHasher: p, jwtMgr: j, tokenRevoker: r, serverConf: c}
+	return &AuthService{userRepo: u, pswHasher: p, jwtMgr: j, tokenRevoker: r, userInfoCache: uic, serverConf: c}
 }
 
 func (a *AuthService) Register(
@@ -53,7 +55,12 @@ func (a *AuthService) Register(
 		return nil, service_errors.MapDBErrToServiceErr(err, "create user for register")
 	}
 
-	// 3. ToDo: update cache
+	// 3. save user info in cache
+	// NOTE: when a user first created (here by this service) --> superuser=false, enabled=true
+	redisErr := a.userInfoCache.SetAllInfo(ctx, createdUser.ID, createdUser.Username, false, true)
+	if redisErr != nil {
+		fmt.Println(redisErr) // log.Error
+	}
 
 	// 4. generate token pair (access and refresh tokens + expirations)
 	tokenPair, err := a.jwtMgr.GenerateTokenPair(createdUser.ID)

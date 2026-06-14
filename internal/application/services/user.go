@@ -15,15 +15,15 @@ import (
 )
 
 type UserService struct {
-	repo                repository.UserRepository
-	pswHasher           *hashing.PasswordHasher
-	userDisabledChecker *redis.UserDisabledChecker
+	repo          repository.UserRepository
+	pswHasher     *hashing.PasswordHasher
+	userInfoCache *redis.UserInfoCache
 }
 
 func NewUserService(
-	r repository.UserRepository, p *hashing.PasswordHasher, udc *redis.UserDisabledChecker,
+	r repository.UserRepository, p *hashing.PasswordHasher, uic *redis.UserInfoCache,
 ) *UserService {
-	return &UserService{repo: r, pswHasher: p, userDisabledChecker: udc}
+	return &UserService{repo: r, pswHasher: p, userInfoCache: uic}
 }
 
 func (u *UserService) Create(
@@ -41,7 +41,11 @@ func (u *UserService) Create(
 		return nil, service_errors.MapDBErrToServiceErr(err, "create user")
 	}
 
-	// update cache
+	// NOTE: when a user first created (here by this service) --> superuser=false, enabled=true
+	redisErr := u.userInfoCache.SetAllInfo(ctx, createdUser.ID, createdUser.Username, false, true)
+	if redisErr != nil {
+		fmt.Println(redisErr) // log.Error
+	}
 
 	userResp := dto.ToUserDetails(createdUser)
 	return userResp, nil
@@ -55,7 +59,10 @@ func (u *UserService) UpdateUsername(
 		return service_errors.MapDBErrToServiceErr(err, "update user.username")
 	}
 
-	// update cache
+	redisErr := u.userInfoCache.UpdateUsername(ctx, pk, data.Username)
+	if redisErr != nil {
+		fmt.Println(redisErr) // log.Error
+	}
 
 	return nil
 }
@@ -114,14 +121,7 @@ func (u *UserService) UpdateEnabled(
 		return service_errors.MapDBErrToServiceErr(err, "update user.enabled")
 	}
 
-	var redisErr error
-	switch *data.Enabled {
-	case true:
-		redisErr = u.userDisabledChecker.RemoveFromDisabledUsers(ctx, pk)
-	case false:
-		redisErr = u.userDisabledChecker.SaveInDisabledUsers(ctx, pk)
-	}
-
+	redisErr := u.userInfoCache.UpdateEnabled(ctx, pk, *data.Enabled)
 	if redisErr != nil {
 		fmt.Println(redisErr) // log.Error
 	}
@@ -135,7 +135,10 @@ func (u *UserService) Delete(ctx context.Context, pk uint64) *service_errors.Ser
 		return service_errors.MapDBErrToServiceErr(err, "delete user")
 	}
 
-	// update cache
+	redisErr := u.userInfoCache.DeleteUserInfo(ctx, pk)
+	if redisErr != nil {
+		fmt.Println(redisErr) // log.Error
+	}
 
 	return nil
 }

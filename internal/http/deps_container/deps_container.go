@@ -26,10 +26,10 @@ type Container struct {
 	ListRepository    repository.ListRepository
 
 	// other infrastructure services (security, caching, etc.)
-	JwtManager          *jwt.JWTManager
-	PasswordHasher      *hashing.PasswordHasher
-	TokenRevoker        *redisInfra.TokenRevoker
-	UserDisabledChecker *redisInfra.UserDisabledChecker
+	JwtManager     *jwt.JWTManager
+	PasswordHasher *hashing.PasswordHasher
+	TokenRevoker   *redisInfra.TokenRevoker
+	UserInfoCache  *redisInfra.UserInfoCache
 
 	// Services
 	AuthService    *services.AuthService
@@ -61,11 +61,11 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	jwtManager := jwt.NewJWTManager(&cfg.Jwt)
 	passwordHasher := hashing.NewPasswordHasher()
 	tokenRevoker := redisInfra.NewTokenRevoker(redis)
-	UserDisabledChecker := redisInfra.NewUserDisabledChecker(redis)
+	userInfoCache := redisInfra.NewUserInfoCache(redis)
 
 	// initialize services
-	authService := services.NewAuthService(userRepo, passwordHasher, jwtManager, tokenRevoker, &cfg.Server)
-	userService := services.NewUserService(userRepo, passwordHasher, UserDisabledChecker)
+	authService := services.NewAuthService(userRepo, passwordHasher, jwtManager, tokenRevoker, userInfoCache, &cfg.Server)
+	userService := services.NewUserService(userRepo, passwordHasher, userInfoCache)
 
 	// initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -77,10 +77,10 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	return &Container{
 		UserRepository: userRepo,
 
-		JwtManager:          jwtManager,
-		PasswordHasher:      passwordHasher,
-		TokenRevoker:        tokenRevoker,
-		UserDisabledChecker: UserDisabledChecker,
+		JwtManager:     jwtManager,
+		PasswordHasher: passwordHasher,
+		TokenRevoker:   tokenRevoker,
+		UserInfoCache:  userInfoCache,
 
 		AuthService: authService,
 		UserService: userService,
