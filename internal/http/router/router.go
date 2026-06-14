@@ -26,11 +26,12 @@ func (r *Router) RegisterRoutes() {
 	{
 		auth.POST("/register", r.dependencies.AuthHandler.Register)
 		auth.POST("/login", r.dependencies.AuthHandler.Login)
-		auth.GET("/logout", r.dependencies.AuthHandler.Logout)
-		auth.GET("/renew-tokens", r.dependencies.AuthHandler.RenewTokens)
+		auth.GET("/logout", r.dependencies.AuthMiddleware.Authenticate(), r.dependencies.AuthHandler.Logout)
+		auth.GET("/renew-tokens", r.dependencies.AuthMiddleware.Authenticate(), r.dependencies.AuthHandler.RenewTokens)
 	}
 
 	users := r.router.Group("/users")
+	users.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		users.POST("", r.dependencies.UserHandler.Create)
 		users.PATCH("/:id/username", r.dependencies.UserHandler.UpdateUsername)
@@ -59,6 +60,7 @@ func (r *Router) RegisterRoutes() {
 	}
 
 	links := r.router.Group("/links")
+	links.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		links.POST("", r.dependencies.LinkHandler.Create)
 		links.PUT("/:id", r.dependencies.LinkHandler.Update)
@@ -68,6 +70,7 @@ func (r *Router) RegisterRoutes() {
 	}
 
 	posts := r.router.Group("/posts")
+	posts.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		posts.POST("", r.dependencies.PostHandler.Create)
 		posts.PUT("/:id", r.dependencies.PostHandler.Update)
@@ -88,6 +91,7 @@ func (r *Router) RegisterRoutes() {
 	}
 
 	tags := r.router.Group("/tags")
+	tags.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		tags.POST("", r.dependencies.TagHandler.Create)
 		tags.GET("/:id", r.dependencies.TagHandler.GetByID)
@@ -99,6 +103,7 @@ func (r *Router) RegisterRoutes() {
 	}
 
 	comments := r.router.Group("/comments")
+	comments.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		comments.POST("", r.dependencies.CommentHandler.Create)
 		comments.PUT("/:id", r.dependencies.CommentHandler.Update)
@@ -114,6 +119,7 @@ func (r *Router) RegisterRoutes() {
 	}
 
 	lists := r.router.Group("/lists")
+	lists.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		lists.POST("", r.dependencies.ListHandler.Create)
 		lists.PUT("/:id", r.dependencies.ListHandler.Update)

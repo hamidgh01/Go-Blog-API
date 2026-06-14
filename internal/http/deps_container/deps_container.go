@@ -7,6 +7,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/handlers"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/middlewares"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/database/postgres_repository"
 	redisInfra "github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/hashing"
@@ -50,6 +51,7 @@ type Container struct {
 	ListHandler    *handlers.ListHandler
 
 	// Middlewares
+	AuthMiddleware *middlewares.AuthenticationMiddleware
 }
 
 // NewContainer creates and wires all dependencies
@@ -72,7 +74,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	userHandler := handlers.NewUserHandler(userService)
 
 	// middlewares
-	// ...
+	authMiddleware := middlewares.NewAuthenticationMiddleware(jwtManager, userInfoCache)
 
 	return &Container{
 		UserRepository: userRepo,
@@ -87,5 +89,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 
 		AuthHandler: authHandler,
 		UserHandler: userHandler,
+
+		AuthMiddleware: authMiddleware,
 	}, postgres_repository.CloseAllPreparedStatements
 }
