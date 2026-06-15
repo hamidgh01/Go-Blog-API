@@ -1,0 +1,91 @@
+package services
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
+	e "github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
+)
+
+func create[TEntity e.TDBEntities, TOutput generics.OutputTypes](
+	ctx context.Context,
+	objectName string,
+	entity *TEntity,
+	createRepository func(ctx context.Context, entity *TEntity) (*TEntity, error),
+	ToObjectDetailsDTO func(entity *TEntity) *TOutput,
+) (*TOutput, *service_errors.ServiceError) {
+	//
+	createdObj, err := createRepository(ctx, entity)
+	if err != nil {
+		return nil, service_errors.MapDBErrToServiceErr(err, fmt.Sprintf("create %s", objectName))
+	}
+
+	//
+	objectDetails := ToObjectDetailsDTO(createdObj)
+	return objectDetails, nil
+}
+
+func update[TEntity e.TDBEntities](
+	ctx context.Context,
+	pk uint64,
+	objectName string,
+	entity *TEntity,
+	updateRepository func(ctx context.Context, pk uint64, entity *TEntity) error,
+) *service_errors.ServiceError {
+	err := updateRepository(ctx, pk, entity)
+	if err != nil {
+		return service_errors.MapDBErrToServiceErr(err, fmt.Sprintf("update %s", objectName))
+	}
+
+	return nil
+}
+
+func delete(
+	ctx context.Context,
+	pk uint64,
+	objectName string,
+	deleteRepository func(ctx context.Context, pk uint64) error,
+) *service_errors.ServiceError {
+	err := deleteRepository(ctx, pk)
+	if err != nil {
+		return service_errors.MapDBErrToServiceErr(err, fmt.Sprintf("delete %s", objectName))
+	}
+
+	return nil
+}
+
+func getByID[TEntity e.TDBEntities, TOutput generics.OutputTypes](
+	ctx context.Context,
+	pk uint64,
+	objectName string,
+	getByIdRepository func(ctx context.Context, pk uint64) (*TEntity, error),
+	ToObjectDetailsDTO func(entity *TEntity) *TOutput,
+) (*TOutput, *service_errors.ServiceError) {
+	entityObj, err := getByIdRepository(ctx, pk)
+	if err != nil {
+		return nil, service_errors.MapDBErrToServiceErr(
+			err, fmt.Sprintf("get %s by id", objectName),
+		)
+	}
+
+	objDetails := ToObjectDetailsDTO(entityObj)
+	return objDetails, nil
+}
+
+func getOwnerID(
+	ctx context.Context,
+	pk uint64,
+	objectName string,
+	getOwnerIdRepository func(ctx context.Context, pk uint64) (uint64, error),
+) (uint64, error) {
+	ownerID, err := getOwnerIdRepository(ctx, pk)
+	if err != nil {
+		return 0, service_errors.MapDBErrToServiceErr(
+			err, fmt.Sprintf("get %s owner id", objectName),
+		)
+	}
+
+	return ownerID, nil
+}

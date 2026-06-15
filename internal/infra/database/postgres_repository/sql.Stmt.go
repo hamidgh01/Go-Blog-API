@@ -17,4 +17,5 @@ func prepareStatement(db *sql.DB, stmtName string, query string) *sql.Stmt {
 
 func CloseAllPreparedStatements() {
 	closeAllUserStatements()
+	closeAllPostStatements()
 }

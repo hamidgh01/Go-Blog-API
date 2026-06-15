@@ -56,7 +56,6 @@ func checkUniqueFieldExists(
 		if err == sql.ErrNoRows {
 			return false, nil
 		}
-
 		return false, dbErrors.GetDBError(err)
 	}
 
@@ -76,9 +75,27 @@ func getFieldValue(
 		if err == sql.ErrNoRows {
 			return false, dbErrors.NewRecordNotFoundError(fmt.Sprintf("%s (with id=%d) not found", entityName, pk))
 		}
-
 		return false, dbErrors.GetDBError(err)
 	}
 
 	return result, nil
+}
+
+func getOwnerID(
+	ctx context.Context, getOwnerIDStmt *sql.Stmt, entityName string, pk uint64,
+) (ownerID uint64, err error) {
+	err = getOwnerIDStmt.QueryRowContext(ctx, pk).Scan(&ownerID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return 0, dbErrors.NewRecordNotFoundError(fmt.Sprintf("%s (with id=%d) not found", entityName, pk))
+		}
+		return 0, dbErrors.GetDBError(err)
+	}
+
+	// if ownerID == 0 {
+	// 	in this situation: related `user` (owner) is deleted and `resource.userId` is set to 0
+	// 	handle it later
+	// }
+
+	return
 }

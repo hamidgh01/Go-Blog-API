@@ -167,14 +167,7 @@ func (u *UserService) GetByID(
 	ctx context.Context, pk uint64,
 ) (*dto.UserDetails, *service_errors.ServiceError) {
 	// try to fetch from cache first (maybe)
-
-	user, err := u.repo.GetByID(ctx, pk)
-	if err != nil {
-		return nil, service_errors.MapDBErrToServiceErr(err, "get user by id")
-	}
-
-	userResp := dto.ToUserDetails(user)
-	return userResp, nil
+	return getByID(ctx, pk, "post", u.repo.GetByID, dto.ToUserDetails)
 }
 
 func (u *UserService) GetByUsername(

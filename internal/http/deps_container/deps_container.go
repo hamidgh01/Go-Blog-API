@@ -58,6 +58,7 @@ type Container struct {
 func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Container, func()) {
 	// initialize repositories
 	userRepo := postgres_repository.NewUserRepository(db)
+	postRepo := postgres_repository.NewPostRepository(db)
 
 	// initialize infrastructure services
 	jwtManager := jwt.NewJWTManager(&cfg.Jwt)
@@ -68,16 +69,19 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	// initialize services
 	authService := services.NewAuthService(userRepo, passwordHasher, jwtManager, tokenRevoker, userInfoCache, &cfg.Server)
 	userService := services.NewUserService(userRepo, passwordHasher, userInfoCache)
+	postService := services.NewPostService(postRepo)
 
 	// initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
 	userHandler := handlers.NewUserHandler(userService)
+	postHandler := handlers.NewPostHandler(postService)
 
 	// middlewares
 	authMiddleware := middlewares.NewAuthenticationMiddleware(jwtManager, userInfoCache)
 
 	return &Container{
 		UserRepository: userRepo,
+		PostRepository: postRepo,
 
 		JwtManager:     jwtManager,
 		PasswordHasher: passwordHasher,
@@ -86,9 +90,11 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 
 		AuthService: authService,
 		UserService: userService,
+		PostService: postService,
 
 		AuthHandler: authHandler,
 		UserHandler: userHandler,
+		PostHandler: postHandler,
 
 		AuthMiddleware: authMiddleware,
 	}, postgres_repository.CloseAllPreparedStatements

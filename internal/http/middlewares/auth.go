@@ -83,12 +83,7 @@ func (m *AuthenticationMiddleware) Authenticate() gin.HandlerFunc {
 		c.Set("currentUserID", userID)
 		c.Set("currentUserUsername", userInfo.Username)
 		c.Set("currentUserEnabled", true)
-
-		if userInfo.IsSuperuser == "f" {
-			c.Set("currentUserIsSuperuser", false)
-		} else {
-			c.Set("currentUserIsSuperuser", true)
-		}
+		c.Set("currentUserIsSuperuser", userInfo.IsSuperuser) // it would be 'f' (as false) or 't' (as true)
 
 		c.Next()
 	}
