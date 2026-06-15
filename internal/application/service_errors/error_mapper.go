@@ -20,6 +20,8 @@ func MapDBErrToServiceErr(err error, serviceName string) *ServiceError {
 		return newServiceError(http.StatusNotFound, err.Error())
 	// case errors.As(err, &dbErrors.CheckViolationError{}):
 	// 	return newServiceError(...)
+	case errors.As(err, &dbErrors.BadInputError{}):
+		return newServiceError(http.StatusBadRequest, err.Error())
 	case errors.As(err, &dbErrors.UnexpectedDBError{}):
 		fmt.Printf("failed to %s. origin: %s \n", serviceName, err.Error()) // log.Error()
 		return InternalServerError

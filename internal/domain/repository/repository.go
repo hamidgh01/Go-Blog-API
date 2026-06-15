@@ -8,7 +8,7 @@ import (
 )
 
 type UserRepository interface {
-	Create(ctx context.Context, entity *e.User) (*e.User, error)
+	creator[e.User]
 
 	UpdateUsername(ctx context.Context, pk uint64, username string) error
 	UpdateEmail(ctx context.Context, pk uint64, email string) error
@@ -51,7 +51,7 @@ type LinkRepository interface {
 }
 
 type PostRepository interface {
-	Create(ctx context.Context, entity *e.Post, status e.PostStatus, userID uint64) (*e.Post, error)
+	creator[e.Post]
 
 	updater[e.Post]
 	PublishDraftPost(ctx context.Context, pk uint64) error

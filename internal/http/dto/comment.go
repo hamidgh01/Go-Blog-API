@@ -28,7 +28,8 @@ func NewUpdateCommentRequest() *UpdateCommentRequest {
 }
 
 type UpdateCommentStatusRequest struct {
-	Status string `json:"status" binding:"required,oneof=published hidden deleted"`
+	Status string // it's assigned manually in handlers
+	// `json:"status" binding:"required,oneof=published hidden deleted"`
 }
 
 func NewUpdateCommentStatusRequest() *UpdateCommentStatusRequest {
@@ -46,7 +47,6 @@ type CommentDetails struct {
 	Status          string     `json:"status"`
 	User            *UserBrief `json:"user"`
 	PostParentID    uint64     `json:"post_parent_id,omitempty"`
-	PostParent      *PostBrief `json:"post_parent,omitempty"`
 	CommentParentID uint64     `json:"comment_parent_id,omitempty"`
 }
 
@@ -63,12 +63,11 @@ func ToCommentDetails(c *entity.Comment) *CommentDetails {
 		cd.ModifiedAt = c.ModifiedAt.Time
 	}
 
-	if c.PostParentID == 0 {
-		cd.CommentParentID = c.CommentParentID
+	if c.PostParentID.Valid {
+		cd.PostParentID = c.PostParentID.V
 		return cd
 	} else {
-		cd.PostParentID = c.PostParentID
-		cd.PostParent = ToPostBrief(c.PostParent)
+		cd.CommentParentID = c.CommentParentID.V
 		return cd
 	}
 }

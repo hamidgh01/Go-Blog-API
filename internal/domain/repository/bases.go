@@ -7,7 +7,7 @@ import (
 )
 
 type creator[TEntity e.TDBEntities] interface {
-	Create(ctx context.Context, entity *TEntity, userID uint64) (*TEntity, error)
+	Create(ctx context.Context, entity *TEntity) (*TEntity, error)
 }
 
 type updater[TEntity e.TDBEntities] interface {

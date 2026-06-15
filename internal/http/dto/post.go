@@ -12,8 +12,8 @@ import (
 type CreatePostRequest struct {
 	Title     string `json:"title" binding:"required,max=200"`
 	Content   string `json:"content,omitempty"`
-	Status    string `json:"status,omitempty" binding:"oneof=draft published"`
-	IsPrivate *bool   `json:"is_private,omitempty"`
+	Status    string `json:"status" binding:"oneof=draft published"`
+	IsPrivate *bool  `json:"is_private,omitempty"`
 }
 
 func NewCreatePostRequest() *CreatePostRequest {
@@ -30,7 +30,8 @@ func NewUpdatePostRequest() *UpdatePostRequest {
 }
 
 type UpdatePostStatusRequest struct {
-	Status string `json:"status" binding:"required,oneof=published rejected deleted"`
+	Status string // it's assigned manually in handlers
+	// `json:"status" binding:"required,oneof=published rejected deleted"`
 }
 
 func NewUpdatePostStatusRequest() *UpdatePostStatusRequest {

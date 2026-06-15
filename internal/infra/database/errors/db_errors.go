@@ -71,6 +71,22 @@ func (s RecordNotFoundError) Error() string {
 
 // -----------------------------------------------
 
+type BadInputError struct {
+	message string
+}
+
+var _ error = (*BadInputError)(nil)
+
+func NewBadInputError(msg string) BadInputError {
+	return BadInputError{message: msg}
+}
+
+func (s BadInputError) Error() string {
+	return s.message
+}
+
+// -----------------------------------------------
+
 type UnexpectedDBError struct {
 	err     error
 	message string

@@ -24,7 +24,7 @@ func (h *CommentHandler) Update(c *gin.Context) {
 }
 
 func (h *CommentHandler) Hide(c *gin.Context) {
-	requestDTO := &dto.UpdateCommentStatusRequest{Status: "hidden"}
+	requestDTO := &dto.UpdateCommentStatusRequest{Status: "hidden-by-Admin"}
 	updateStatusEnum(c, requestDTO, h.service.UpdateStatus)
 }
 
@@ -34,7 +34,7 @@ func (h *CommentHandler) Republish(c *gin.Context) {
 }
 
 func (h *CommentHandler) DeleteAtUserRequest(c *gin.Context) {
-	requestDTO := &dto.UpdateCommentStatusRequest{Status: "deleted"}
+	requestDTO := &dto.UpdateCommentStatusRequest{Status: "deleted-by-commenter"}
 	updateStatusEnum(c, requestDTO, h.service.UpdateStatus)
 }
 

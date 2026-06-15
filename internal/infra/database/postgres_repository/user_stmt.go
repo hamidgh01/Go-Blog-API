@@ -18,31 +18,16 @@ var (
 	)
 
 	// update
-	updateUsernameQuery = `
-		UPDATE users SET username = $1, modifiedAt = CURRENT_TIMESTAMP
+	updateSingleUserFieldQuery = `
+		UPDATE users
+		SET %s = $1, modifiedAt = CURRENT_TIMESTAMP
 		WHERE id = $2
-		RETURNING id, modifiedAt
 	`
-	updateEmailQuery = `
-		UPDATE users SET email = $1, modifiedAt = CURRENT_TIMESTAMP
-		WHERE id = $2
-		RETURNING id, modifiedAt
-	`
-	updateBioQuery = `
-		UPDATE users SET bio = $1, modifiedAt = CURRENT_TIMESTAMP
-		WHERE id = $2
-		RETURNING id, modifiedAt
-	`
-	updatePasswordQuery = `
-		UPDATE users SET password = $1, modifiedAt = CURRENT_TIMESTAMP
-		WHERE id = $2
-		RETURNING id, modifiedAt
-	`
-	updateEnabledQuery = `
-		UPDATE users SET enabled = $1, modifiedAt = CURRENT_TIMESTAMP
-		WHERE id = $2
-		RETURNING id, modifiedAt
-	`
+	updateUsernameQuery = fmt.Sprintf(updateSingleUserFieldQuery, "username")
+	updateEmailQuery    = fmt.Sprintf(updateSingleUserFieldQuery, "email")
+	updateBioQuery      = fmt.Sprintf(updateSingleUserFieldQuery, "bio")
+	updatePasswordQuery = fmt.Sprintf(updateSingleUserFieldQuery, "password")
+	updateEnabledQuery  = fmt.Sprintf(updateSingleUserFieldQuery, "enabled")
 
 	// delete
 	deleteUserQuery = "DELETE FROM users WHERE id = $1"

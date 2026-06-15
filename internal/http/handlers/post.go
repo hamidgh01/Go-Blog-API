@@ -43,7 +43,7 @@ func (h *PostHandler) Republish(c *gin.Context) {
 }
 
 func (h *PostHandler) DeleteAtUserRequest(c *gin.Context) {
-	requestDTO := &dto.UpdatePostStatusRequest{Status: "deleted"}
+	requestDTO := &dto.UpdatePostStatusRequest{Status: "deleted-by-author"}
 	updateStatusEnum(c, requestDTO, h.service.UpdateStatus)
 }
 
