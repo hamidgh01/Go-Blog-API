@@ -59,6 +59,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	// initialize repositories
 	userRepo := postgres_repository.NewUserRepository(db)
 	postRepo := postgres_repository.NewPostRepository(db)
+	commentRepo := postgres_repository.NewCommentRepository(db)
 
 	// initialize infrastructure services
 	jwtManager := jwt.NewJWTManager(&cfg.Jwt)
@@ -70,31 +71,36 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	authService := services.NewAuthService(userRepo, passwordHasher, jwtManager, tokenRevoker, userInfoCache, &cfg.Server)
 	userService := services.NewUserService(userRepo, passwordHasher, userInfoCache)
 	postService := services.NewPostService(postRepo)
+	commentService := services.NewCommentService(commentRepo)
 
 	// initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
 	userHandler := handlers.NewUserHandler(userService)
 	postHandler := handlers.NewPostHandler(postService)
+	commentHandler := handlers.NewCommentHandler(commentService)
 
 	// middlewares
 	authMiddleware := middlewares.NewAuthenticationMiddleware(jwtManager, userInfoCache)
 
 	return &Container{
-		UserRepository: userRepo,
-		PostRepository: postRepo,
+		UserRepository:    userRepo,
+		PostRepository:    postRepo,
+		CommentRepository: commentRepo,
 
 		JwtManager:     jwtManager,
 		PasswordHasher: passwordHasher,
 		TokenRevoker:   tokenRevoker,
 		UserInfoCache:  userInfoCache,
 
-		AuthService: authService,
-		UserService: userService,
-		PostService: postService,
+		AuthService:    authService,
+		UserService:    userService,
+		PostService:    postService,
+		CommentService: commentService,
 
-		AuthHandler: authHandler,
-		UserHandler: userHandler,
-		PostHandler: postHandler,
+		AuthHandler:    authHandler,
+		UserHandler:    userHandler,
+		PostHandler:    postHandler,
+		CommentHandler: commentHandler,
 
 		AuthMiddleware: authMiddleware,
 	}, postgres_repository.CloseAllPreparedStatements

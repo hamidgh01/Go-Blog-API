@@ -83,12 +83,10 @@ func (r *postRepository) Delete(ctx context.Context, pk uint64) error {
 }
 
 func (r *postRepository) GetByID(ctx context.Context, pk uint64) (*e.Post, error) {
-	row := getPostByIDStmt.QueryRowContext(ctx, pk)
-
 	post := &e.Post{}
 	user := &e.User{}
 	post.User = user
-	err := row.Scan(
+	err := getPostByIDStmt.QueryRowContext(ctx, pk).Scan(
 		&post.ID,
 		&post.Title,
 		&post.Content,

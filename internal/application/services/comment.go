@@ -2,9 +2,11 @@ package services
 
 import (
 	"context"
+	"database/sql"
 
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
 	d "github.com/hamidgh01/Go-Blog-API/internal/domain"
+	e "github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
@@ -21,29 +23,50 @@ func NewCommentService(r repository.CommentRepository) *CommentService {
 func (c *CommentService) Create(
 	ctx context.Context, data *dto.CreateCommentRequest,
 ) (*dto.CommentDetails, *service_errors.ServiceError) {
-	return nil, nil
+	//
+	userID := ctx.Value("currentUserID").(uint64)
+	comment := &e.Comment{Content: data.Content, UserID: userID}
+	switch data.ParentType {
+	case "post":
+		comment.PostParentID = sql.Null[uint64]{V: data.ParentID, Valid: true}
+	case "comment":
+		comment.CommentParentID = sql.Null[uint64]{V: data.ParentID, Valid: true}
+	}
+
+	//
+	username := ctx.Value("currentUserUsername").(string)
+	comment.User = &e.User{ID: userID, Username: username}
+
+	//
+	return create(ctx, "comment", comment, c.repo.Create, dto.ToCommentDetails)
 }
 
 func (c *CommentService) Update(
 	ctx context.Context, pk uint64, data *dto.UpdateCommentRequest,
 ) *service_errors.ServiceError {
-	return nil
+	comment := &e.Comment{Content: data.Content}
+	return update(ctx, pk, "comment", comment, c.repo.Update)
 }
 
 func (c *CommentService) UpdateStatus(
 	ctx context.Context, pk uint64, data *dto.UpdateCommentStatusRequest,
 ) *service_errors.ServiceError {
+	err := c.repo.UpdateStatus(ctx, pk, e.CommentStatus(data.Status))
+	if err != nil {
+		return service_errors.MapDBErrToServiceErr(err, "update comment status")
+	}
+
 	return nil
 }
 
 func (c *CommentService) Delete(ctx context.Context, pk uint64) *service_errors.ServiceError {
-	return nil
+	return delete(ctx, pk, "comment", c.repo.Delete)
 }
 
 func (c *CommentService) GetByID(
 	ctx context.Context, pk uint64,
 ) (*dto.CommentDetails, *service_errors.ServiceError) {
-	return nil, nil
+	return getByID(ctx, pk, "comment", c.repo.GetByID, dto.ToCommentDetails)
 }
 
 // -----------------------------------------------------------------------------
@@ -52,5 +75,12 @@ func (c *CommentService) GetByID(
 func (c *CommentService) GetReplies(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.CommentList], *service_errors.ServiceError) {
+	// implement later
 	return nil, nil
+}
+
+// -----------------------------------------------------------------------------
+
+func (c *CommentService) GetOwnerID(ctx context.Context, pk uint64) (uint64, error) {
+	return getOwnerID(ctx, pk, "comment", c.repo.GetOwnerID)
 }
