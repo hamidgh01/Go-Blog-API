@@ -12,7 +12,7 @@ import (
 type CreateListRequest struct {
 	Title       string `json:"title" binding:"required,max=100"`
 	Description string `json:"description,omitempty" binding:"max=1000"`
-	IsPrivate   *bool   `json:"is_private"`
+	IsPrivate   *bool  `json:"is_private"`
 }
 
 func NewCreateListRequest() *CreateListRequest {
@@ -22,7 +22,7 @@ func NewCreateListRequest() *CreateListRequest {
 type UpdateListRequest struct {
 	Title       string `json:"title" binding:"required,max=100"`
 	Description string `json:"description,omitempty" binding:"max=1000"`
-	IsPrivate   *bool   `json:"is_private"`
+	IsPrivate   *bool  `json:"is_private"`
 }
 
 func NewUpdateListRequest() *UpdateListRequest {

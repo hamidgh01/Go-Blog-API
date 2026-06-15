@@ -60,6 +60,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	userRepo := postgres_repository.NewUserRepository(db)
 	postRepo := postgres_repository.NewPostRepository(db)
 	commentRepo := postgres_repository.NewCommentRepository(db)
+	listRepo := postgres_repository.NewListRepository(db)
 
 	// initialize infrastructure services
 	jwtManager := jwt.NewJWTManager(&cfg.Jwt)
@@ -72,12 +73,14 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	userService := services.NewUserService(userRepo, passwordHasher, userInfoCache)
 	postService := services.NewPostService(postRepo)
 	commentService := services.NewCommentService(commentRepo)
+	listService := services.NewListService(listRepo)
 
 	// initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
 	userHandler := handlers.NewUserHandler(userService)
 	postHandler := handlers.NewPostHandler(postService)
 	commentHandler := handlers.NewCommentHandler(commentService)
+	listHandler := handlers.NewListHandler(listService)
 
 	// middlewares
 	authMiddleware := middlewares.NewAuthenticationMiddleware(jwtManager, userInfoCache)
@@ -86,6 +89,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 		UserRepository:    userRepo,
 		PostRepository:    postRepo,
 		CommentRepository: commentRepo,
+		ListRepository:    listRepo,
 
 		JwtManager:     jwtManager,
 		PasswordHasher: passwordHasher,
@@ -96,11 +100,13 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 		UserService:    userService,
 		PostService:    postService,
 		CommentService: commentService,
+		ListService:    listService,
 
 		AuthHandler:    authHandler,
 		UserHandler:    userHandler,
 		PostHandler:    postHandler,
 		CommentHandler: commentHandler,
+		ListHandler:    listHandler,
 
 		AuthMiddleware: authMiddleware,
 	}, postgres_repository.CloseAllPreparedStatements

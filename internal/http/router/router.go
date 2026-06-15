@@ -123,7 +123,7 @@ func (r *Router) RegisterRoutes() {
 	{
 		lists.POST("", r.dependencies.ListHandler.Create)
 		lists.PUT("/:id", r.dependencies.ListHandler.Update)
-		lists.PATCH("/:id/...", r.dependencies.ListHandler.UpdatePrivacy)
+		lists.PATCH("/:id", r.dependencies.ListHandler.UpdatePrivacy)
 		lists.DELETE("/:id", r.dependencies.ListHandler.Delete)
 		lists.GET("/:id", r.dependencies.ListHandler.GetByID)
 		// lists.GET("", r.dependencies.ListHandler.GetList)
