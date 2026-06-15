@@ -61,6 +61,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	postRepo := postgres_repository.NewPostRepository(db)
 	commentRepo := postgres_repository.NewCommentRepository(db)
 	listRepo := postgres_repository.NewListRepository(db)
+	linkRepo := postgres_repository.NewLinkRepository(db)
 
 	// initialize infrastructure services
 	jwtManager := jwt.NewJWTManager(&cfg.Jwt)
@@ -74,6 +75,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	postService := services.NewPostService(postRepo)
 	commentService := services.NewCommentService(commentRepo)
 	listService := services.NewListService(listRepo)
+	linkService := services.NewLinkService(linkRepo)
 
 	// initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -81,6 +83,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	postHandler := handlers.NewPostHandler(postService)
 	commentHandler := handlers.NewCommentHandler(commentService)
 	listHandler := handlers.NewListHandler(listService)
+	linkHandler := handlers.NewLinkHandler(linkService)
 
 	// middlewares
 	authMiddleware := middlewares.NewAuthenticationMiddleware(jwtManager, userInfoCache)
@@ -90,6 +93,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 		PostRepository:    postRepo,
 		CommentRepository: commentRepo,
 		ListRepository:    listRepo,
+		LinkRepository:    linkRepo,
 
 		JwtManager:     jwtManager,
 		PasswordHasher: passwordHasher,
@@ -101,12 +105,14 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 		PostService:    postService,
 		CommentService: commentService,
 		ListService:    listService,
+		LinkService:    linkService,
 
 		AuthHandler:    authHandler,
 		UserHandler:    userHandler,
 		PostHandler:    postHandler,
 		CommentHandler: commentHandler,
 		ListHandler:    listHandler,
+		LinkHandler:    linkHandler,
 
 		AuthMiddleware: authMiddleware,
 	}, postgres_repository.CloseAllPreparedStatements

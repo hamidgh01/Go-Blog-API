@@ -20,4 +20,5 @@ func CloseAllPreparedStatements() {
 	closeAllPostStatements()
 	closeAllCommentStatements()
 	closeAllListStatements()
+	closeAllLinkStatements()
 }
