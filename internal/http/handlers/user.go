@@ -173,12 +173,16 @@ func (h *UserHandler) GetPosts(c *gin.Context) {
 	getListOfOuterResourceByFK(c, h.service.GetPosts)
 }
 
-func (h *UserHandler) GetLists(c *gin.Context) {
-	getListOfOuterResourceByFK(c, h.service.GetLists)
+func (h *UserHandler) GetOwnedLists(c *gin.Context) {
+	getListOfOuterResourceByFK(c, h.service.GetOwnedLists)
 }
 
 func (h *UserHandler) GetSavedLists(c *gin.Context) {
 	getListOfOuterResourceByFK(c, h.service.GetSavedLists)
+}
+
+func (h *UserHandler) GetAllLists(c *gin.Context) {
+	getListOfOuterResourceByFK(c, h.service.GetAllLists)
 }
 
 func (h *UserHandler) GetComments(c *gin.Context) {

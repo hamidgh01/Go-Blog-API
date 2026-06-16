@@ -48,10 +48,16 @@ func (r *Router) RegisterRoutes() {
 		users.GET("/exists/username", r.dependencies.UserHandler.CheckUsernameExists)
 		users.GET("/exists/email", r.dependencies.UserHandler.CheckEmailExists)
 
+		// manipulate outer sources (related to User):
+		users.POST("/:id/follow", r.dependencies.FollowHandler.Follow)
+		users.DELETE("/:id/unfollow", r.dependencies.FollowHandler.Unfollow)
+		users.DELETE("/:id/remove-follower", r.dependencies.FollowHandler.RemoveFollower)
+
 		// outer sources (related to User):
 		users.GET("/:id/posts", r.dependencies.UserHandler.GetPosts)
-		users.GET("/:id/lists", r.dependencies.UserHandler.GetLists)
+		users.GET("/:id/owned-lists", r.dependencies.UserHandler.GetOwnedLists)
 		users.GET("/:id/saved-lists", r.dependencies.UserHandler.GetSavedLists)
+		users.GET("/:id/all-lists", r.dependencies.UserHandler.GetAllLists)
 		users.GET("/:id/comments", r.dependencies.UserHandler.GetComments)
 		users.GET("/:id/likes", r.dependencies.UserHandler.GetLikes)
 		users.GET("/:id/followers", r.dependencies.UserHandler.GetFollowers)
@@ -82,6 +88,16 @@ func (r *Router) RegisterRoutes() {
 		posts.DELETE("/:id", r.dependencies.PostHandler.Delete)
 		posts.GET("/:id", r.dependencies.PostHandler.GetByID)
 		// posts.GET("", r.dependencies.PostHandler.GetList)
+
+		// manipulate outer sources (related to Post):
+		posts.POST("/:id/like", r.dependencies.LikeHandler.Like)
+		posts.DELETE("/:id/unlike", r.dependencies.LikeHandler.Unlike)
+
+		posts.POST("/:id/save-post", r.dependencies.SavePostHandler.Save)
+		posts.DELETE("/:id/unsave-post", r.dependencies.SavePostHandler.Unsave)
+
+		posts.POST("/:id/associate-tags", r.dependencies.PostTagsHandler.Associate)
+		posts.DELETE("/:id/dissociate-tags", r.dependencies.PostTagsHandler.Dissociate)
 
 		// outer sources (related to Post):
 		posts.GET("/:id/comments", r.dependencies.PostHandler.GetComments)
@@ -131,6 +147,10 @@ func (r *Router) RegisterRoutes() {
 		// outer sources (related to List):
 		lists.GET("/:id/saved-posts", r.dependencies.ListHandler.GetSavedPosts)
 		lists.GET("/:id/users-who-saved", r.dependencies.ListHandler.GetUsersWhoSaved)
+
+		// manipulate outer sources (related to List):
+		lists.POST("/:id/save-list", r.dependencies.SaveListHandler.Save)
+		lists.DELETE("/:id/unsave-list", r.dependencies.SaveListHandler.Unsave)
 	}
 }
 

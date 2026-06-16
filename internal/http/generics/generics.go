@@ -1,6 +1,10 @@
 package generics
 
-import "github.com/hamidgh01/Go-Blog-API/internal/http/dto"
+import (
+	"github.com/hamidgh01/Go-Blog-API/internal/domain"
+	"github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
+)
 
 type CreateRequestTypes interface {
 	dto.CreateUserRequest |
@@ -9,6 +13,13 @@ type CreateRequestTypes interface {
 		dto.CreateListRequest |
 		dto.CreateLinkRequest |
 		dto.CreateTagsRequest
+}
+
+type CreateOrDeleteM2MRelationshipRequestTypes interface {
+	dto.AssociatePostWithTagsRequest |
+		dto.DissociatePostWithTagsRequest |
+		dto.SavePostRequest |
+		dto.UnsavePostRequest
 }
 
 type UpdateRequestTypes interface {
@@ -71,4 +82,21 @@ type PagedList[TOutputList OutputListTypes] struct {
 	HasNextPage     bool        `json:"has_next_page"`
 	NextPage        int         `json:"next_page,omitempty"`
 	Items           TOutputList `json:"items"`
+}
+
+func ToPagedList[TOutputList OutputListTypes, TEntity entity.TDBEntities](
+	entityPagedList *domain.PagedList[TEntity],
+	toObjectListDTOFunc func(entities []*TEntity) TOutputList,
+) *PagedList[TOutputList] {
+	return &PagedList[TOutputList]{
+		Page:            entityPagedList.Page,
+		Size:            entityPagedList.Size,
+		TotalRows:       entityPagedList.TotalRows,
+		TotalPages:      entityPagedList.TotalPages,
+		HasPreviousPage: entityPagedList.HasPreviousPage,
+		PreviousPage:    entityPagedList.PreviousPage,
+		HasNextPage:     entityPagedList.HasNextPage,
+		NextPage:        entityPagedList.NextPage,
+		Items:           toObjectListDTOFunc(entityPagedList.Items),
+	}
 }

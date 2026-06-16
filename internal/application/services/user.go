@@ -202,13 +202,19 @@ func (u *UserService) GetPosts(
 	return nil, nil
 }
 
-func (u *UserService) GetLists(
+func (u *UserService) GetOwnedLists(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
 	return nil, nil
 }
 
 func (u *UserService) GetSavedLists(
+	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
+) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
+	return nil, nil
+}
+
+func (u *UserService) GetAllLists(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
 	return nil, nil

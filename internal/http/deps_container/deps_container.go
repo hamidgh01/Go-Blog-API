@@ -25,6 +25,11 @@ type Container struct {
 	TagRepository     repository.TagRepository
 	LinkRepository    repository.LinkRepository
 	ListRepository    repository.ListRepository
+	// FollowRepository   *repository.FollowRepository
+	// LikeRepository     *repository.LikeRepository
+	// SavePostRepository *repository.SavePostRepository
+	// SaveListRepository *repository.SaveListRepository
+	// PostTagsRepository *repository.PostTagsRepository
 
 	// other infrastructure services (security, caching, etc.)
 	JwtManager     *jwt.JWTManager
@@ -33,22 +38,32 @@ type Container struct {
 	UserInfoCache  *redisInfra.UserInfoCache
 
 	// Services
-	AuthService    *services.AuthService
-	UserService    *services.UserService
-	PostService    *services.PostService
-	CommentService *services.CommentService
-	TagService     *services.TagService
-	LinkService    *services.LinkService
-	ListService    *services.ListService
+	AuthService     *services.AuthService
+	UserService     *services.UserService
+	PostService     *services.PostService
+	CommentService  *services.CommentService
+	TagService      *services.TagService
+	LinkService     *services.LinkService
+	ListService     *services.ListService
+	FollowService   *services.FollowService
+	LikeService     *services.LikeService
+	SavePostService *services.SavePostService
+	SaveListService *services.SaveListService
+	PostTagsService *services.PostTagsService
 
 	// Handlers
-	AuthHandler    *handlers.AuthHandler
-	UserHandler    *handlers.UserHandler
-	PostHandler    *handlers.PostHandler
-	CommentHandler *handlers.CommentHandler
-	TagHandler     *handlers.TagHandler
-	LinkHandler    *handlers.LinkHandler
-	ListHandler    *handlers.ListHandler
+	AuthHandler     *handlers.AuthHandler
+	UserHandler     *handlers.UserHandler
+	PostHandler     *handlers.PostHandler
+	CommentHandler  *handlers.CommentHandler
+	TagHandler      *handlers.TagHandler
+	LinkHandler     *handlers.LinkHandler
+	ListHandler     *handlers.ListHandler
+	FollowHandler   *handlers.FollowHandler
+	LikeHandler     *handlers.LikeHandler
+	SavePostHandler *handlers.SavePostHandler
+	SaveListHandler *handlers.SaveListHandler
+	PostTagsHandler *handlers.PostTagsHandler
 
 	// Middlewares
 	AuthMiddleware *middlewares.AuthenticationMiddleware

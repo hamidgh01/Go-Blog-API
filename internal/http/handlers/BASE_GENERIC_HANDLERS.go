@@ -17,10 +17,10 @@ import (
 
 func create[TRequest generics.CreateRequestTypes, TResponse generics.OutputTypes](
 	c *gin.Context,
-	NewCreateObjRequestDTOFunc func() *TRequest,
+	newCreateObjRequestDTOFunc func() *TRequest,
 	createObjService func(ctx context.Context, data *TRequest) (*TResponse, *service_errors.ServiceError),
 ) {
-	data := NewCreateObjRequestDTOFunc()
+	data := newCreateObjRequestDTOFunc()
 	if err := c.ShouldBindJSON(data); err != nil {
 		if translatedVldErrs := validations.GetValidationErrors(err); translatedVldErrs != nil {
 			c.AbortWithStatusJSON(
@@ -57,7 +57,7 @@ func create[TRequest generics.CreateRequestTypes, TResponse generics.OutputTypes
 
 func update[TRequest generics.UpdateRequestTypes](
 	c *gin.Context,
-	NewUpdateObjRequestDTOFunc func() *TRequest,
+	newUpdateObjRequestDTOFunc func() *TRequest,
 	updataObjService func(ctx context.Context, pk uint64, data *TRequest) *service_errors.ServiceError,
 ) {
 	pk, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
@@ -65,7 +65,7 @@ func update[TRequest generics.UpdateRequestTypes](
 		return
 	}
 
-	data := NewUpdateObjRequestDTOFunc()
+	data := newUpdateObjRequestDTOFunc()
 	if err := c.ShouldBindJSON(data); err != nil {
 		if translatedVldErrs := validations.GetValidationErrors(err); translatedVldErrs != nil {
 			c.AbortWithStatusJSON(
@@ -206,6 +206,73 @@ func getListOfOuterResourceByFK[TResponse generics.OutputListTypes](
 		http.StatusOK,
 		helpers.GenerateSuccessfulResponse("objects fetched successfully.", data),
 	)
+}
+
+func AddOrDeleteM2MRelationShipWithUser(
+	c *gin.Context,
+	addOrDeleteRelationshipService func(ctx context.Context, targetObjID uint64) *service_errors.ServiceError,
+	successHttpStatusCode int,
+	successMessage string,
+) {
+	targetID, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
+	if err != nil {
+		return
+	}
+
+	serviceErr := addOrDeleteRelationshipService(c, targetID)
+	if serviceErr != nil {
+		c.AbortWithStatusJSON(
+			serviceErr.Code(),
+			helpers.GenerateErrorResponse(serviceErr.Message(), nil),
+		)
+		return
+	}
+
+	c.JSON(successHttpStatusCode, helpers.GenerateSuccessfulResponse(successMessage, nil))
+}
+
+func AddOrDeleteM2MRelationShipWithoutUser[TRequest generics.CreateOrDeleteM2MRelationshipRequestTypes](
+	c *gin.Context,
+	newCreateOrDeleteM2MRelationshipRequestDTOFunc func() *TRequest,
+	addOrDeleteRelationshipService func(ctx context.Context, targetObjID uint64, data *TRequest) *service_errors.ServiceError,
+	successHttpStatusCode int,
+	successMessage string,
+) {
+	firstTargetID, err := extractIDPathParamOrAbortWithStatusBadRequest(c)
+	if err != nil {
+		return
+	}
+
+	data := newCreateOrDeleteM2MRelationshipRequestDTOFunc()
+	if err := c.ShouldBindJSON(data); err != nil {
+		if translatedVldErrs := validations.GetValidationErrors(err); translatedVldErrs != nil {
+			c.AbortWithStatusJSON(
+				http.StatusBadRequest,
+				helpers.GenerateErrorResponse("invalid input (there is validation errors)", translatedVldErrs),
+			)
+			return
+		}
+
+		c.AbortWithStatusJSON(
+			http.StatusUnprocessableEntity,
+			helpers.GenerateErrorResponse(
+				"invalid request body (json)",
+				gin.H{"description": "json format is invalid, or fields have invalid type"},
+			),
+		)
+		return
+	}
+
+	serviceErr := addOrDeleteRelationshipService(c, firstTargetID, data)
+	if serviceErr != nil {
+		c.AbortWithStatusJSON(
+			serviceErr.Code(),
+			helpers.GenerateErrorResponse(serviceErr.Message(), nil),
+		)
+		return
+	}
+
+	c.JSON(successHttpStatusCode, helpers.GenerateSuccessfulResponse(successMessage, nil))
 }
 
 func extractIDPathParamOrAbortWithStatusBadRequest(c *gin.Context) (uint64, error) {
