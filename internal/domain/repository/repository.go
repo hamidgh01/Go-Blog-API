@@ -77,6 +77,7 @@ type TagRepository interface {
 
 	getterByID[e.Tag]
 	GetByName(ctx context.Context, name string) (*e.Tag, error)
+	GetListOfTagsByNames(ctx context.Context, tags []*e.Tag) ([]*e.Tag, error)
 	getterByIDWithCountOfAllReferencedObjects[e.Tag]
 	GetByNameWithCountOfAllReferencedObjects(ctx context.Context, name string) (*e.DBEntityWithCountOfReferencedObjects[e.Tag], error)
 

@@ -31,7 +31,7 @@ func ToTagDetails(t *entity.Tag) *TagDetails {
 type TagsList []*TagDetails
 
 func ToTagsList(tags []*entity.Tag) TagsList {
-	tagsList := make(TagsList, len(tags))
+	tagsList := make(TagsList, 0, len(tags))
 	for _, tag := range tags {
 		tagsList = append(tagsList, ToTagDetails(tag))
 	}

@@ -99,7 +99,7 @@ func ToListDetailsWithCountOfReferencedObjects(
 type ListsList []*ListBrief
 
 func ToListsList(lists []*entity.List) ListsList {
-	listsList := make(ListsList, len(lists))
+	listsList := make(ListsList, 0, len(lists))
 	for _, list := range lists {
 		listsList = append(listsList, ToListBrief(list))
 	}

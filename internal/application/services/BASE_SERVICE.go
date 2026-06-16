@@ -14,7 +14,7 @@ func create[TEntity e.TDBEntities, TOutput generics.OutputTypes](
 	objectName string,
 	entity *TEntity,
 	createRepository func(ctx context.Context, entity *TEntity) (*TEntity, error),
-	ToObjectDetailsDTO func(entity *TEntity) *TOutput,
+	toObjectDetailsDTOFunc func(entity *TEntity) *TOutput,
 ) (*TOutput, *service_errors.ServiceError) {
 	//
 	createdObj, err := createRepository(ctx, entity)
@@ -23,8 +23,7 @@ func create[TEntity e.TDBEntities, TOutput generics.OutputTypes](
 	}
 
 	//
-	objectDetails := ToObjectDetailsDTO(createdObj)
-	return objectDetails, nil
+	return toObjectDetailsDTOFunc(createdObj), nil
 }
 
 func update[TEntity e.TDBEntities](
@@ -61,7 +60,7 @@ func getByID[TEntity e.TDBEntities, TOutput generics.OutputTypes](
 	pk uint64,
 	objectName string,
 	getByIdRepository func(ctx context.Context, pk uint64) (*TEntity, error),
-	ToObjectDetailsDTO func(entity *TEntity) *TOutput,
+	toObjectDetailsDTOFunc func(entity *TEntity) *TOutput,
 ) (*TOutput, *service_errors.ServiceError) {
 	entityObj, err := getByIdRepository(ctx, pk)
 	if err != nil {
@@ -70,8 +69,7 @@ func getByID[TEntity e.TDBEntities, TOutput generics.OutputTypes](
 		)
 	}
 
-	objDetails := ToObjectDetailsDTO(entityObj)
-	return objDetails, nil
+	return toObjectDetailsDTOFunc(entityObj), nil
 }
 
 func getOwnerID(

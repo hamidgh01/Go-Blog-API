@@ -8,6 +8,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/domain"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/helpers"
+	"github.com/hamidgh01/Go-Blog-API/internal/http/validations"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,7 +22,39 @@ func NewTagHandler(s *services.TagService) *TagHandler {
 }
 
 func (h *TagHandler) Create(c *gin.Context) {
-	create(c, dto.NewCreateTagsRequest, h.service.Create)
+	data := dto.NewCreateTagsRequest()
+	if err := c.ShouldBindJSON(data); err != nil {
+		if translatedVldErrs := validations.GetValidationErrors(err); translatedVldErrs != nil {
+			c.AbortWithStatusJSON(
+				http.StatusBadRequest,
+				helpers.GenerateErrorResponse("invalid input (there is validation errors)", translatedVldErrs),
+			)
+			return
+		}
+
+		c.AbortWithStatusJSON(
+			http.StatusUnprocessableEntity,
+			helpers.GenerateErrorResponse(
+				"invalid request body (json)",
+				gin.H{"description": "json format is invalid, or fields have invalid type"},
+			),
+		)
+		return
+	}
+
+	tagsList, serviceErr := h.service.Create(c, data)
+	if serviceErr != nil {
+		c.AbortWithStatusJSON(
+			serviceErr.Code(),
+			helpers.GenerateErrorResponse(serviceErr.Message(), nil),
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusCreated,
+		helpers.GenerateSuccessfulResponse("tags created successfully.", tagsList),
+	)
 }
 
 func (h *TagHandler) GetByID(c *gin.Context) {

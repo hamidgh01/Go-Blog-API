@@ -121,7 +121,7 @@ func ToPostDetailsWithCountOfReferencedObjects(
 type PostsList []*PostBrief
 
 func ToPostsList(posts []*entity.Post) PostsList {
-	postsList := make(PostsList, len(posts))
+	postsList := make(PostsList, 0, len(posts))
 	for _, post := range posts {
 		postsList = append(postsList, ToPostBrief(post))
 	}

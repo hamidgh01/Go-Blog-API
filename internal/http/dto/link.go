@@ -45,7 +45,7 @@ func ToLinkDetails(l *entity.Link) *LinkDetails {
 type LinksList []*LinkDetails
 
 func ToLinksList(links []*entity.Link) LinksList {
-	linksList := make(LinksList, len(links))
+	linksList := make(LinksList, 0, len(links))
 	for _, link := range links {
 		linksList = append(linksList, ToLinkDetails(link))
 	}

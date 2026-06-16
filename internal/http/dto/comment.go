@@ -87,7 +87,7 @@ func ToCommentDetailsWithRepliesCount(c *entity.Comment, repliesCount int) *Comm
 type CommentList []*CommentDetails
 
 func ToCommentList(comments []*entity.Comment) CommentList {
-	commentsList := make(CommentList, len(comments))
+	commentsList := make(CommentList, 0, len(comments))
 	for _, comment := range comments {
 		commentsList = append(commentsList, ToCommentDetails(comment))
 	}

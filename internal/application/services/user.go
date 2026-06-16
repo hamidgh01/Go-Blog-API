@@ -47,8 +47,7 @@ func (u *UserService) Create(
 		fmt.Println(redisErr) // log.Error
 	}
 
-	userResp := dto.ToUserDetails(createdUser)
-	return userResp, nil
+	return dto.ToUserDetails(createdUser), nil
 }
 
 func (u *UserService) UpdateUsername(
@@ -167,7 +166,7 @@ func (u *UserService) GetByID(
 	ctx context.Context, pk uint64,
 ) (*dto.UserDetails, *service_errors.ServiceError) {
 	// try to fetch from cache first (maybe)
-	return getByID(ctx, pk, "post", u.repo.GetByID, dto.ToUserDetails)
+	return getByID(ctx, pk, "user", u.repo.GetByID, dto.ToUserDetails)
 }
 
 func (u *UserService) GetByUsername(
@@ -178,8 +177,7 @@ func (u *UserService) GetByUsername(
 		return nil, service_errors.MapDBErrToServiceErr(err, "get user by username")
 	}
 
-	userResp := dto.ToUserDetails(user)
-	return userResp, nil
+	return dto.ToUserDetails(user), nil
 }
 
 func (u *UserService) GetByEmail(
@@ -190,8 +188,7 @@ func (u *UserService) GetByEmail(
 		return nil, service_errors.MapDBErrToServiceErr(err, "get user by email")
 	}
 
-	userResp := dto.ToUserDetails(user)
-	return userResp, nil
+	return dto.ToUserDetails(user), nil
 }
 
 // func (u *UserService) GetByIDWithCountOfAllReferencedObjects()

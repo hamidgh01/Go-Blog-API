@@ -62,6 +62,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	commentRepo := postgres_repository.NewCommentRepository(db)
 	listRepo := postgres_repository.NewListRepository(db)
 	linkRepo := postgres_repository.NewLinkRepository(db)
+	tagRepo := postgres_repository.NewTagRepository(db)
 
 	// initialize infrastructure services
 	jwtManager := jwt.NewJWTManager(&cfg.Jwt)
@@ -76,6 +77,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	commentService := services.NewCommentService(commentRepo)
 	listService := services.NewListService(listRepo)
 	linkService := services.NewLinkService(linkRepo)
+	tagService := services.NewTagService(tagRepo)
 
 	// initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -84,6 +86,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	commentHandler := handlers.NewCommentHandler(commentService)
 	listHandler := handlers.NewListHandler(listService)
 	linkHandler := handlers.NewLinkHandler(linkService)
+	tagHandler := handlers.NewTagHandler(tagService)
 
 	// middlewares
 	authMiddleware := middlewares.NewAuthenticationMiddleware(jwtManager, userInfoCache)
@@ -94,6 +97,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 		CommentRepository: commentRepo,
 		ListRepository:    listRepo,
 		LinkRepository:    linkRepo,
+		TagRepository:     tagRepo,
 
 		JwtManager:     jwtManager,
 		PasswordHasher: passwordHasher,
@@ -106,6 +110,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 		CommentService: commentService,
 		ListService:    listService,
 		LinkService:    linkService,
+		TagService:     tagService,
 
 		AuthHandler:    authHandler,
 		UserHandler:    userHandler,
@@ -113,6 +118,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 		CommentHandler: commentHandler,
 		ListHandler:    listHandler,
 		LinkHandler:    linkHandler,
+		TagHandler:     tagHandler,
 
 		AuthMiddleware: authMiddleware,
 	}, postgres_repository.CloseAllPreparedStatements

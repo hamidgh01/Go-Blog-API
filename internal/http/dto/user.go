@@ -18,7 +18,7 @@ type setPasswordOperation struct {
 type CreateUserRequest struct {
 	Username    string `json:"username" binding:"required,min=3,max=64,username_pattern"`
 	Email       string `json:"email" binding:"required,email"`
-	AcceptTerms *bool   `json:"accept_terms" binding:"required,eq=true"`
+	AcceptTerms *bool  `json:"accept_terms" binding:"required,eq=true"`
 	setPasswordOperation
 }
 
@@ -123,7 +123,7 @@ func ToUserDetailsWithCountOfReferencedObjects(
 type UsersList []*UserBrief
 
 func ToUsersList(users []*entity.User) UsersList {
-	usersList := make(UsersList, len(users))
+	usersList := make(UsersList, 0, len(users))
 	for _, user := range users {
 		usersList = append(usersList, ToUserBrief(user))
 	}
