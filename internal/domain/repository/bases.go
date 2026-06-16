@@ -42,3 +42,8 @@ type getterByIDWithCountOfAllReferencedObjects[TEntity e.TDBEntities] interface 
 // type listGetterByFilter[TEntity TDBEntities] interface {
 // 	GetListByFilter()
 // }
+
+type M2MEntityRepository[TEntity e.TM2MDBEntities] interface {
+	Create(ctx context.Context, entity *TEntity) error
+	Delete(ctx context.Context, entity *TEntity) error
+}

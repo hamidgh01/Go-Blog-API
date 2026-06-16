@@ -119,3 +119,23 @@ type ListRepository interface {
 
 	ownerIDGetter
 }
+
+type FollowRepository interface {
+	M2MEntityRepository[e.FollowsM2M]
+}
+
+type LikeRepository interface {
+	M2MEntityRepository[e.PostLikesM2M]
+}
+
+type PostTagsRepository interface {
+	M2MEntityRepository[e.PostTagsM2M]
+}
+
+type SavePostRepository interface {
+	M2MEntityRepository[e.SavedPostsM2M]
+}
+
+type SaveListRepository interface {
+	M2MEntityRepository[e.UsersSavedListsM2M]
+}

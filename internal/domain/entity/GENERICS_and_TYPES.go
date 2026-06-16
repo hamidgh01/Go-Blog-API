@@ -5,6 +5,10 @@ type TDBEntities interface {
 		Tag | PostTagsM2M | List | SavedPostsM2M | UsersSavedListsM2M
 }
 
+type TM2MDBEntities interface {
+	FollowsM2M | PostLikesM2M | PostTagsM2M | SavedPostsM2M | UsersSavedListsM2M
+}
+
 type CountKey string
 
 const (

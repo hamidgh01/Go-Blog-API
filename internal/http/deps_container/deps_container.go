@@ -19,17 +19,17 @@ import (
 // Container holds all application dependencies
 type Container struct {
 	// Repositories
-	UserRepository    repository.UserRepository
-	PostRepository    repository.PostRepository
-	CommentRepository repository.CommentRepository
-	TagRepository     repository.TagRepository
-	LinkRepository    repository.LinkRepository
-	ListRepository    repository.ListRepository
-	// FollowRepository   *repository.FollowRepository
-	// LikeRepository     *repository.LikeRepository
-	// SavePostRepository *repository.SavePostRepository
-	// SaveListRepository *repository.SaveListRepository
-	// PostTagsRepository *repository.PostTagsRepository
+	UserRepository     repository.UserRepository
+	PostRepository     repository.PostRepository
+	CommentRepository  repository.CommentRepository
+	TagRepository      repository.TagRepository
+	LinkRepository     repository.LinkRepository
+	ListRepository     repository.ListRepository
+	FollowRepository   repository.FollowRepository
+	LikeRepository     repository.LikeRepository
+	SavePostRepository repository.SavePostRepository
+	SaveListRepository repository.SaveListRepository
+	PostTagsRepository repository.PostTagsRepository
 
 	// other infrastructure services (security, caching, etc.)
 	JwtManager     *jwt.JWTManager
