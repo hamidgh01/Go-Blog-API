@@ -55,6 +55,24 @@ var (
 
 // -----------------------------------------------
 
+type CheckViolationError struct {
+	message string
+}
+
+var _ error = (*CheckViolationError)(nil)
+
+func newCheckViolationError(msg string) CheckViolationError {
+	return CheckViolationError{message: msg}
+}
+
+func (s CheckViolationError) Error() string {
+	return s.message
+}
+
+var ErrSelfFollowRequest = newCheckViolationError("self follow request is invalid")
+
+// -----------------------------------------------
+
 type RecordNotFoundError struct {
 	message string
 }
@@ -87,6 +105,22 @@ func (s BadInputError) Error() string {
 
 // -----------------------------------------------
 
+type NoRowsAffectedOnM2MEntity struct {
+	message string
+}
+
+var _ error = (*NoRowsAffectedOnM2MEntity)(nil)
+
+func NewNoRowsAffectedOnM2MEntity(msg string) NoRowsAffectedOnM2MEntity {
+	return NoRowsAffectedOnM2MEntity{message: msg}
+}
+
+func (s NoRowsAffectedOnM2MEntity) Error() string {
+	return s.message
+}
+
+// -----------------------------------------------
+
 type UnexpectedDBError struct {
 	err     error
 	message string
@@ -101,6 +135,8 @@ func newUnexpectedDBError(err error) UnexpectedDBError {
 func (s UnexpectedDBError) Error() string {
 	return s.message
 }
+
+// -----------------------------------------------
 
 func GetDBError(err error) error {
 
@@ -124,7 +160,7 @@ func GetDBError(err error) error {
 		case "23514": // check violations
 			switch pqErr.Constraint {
 			case "cant_follow_yourself":
-
+				return ErrSelfFollowRequest
 			}
 
 		case "23503": // foreign key violations

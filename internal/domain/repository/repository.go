@@ -128,14 +128,15 @@ type LikeRepository interface {
 	M2MEntityRepository[e.PostLikesM2M]
 }
 
-type PostTagsRepository interface {
-	M2MEntityRepository[e.PostTagsM2M]
-}
-
 type SavePostRepository interface {
 	M2MEntityRepository[e.SavedPostsM2M]
 }
 
 type SaveListRepository interface {
 	M2MEntityRepository[e.UsersSavedListsM2M]
+}
+
+type PostTagsRepository interface {
+	Create(ctx context.Context, entity []*e.PostTagsM2M) error
+	Delete(ctx context.Context, entity []*e.PostTagsM2M) error
 }

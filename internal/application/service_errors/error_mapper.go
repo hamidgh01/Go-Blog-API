@@ -15,13 +15,15 @@ func MapDBErrToServiceErr(err error, serviceName string) *ServiceError {
 	case errors.As(err, &dbErrors.UniqueViolationError{}):
 		return newServiceError(http.StatusConflict, err.Error())
 	case errors.As(err, &dbErrors.ForeignKeyViolationError{}):
-		return newServiceError(http.StatusUnprocessableEntity, err.Error())
+		return newServiceError(http.StatusNotAcceptable, err.Error())
 	case errors.As(err, &dbErrors.RecordNotFoundError{}):
 		return newServiceError(http.StatusNotFound, err.Error())
-	// case errors.As(err, &dbErrors.CheckViolationError{}):
-	// 	return newServiceError(...)
+	case errors.As(err, &dbErrors.CheckViolationError{}):
+		return newServiceError(http.StatusNotAcceptable, err.Error())
 	case errors.As(err, &dbErrors.BadInputError{}):
 		return newServiceError(http.StatusBadRequest, err.Error())
+	case errors.As(err, &dbErrors.NoRowsAffectedOnM2MEntity{}):
+		return newServiceError(http.StatusNotAcceptable, err.Error())
 	case errors.As(err, &dbErrors.UnexpectedDBError{}):
 		fmt.Printf("failed to %s. origin: %s \n", serviceName, err.Error()) // log.Error()
 		return InternalServerError

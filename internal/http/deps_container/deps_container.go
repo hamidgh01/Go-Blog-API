@@ -78,6 +78,11 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	listRepo := postgres_repository.NewListRepository(db)
 	linkRepo := postgres_repository.NewLinkRepository(db)
 	tagRepo := postgres_repository.NewTagRepository(db)
+	followRepo := postgres_repository.NewFollowRepository(db)
+	likeRepo := postgres_repository.NewLikeRepository(db)
+	savePostRepo := postgres_repository.NewSavePostRepository(db)
+	saveListRepo := postgres_repository.NewSaveListRepository(db)
+	postTagsRepo := postgres_repository.NewPostTagsRepository(db)
 
 	// initialize infrastructure services
 	jwtManager := jwt.NewJWTManager(&cfg.Jwt)
@@ -93,6 +98,11 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	listService := services.NewListService(listRepo)
 	linkService := services.NewLinkService(linkRepo)
 	tagService := services.NewTagService(tagRepo)
+	followService := services.NewFollowService(followRepo)
+	likeService := services.NewLikeService(likeRepo)
+	savePostService := services.NewSavePostService(savePostRepo, listRepo)
+	saveListService := services.NewSaveListService(saveListRepo)
+	postTagsService := services.NewPostTagsService(postTagsRepo, postRepo)
 
 	// initialize handlers
 	authHandler := handlers.NewAuthHandler(authService)
@@ -102,38 +112,58 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	listHandler := handlers.NewListHandler(listService)
 	linkHandler := handlers.NewLinkHandler(linkService)
 	tagHandler := handlers.NewTagHandler(tagService)
+	followHandler := handlers.NewFollowHandler(followService)
+	likeHandler := handlers.NewLikeHandler(likeService)
+	savePostHandler := handlers.NewSavePostHandler(savePostService)
+	saveListHandler := handlers.NewSaveListHandler(saveListService)
+	postTagsHandler := handlers.NewPostTagsHandler(postTagsService)
 
 	// middlewares
 	authMiddleware := middlewares.NewAuthenticationMiddleware(jwtManager, userInfoCache)
 
 	return &Container{
-		UserRepository:    userRepo,
-		PostRepository:    postRepo,
-		CommentRepository: commentRepo,
-		ListRepository:    listRepo,
-		LinkRepository:    linkRepo,
-		TagRepository:     tagRepo,
+		UserRepository:     userRepo,
+		PostRepository:     postRepo,
+		CommentRepository:  commentRepo,
+		ListRepository:     listRepo,
+		LinkRepository:     linkRepo,
+		TagRepository:      tagRepo,
+		FollowRepository:   followRepo,
+		LikeRepository:     likeRepo,
+		SavePostRepository: savePostRepo,
+		SaveListRepository: saveListRepo,
+		PostTagsRepository: postTagsRepo,
 
 		JwtManager:     jwtManager,
 		PasswordHasher: passwordHasher,
 		TokenRevoker:   tokenRevoker,
 		UserInfoCache:  userInfoCache,
 
-		AuthService:    authService,
-		UserService:    userService,
-		PostService:    postService,
-		CommentService: commentService,
-		ListService:    listService,
-		LinkService:    linkService,
-		TagService:     tagService,
+		AuthService:     authService,
+		UserService:     userService,
+		PostService:     postService,
+		CommentService:  commentService,
+		ListService:     listService,
+		LinkService:     linkService,
+		TagService:      tagService,
+		FollowService:   followService,
+		LikeService:     likeService,
+		SavePostService: savePostService,
+		SaveListService: saveListService,
+		PostTagsService: postTagsService,
 
-		AuthHandler:    authHandler,
-		UserHandler:    userHandler,
-		PostHandler:    postHandler,
-		CommentHandler: commentHandler,
-		ListHandler:    listHandler,
-		LinkHandler:    linkHandler,
-		TagHandler:     tagHandler,
+		AuthHandler:     authHandler,
+		UserHandler:     userHandler,
+		PostHandler:     postHandler,
+		CommentHandler:  commentHandler,
+		ListHandler:     listHandler,
+		LinkHandler:     linkHandler,
+		TagHandler:      tagHandler,
+		FollowHandler:   followHandler,
+		LikeHandler:     likeHandler,
+		SavePostHandler: savePostHandler,
+		SaveListHandler: saveListHandler,
+		PostTagsHandler: postTagsHandler,
 
 		AuthMiddleware: authMiddleware,
 	}, postgres_repository.CloseAllPreparedStatements

@@ -22,4 +22,9 @@ func CloseAllPreparedStatements() {
 	closeAllListStatements()
 	closeAllLinkStatements()
 	closeAllTagStatements()
+	// M2M entities
+	closeAllFollowStatements()
+	closeAllLikeStatements()
+	closeAllSavePostStatements()
+	closeAllSaveListStatements()
 }

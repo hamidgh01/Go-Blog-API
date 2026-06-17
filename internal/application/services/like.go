@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
+	"github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 )
 
@@ -16,9 +17,18 @@ func NewLikeService(r repository.LikeRepository) *LikeService {
 }
 
 func (l *LikeService) Like(ctx context.Context, targetPostID uint64) *service_errors.ServiceError {
-	return nil
+	currentUserID := ctx.Value("currentUserID").(uint64)
+	entity := &entity.PostLikesM2M{PostID: targetPostID, UserID: currentUserID}
+
+	// ToDo: condition to check:
+	// check the target post (to like) is 'published' & is not private
+
+	return createOrDeleteM2MRelationship(ctx, "like a post", entity, l.repo.Create)
 }
 
 func (l *LikeService) Unlike(ctx context.Context, targetPostID uint64) *service_errors.ServiceError {
-	return nil
+	currentUserID := ctx.Value("currentUserID").(uint64)
+	entity := &entity.PostLikesM2M{PostID: targetPostID, UserID: currentUserID}
+
+	return createOrDeleteM2MRelationship(ctx, "unlike a post", entity, l.repo.Delete)
 }

@@ -9,6 +9,19 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
 )
 
+func createOrDeleteM2MRelationship[TEntity e.TM2MDBEntities](
+	ctx context.Context,
+	serviceName string,
+	entity *TEntity,
+	createOrDeleteM2MRelationshipRepo func(ctx context.Context, entity *TEntity) error,
+) *service_errors.ServiceError {
+	if err := createOrDeleteM2MRelationshipRepo(ctx, entity); err != nil {
+		return service_errors.MapDBErrToServiceErr(err, serviceName)
+	}
+
+	return nil
+}
+
 func create[TEntity e.TDBEntities, TOutput generics.OutputTypes](
 	ctx context.Context,
 	objectName string,

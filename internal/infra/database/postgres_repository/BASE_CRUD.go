@@ -8,6 +8,28 @@ import (
 	dbErrors "github.com/hamidgh01/Go-Blog-API/internal/infra/database/errors"
 )
 
+func createOrDeleteM2MRelationship(
+	ctx context.Context,
+	createOrDeleteM2MRelationshipStmt *sql.Stmt,
+	firstID uint64,
+	secondID uint64,
+	noRowsAffectedMessage string,
+) error {
+	result, err := createOrDeleteM2MRelationshipStmt.ExecContext(ctx, firstID, secondID)
+	if err != nil {
+		return dbErrors.GetDBError(err)
+	}
+
+	n, e := result.RowsAffected()
+	if n == 0 || e == sql.ErrNoRows {
+		return dbErrors.NewNoRowsAffectedOnM2MEntity(noRowsAffectedMessage)
+	} else if e != nil {
+		return dbErrors.GetDBError(e)
+	}
+
+	return nil
+}
+
 func update(ctx context.Context, updateStmt *sql.Stmt, entityName string, pk uint64, fields ...any) error {
 	fields = append(fields, pk)
 	result, err := updateStmt.ExecContext(ctx, fields...)
