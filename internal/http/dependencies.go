@@ -1,14 +1,11 @@
-package deps_container
+package http
 
 import (
-	"database/sql"
-
 	"github.com/hamidgh01/Go-Blog-API/config"
 	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/handlers"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/middlewares"
-	"github.com/hamidgh01/Go-Blog-API/internal/infra/database/postgres_repository"
 	redisInfra "github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/hashing"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/jwt"
@@ -16,8 +13,8 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// Container holds all application dependencies
-type Container struct {
+// DependencyContainer holds all application dependencies
+type DependencyContainer struct {
 	// Repositories
 	UserRepository     repository.UserRepository
 	PostRepository     repository.PostRepository
@@ -69,20 +66,23 @@ type Container struct {
 	AuthMiddleware *middlewares.AuthenticationMiddleware
 }
 
-// NewContainer creates and wires all dependencies
-func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Container, func()) {
+// NewDependencyContainer creates and wires all dependencies
+func NewDependencyContainer(
+	cfg *config.Config, repoInjector repository.RepositoryInjector, redis *redis.Client,
+) *DependencyContainer {
+
 	// initialize repositories
-	userRepo := postgres_repository.NewUserRepository(db)
-	postRepo := postgres_repository.NewPostRepository(db)
-	commentRepo := postgres_repository.NewCommentRepository(db)
-	listRepo := postgres_repository.NewListRepository(db)
-	linkRepo := postgres_repository.NewLinkRepository(db)
-	tagRepo := postgres_repository.NewTagRepository(db)
-	followRepo := postgres_repository.NewFollowRepository(db)
-	likeRepo := postgres_repository.NewLikeRepository(db)
-	savePostRepo := postgres_repository.NewSavePostRepository(db)
-	saveListRepo := postgres_repository.NewSaveListRepository(db)
-	postTagsRepo := postgres_repository.NewPostTagsRepository(db)
+	userRepo := repoInjector.GetUserRepository()
+	postRepo := repoInjector.GetPostRepository()
+	commentRepo := repoInjector.GetCommentRepository()
+	listRepo := repoInjector.GetListRepository()
+	linkRepo := repoInjector.GetLinkRepository()
+	tagRepo := repoInjector.GetTagRepository()
+	followRepo := repoInjector.GetFollowRepository()
+	likeRepo := repoInjector.GetLikeRepository()
+	savePostRepo := repoInjector.GetSavePostRepository()
+	saveListRepo := repoInjector.GetSaveListRepository()
+	postTagsRepo := repoInjector.GetPostTagsRepository()
 
 	// initialize infrastructure services
 	jwtManager := jwt.NewJWTManager(&cfg.Jwt)
@@ -121,7 +121,7 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 	// middlewares
 	authMiddleware := middlewares.NewAuthenticationMiddleware(jwtManager, userInfoCache)
 
-	return &Container{
+	return &DependencyContainer{
 		UserRepository:     userRepo,
 		PostRepository:     postRepo,
 		CommentRepository:  commentRepo,
@@ -166,5 +166,5 @@ func NewContainer(cfg *config.Config, db *sql.DB, redis *redis.Client) (*Contain
 		PostTagsHandler: postTagsHandler,
 
 		AuthMiddleware: authMiddleware,
-	}, postgres_repository.CloseAllPreparedStatements
+	}
 }

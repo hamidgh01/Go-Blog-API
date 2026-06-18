@@ -4,8 +4,8 @@ import (
 	"log"
 
 	"github.com/hamidgh01/Go-Blog-API/config"
-	server "github.com/hamidgh01/Go-Blog-API/internal/http"
-	"github.com/hamidgh01/Go-Blog-API/internal/http/deps_container"
+	"github.com/hamidgh01/Go-Blog-API/internal/dependencies"
+	"github.com/hamidgh01/Go-Blog-API/internal/http"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/database"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 
@@ -43,12 +43,12 @@ func serve() {
 	}
 	defer redisClient.Close()
 
-	// initialize container with all dependencies
-	dependencyContainer, repositoryCleanup := deps_container.NewContainer(cfg, db, redisClient)
+	// initialize dependency injector
+	repositoryInjector, repositoryCleanup := dependencies.NewRepositoryInjector(db)
 	defer repositoryCleanup()
 
 	// init and run server
-	if err := server.InitAndRun(cfg, dependencyContainer); err != nil {
+	if err := http.InitServerAndRun(cfg, repositoryInjector, redisClient); err != nil {
 		log.Fatalf("failed to init and run server. reason: %v", err)
 	}
 }

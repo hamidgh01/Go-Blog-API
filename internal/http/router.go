@@ -1,20 +1,18 @@
-package router
+package http
 
 import (
 	"net/http"
 	"strings"
-
-	"github.com/hamidgh01/Go-Blog-API/internal/http/deps_container"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Router struct {
 	router       *gin.RouterGroup
-	dependencies *deps_container.Container
+	dependencies *DependencyContainer
 }
 
-func NewRouter(r *gin.RouterGroup, deps *deps_container.Container) *Router {
+func NewRouter(r *gin.RouterGroup, deps *DependencyContainer) *Router {
 	return &Router{router: r, dependencies: deps}
 }
 

@@ -1,27 +1,29 @@
-package server
+package http
 
 import (
 	"fmt"
 
 	"github.com/hamidgh01/Go-Blog-API/config"
-	"github.com/hamidgh01/Go-Blog-API/internal/http/deps_container"
-	"github.com/hamidgh01/Go-Blog-API/internal/http/router"
+	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/validations"
 
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 )
 
 type Server struct {
-	dependencyContainer *deps_container.Container
+	dependencyContainer *DependencyContainer // container with all needed dependencies
 	engine              *gin.Engine
 	cfg                 *config.Config
 }
 
-func InitAndRun(cfg *config.Config, deps *deps_container.Container) error {
+func InitServerAndRun(
+	cfg *config.Config, repoInjector repository.RepositoryInjector, redis *redis.Client,
+) error {
 	server := &Server{
 		engine:              gin.Default(),
+		dependencyContainer: NewDependencyContainer(cfg, repoInjector, redis),
 		cfg:                 cfg,
-		dependencyContainer: deps,
 	}
 
 	// register custom validators
@@ -31,7 +33,7 @@ func InitAndRun(cfg *config.Config, deps *deps_container.Container) error {
 
 	// register routes
 	v1 := server.engine.Group("/v1")
-	router := router.NewRouter(v1, server.dependencyContainer)
+	router := NewRouter(v1, server.dependencyContainer)
 	router.RegisterRoutes()
 
 	// run server
