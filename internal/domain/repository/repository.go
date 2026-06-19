@@ -32,8 +32,9 @@ type UserRepository interface {
 
 	// get list of other sources (have FK to a `User`)
 	GetPosts(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)
-	GetLists(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.List], error)
+	GetOwnedLists(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.List], error)
 	GetSavedLists(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.List], error)
+	GetAllLists(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.List], error)
 	GetComments(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Comment], error)
 	GetLikes(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)
 	GetFollowers(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.User], error)

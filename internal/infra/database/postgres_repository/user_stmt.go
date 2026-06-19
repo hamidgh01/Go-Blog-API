@@ -38,7 +38,7 @@ var (
 	checkIsEnabledQuery          = "SELECT enabled FROM users WHERE id = $1"
 	checkIsSuperuserQuery        = "SELECT isSuperuser FROM users WHERE id = $1"
 	getHashedPasswordQuery       = "SELECT password FROM users WHERE id = $1"
-	getUserForLoginVerificationQ = "SELECT id, username, password FROM users WHERE email = $1 OR username = $1"
+	getUserForLoginVerificationQ = "SELECT id, username, enabled, password FROM users WHERE email = $1 OR username = $1"
 
 	// read
 	getUserByIDQuery       = fmt.Sprintf("SELECT %s FROM users WHERE id = $1", DETAILED_USER_FIELDS)

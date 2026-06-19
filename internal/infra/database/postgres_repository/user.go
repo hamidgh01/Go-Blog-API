@@ -95,7 +95,9 @@ func (r *userRepository) GetHashedPassword(ctx context.Context, pk uint64) (stri
 
 func (r *userRepository) GetUserForLoginVerification(ctx context.Context, identifier string) (*e.User, error) {
 	var user = &e.User{}
-	err := getUserForLoginVerificationStmt.QueryRowContext(ctx, identifier).Scan(&user.ID, &user.Username, &user.Password)
+	err := getUserForLoginVerificationStmt.QueryRowContext(ctx, identifier).Scan(
+		&user.ID, &user.Username, &user.Enabled, &user.Password,
+	)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, dbErrors.NewRecordNotFoundError("User not found")
@@ -137,7 +139,7 @@ func (r *userRepository) GetPosts(
 	return nil, nil
 }
 
-func (r *userRepository) GetLists(
+func (r *userRepository) GetOwnedLists(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.List], error) {
 	// implement later
@@ -145,6 +147,13 @@ func (r *userRepository) GetLists(
 }
 
 func (r *userRepository) GetSavedLists(
+	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
+) (*d.PagedList[e.List], error) {
+	// implement later
+	return nil, nil
+}
+
+func (r *userRepository) GetAllLists(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.List], error) {
 	// implement later

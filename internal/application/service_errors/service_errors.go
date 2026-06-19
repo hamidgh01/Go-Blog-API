@@ -32,6 +32,7 @@ var (
 	InvalidToken       = newServiceError(http.StatusUnauthorized, "token is invalid")
 	TokenExpired       = newServiceError(http.StatusUnauthorized, "token is expired")
 	TokenBlacklisted   = newServiceError(http.StatusUnauthorized, "token is blacklisted")
+	SuspendedUser      = newServiceError(http.StatusForbidden, "user is suspended")
 	PermissionDenied   = newServiceError(http.StatusForbidden, "permission denied")
 
 	// server

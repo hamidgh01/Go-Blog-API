@@ -96,14 +96,19 @@ func (a *AuthService) Login(
 		return nil, service_errors.InvalidCredentials
 	}
 
-	// 3. generate token pair (access and refresh tokens + expirations)
+	// 3. check user is suspended or not
+	if user.Enabled == false {
+		return nil, service_errors.SuspendedUser
+	}
+
+	// 4. generate token pair (access and refresh tokens + expirations)
 	tokenPair, err := a.jwtMgr.GenerateTokenPair(user.ID)
 	if err != nil {
 		fmt.Printf("failed to generate JWT pair. reason: %s \n", err) // log.Error
 		return nil, service_errors.InternalServerError
 	}
 
-	// 4. prepare needed data and add refresh_token cookie
+	// 5. prepare needed data and add refresh_token cookie
 	userData := dto.ToUserBrief(user)
 	tokenData := &dto.Token{AccessToken: tokenPair.AccessToken, ExpirationTS: tokenPair.AccessExpTime.Unix()}
 	a.addRefreshTokenCookie(w, tokenPair.RefreshToken, int(time.Until(tokenPair.RefreshExpTime).Seconds()))
