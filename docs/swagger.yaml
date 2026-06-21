@@ -1,0 +1,3289 @@
+definitions:
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.AssociatePostWithTagsRequest:
+    properties:
+      tag_ids:
+        items:
+          type: integer
+        maxItems: 10
+        minItems: 1
+        type: array
+        uniqueItems: true
+    required:
+    - tag_ids
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.CommentDetails:
+    properties:
+      comment_parent_id:
+        type: integer
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      modified_at:
+        type: string
+      post_parent_id:
+        type: integer
+      status:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateCommentRequest:
+    properties:
+      content:
+        maxLength: 1500
+        type: string
+      parent_id:
+        type: integer
+      parent_type:
+        enum:
+        - post
+        - comment
+        type: string
+    required:
+    - content
+    - parent_id
+    - parent_type
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateLinkRequest:
+    properties:
+      title:
+        maxLength: 32
+        type: string
+      url:
+        type: string
+    required:
+    - title
+    - url
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateListRequest:
+    properties:
+      description:
+        maxLength: 1000
+        type: string
+      is_private:
+        type: boolean
+      title:
+        maxLength: 100
+        type: string
+    required:
+    - title
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreatePostRequest:
+    properties:
+      content:
+        type: string
+      is_private:
+        type: boolean
+      status:
+        enum:
+        - draft
+        - published
+        type: string
+      title:
+        maxLength: 200
+        type: string
+    required:
+    - title
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateTagsRequest:
+    properties:
+      tags:
+        items:
+          type: string
+        maxItems: 10
+        minItems: 1
+        type: array
+        uniqueItems: true
+    required:
+    - tags
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateUserRequest:
+    properties:
+      accept_terms:
+        type: boolean
+      confirm_password:
+        type: string
+      email:
+        type: string
+      password:
+        maxLength: 64
+        minLength: 8
+        type: string
+      username:
+        maxLength: 64
+        minLength: 3
+        type: string
+    required:
+    - accept_terms
+    - confirm_password
+    - email
+    - password
+    - username
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.DissociatePostWithTagsRequest:
+    properties:
+      tag_ids:
+        items:
+          type: integer
+        maxItems: 10
+        minItems: 1
+        type: array
+        uniqueItems: true
+    required:
+    - tag_ids
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.LinkDetails:
+    properties:
+      id:
+        type: integer
+      title:
+        type: string
+      url:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.ListBrief:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      is_private:
+        type: boolean
+      modified_at:
+        type: string
+      title:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.ListDetails:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_private:
+        type: boolean
+      modified_at:
+        type: string
+      title:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.LoginRequest:
+    properties:
+      identifier:
+        type: string
+      password:
+        maxLength: 64
+        minLength: 8
+        type: string
+    required:
+    - identifier
+    - password
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.LoginSuccessfulData:
+    properties:
+      token:
+        $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.Token'
+      user:
+        $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.PostBrief:
+    properties:
+      created_at:
+        type: string
+      first_published_at:
+        type: string
+      id:
+        type: integer
+      modified_at:
+        type: string
+      title:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.PostDetails:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      first_published_at:
+        type: string
+      id:
+        type: integer
+      is_private:
+        type: boolean
+      modified_at:
+        type: string
+      status:
+        type: string
+      title:
+        type: string
+      user:
+        $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.SavePostRequest:
+    properties:
+      list_id:
+        type: integer
+    required:
+    - list_id
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.TagDetails:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.Token:
+    properties:
+      access_token:
+        example: eyJhbGciOiJIUzI1NiIsI...
+        type: string
+      expiration_timestamp:
+        type: integer
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UnsavePostRequest:
+    properties:
+      list_id:
+        type: integer
+    required:
+    - list_id
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateBioRequest:
+    properties:
+      bio:
+        maxLength: 500
+        type: string
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateCommentRequest:
+    properties:
+      content:
+        maxLength: 1500
+        type: string
+    required:
+    - content
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateEmailRequest:
+    properties:
+      email:
+        type: string
+    required:
+    - email
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateEnabledRequest:
+    properties:
+      enabled:
+        type: boolean
+    required:
+    - enabled
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateLinkRequest:
+    properties:
+      title:
+        maxLength: 32
+        type: string
+      url:
+        type: string
+    required:
+    - title
+    - url
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateListPrivacyRequest:
+    properties:
+      is_private:
+        type: boolean
+    required:
+    - is_private
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateListRequest:
+    properties:
+      description:
+        maxLength: 1000
+        type: string
+      is_private:
+        type: boolean
+      title:
+        maxLength: 100
+        type: string
+    required:
+    - title
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdatePasswordRequest:
+    properties:
+      confirm_password:
+        type: string
+      old_password:
+        maxLength: 60
+        minLength: 8
+        type: string
+      password:
+        maxLength: 64
+        minLength: 8
+        type: string
+    required:
+    - confirm_password
+    - old_password
+    - password
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdatePostPrivacyRequest:
+    properties:
+      is_private:
+        type: boolean
+    required:
+    - is_private
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdatePostRequest:
+    properties:
+      content:
+        type: string
+      title:
+        maxLength: 200
+        type: string
+    required:
+    - title
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateUsernameRequest:
+    properties:
+      username:
+        maxLength: 64
+        minLength: 3
+        type: string
+    required:
+    - username
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief:
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserDetails:
+    properties:
+      bio:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      enabled:
+        type: boolean
+      id:
+        type: integer
+      modified_at:
+        type: string
+      username:
+        type: string
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_CommentList:
+    properties:
+      has_next_page:
+        type: boolean
+      has_previous_page:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CommentDetails'
+        type: array
+      next_page:
+        type: integer
+      page:
+        type: integer
+      previous_page:
+        type: integer
+      size:
+        type: integer
+      total_pages:
+        type: integer
+      total_rows:
+        type: integer
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_LinksList:
+    properties:
+      has_next_page:
+        type: boolean
+      has_previous_page:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.LinkDetails'
+        type: array
+      next_page:
+        type: integer
+      page:
+        type: integer
+      previous_page:
+        type: integer
+      size:
+        type: integer
+      total_pages:
+        type: integer
+      total_rows:
+        type: integer
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_ListsList:
+    properties:
+      has_next_page:
+        type: boolean
+      has_previous_page:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.ListBrief'
+        type: array
+      next_page:
+        type: integer
+      page:
+        type: integer
+      previous_page:
+        type: integer
+      size:
+        type: integer
+      total_pages:
+        type: integer
+      total_rows:
+        type: integer
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_PostsList:
+    properties:
+      has_next_page:
+        type: boolean
+      has_previous_page:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.PostBrief'
+        type: array
+      next_page:
+        type: integer
+      page:
+        type: integer
+      previous_page:
+        type: integer
+      size:
+        type: integer
+      total_pages:
+        type: integer
+      total_rows:
+        type: integer
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_TagsList:
+    properties:
+      has_next_page:
+        type: boolean
+      has_previous_page:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.TagDetails'
+        type: array
+      next_page:
+        type: integer
+      page:
+        type: integer
+      previous_page:
+        type: integer
+      size:
+        type: integer
+      total_pages:
+        type: integer
+      total_rows:
+        type: integer
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_UsersList:
+    properties:
+      has_next_page:
+        type: boolean
+      has_previous_page:
+        type: boolean
+      items:
+        items:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+        type: array
+      next_page:
+        type: integer
+      page:
+        type: integer
+      previous_page:
+        type: integer
+      size:
+        type: integer
+      total_pages:
+        type: integer
+      total_rows:
+        type: integer
+    type: object
+  github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse:
+    properties:
+      data:
+        description: presents only for successful response (`success=true`)
+      details:
+        description: presents only for error response (`success=false`)
+      message:
+        description: a message that gives more information about response
+        type: string
+      success:
+        description: '`true` for successful response and `false` for error response'
+        type: boolean
+    type: object
+info:
+  contact:
+    email: hamidghahremani2001@gmail.com
+    name: Hamid Ghahremani
+    url: https://github.com/hamidgh01
+  description: Go powered RESTful Blog API.
+  license:
+    name: MIT
+    url: https://mit-license.org/
+  title: Go Blog API
+  version: "1.0"
+paths:
+  /v1/comments:
+    post:
+      consumes:
+      - application/json
+      description: Create a new comment
+      parameters:
+      - description: Data to create new comment
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CommentDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: validation error
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Create Comment
+      tags:
+      - comments
+  /v1/comments/{id}:
+    delete:
+      description: Delete a comment (**only admin access**)
+      parameters:
+      - description: Unique Comment ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: comment not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Delete Comment
+      tags:
+      - comments
+    get:
+      description: Get a comment by unique id
+      parameters:
+      - description: Unique Comment ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CommentDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter
+        "404":
+          description: comment not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Comment By ID
+      tags:
+      - comments
+    put:
+      consumes:
+      - application/json
+      description: Update a comment
+      parameters:
+      - description: Unique Comment ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: Data to update a comment
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: comment not found
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Update Comment
+      tags:
+      - comments
+  /v1/comments/{id}/delete:
+    patch:
+      description: Delete a comment at user request (change status to "deleted")
+      parameters:
+      - description: Unique Comment ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: comment not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Delete Comment At User Request
+      tags:
+      - comments
+  /v1/comments/{id}/hide:
+    patch:
+      description: Hide a comment (change status to "hidden") (**only admin access**)
+      parameters:
+      - description: Unique Comment ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: comment not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Hide Comment
+      tags:
+      - comments
+  /v1/comments/{id}/replies:
+    get:
+      description: Get a list of comment's replies with pagination
+      parameters:
+      - description: Unique Comment ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_CommentList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CommentDetails'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any reply for this comment
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Comment's Replies
+      tags:
+      - comments
+  /v1/comments/{id}/republish:
+    patch:
+      description: Republish a comment (change status to "published") (**only admin
+        access**)
+      parameters:
+      - description: Unique Comment ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: comment not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Republish Comment
+      tags:
+      - comments
+  /v1/links:
+    post:
+      consumes:
+      - application/json
+      description: Create a new link
+      parameters:
+      - description: Data to create new link
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateLinkRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.LinkDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: validation error
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Create Link
+      tags:
+      - links
+  /v1/links/{id}:
+    delete:
+      description: Delete a link
+      parameters:
+      - description: Unique Link ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: link not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Delete Link
+      tags:
+      - links
+    get:
+      description: Get a link by unique id
+      parameters:
+      - description: Unique Link ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.LinkDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter
+        "404":
+          description: link not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Link By ID
+      tags:
+      - links
+    put:
+      consumes:
+      - application/json
+      description: Update a link
+      parameters:
+      - description: Unique Link ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: Data to update a link
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateLinkRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: link not found
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Update Link
+      tags:
+      - links
+  /v1/lists:
+    post:
+      consumes:
+      - application/json
+      description: Create a new list
+      parameters:
+      - description: Data to create new list
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateListRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.ListDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: validation error
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Create List
+      tags:
+      - lists
+  /v1/lists/{id}:
+    delete:
+      description: Delete a list
+      parameters:
+      - description: Unique List ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: list not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Delete List
+      tags:
+      - lists
+    get:
+      description: Get a list by unique id
+      parameters:
+      - description: Unique List ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.ListDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter
+        "404":
+          description: list not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get List By ID
+      tags:
+      - lists
+    patch:
+      consumes:
+      - application/json
+      description: Update list's privacy
+      parameters:
+      - description: Unique List ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: new privacy value to update List.IsPrivate
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateListPrivacyRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: list not found
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Updata List.IsPrivate
+      tags:
+      - lists
+    put:
+      consumes:
+      - application/json
+      description: Update a list
+      parameters:
+      - description: Unique List ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: Data to update a list
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateListRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: list not found
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Update List
+      tags:
+      - lists
+  /v1/lists/{id}/save-list:
+    post:
+      description: Save a list
+      parameters:
+      - description: Unique List ID to Save
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "406":
+          description: no such list to save (trying to save a list that not exists)
+            | list is already saved by this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Save List
+      tags:
+      - lists
+  /v1/lists/{id}/saved-posts:
+    get:
+      description: Get list of saved posts of the list with pagination
+      parameters:
+      - description: Unique List ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_PostsList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.PostBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any saved-post in this list
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get List's Saved Posts
+      tags:
+      - lists
+  /v1/lists/{id}/unsave-list:
+    delete:
+      description: Unsave a list
+      parameters:
+      - description: Unique List ID to Unsave
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "406":
+          description: no such list to unsave (trying to unsave a list that not exists)
+            | list already isn't saved by this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Unsave List
+      tags:
+      - lists
+  /v1/lists/{id}/users-who-saved:
+    get:
+      description: Get list of users who saved the list with pagination
+      parameters:
+      - description: Unique List ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_UsersList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any user who saves this list
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Users Who Saved The List
+      tags:
+      - lists
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Login by identifier (**username** or **email**) and **password**
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.LoginSuccessfulData'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: validation error
+        "401":
+          description: invalid credentials
+        "403":
+          description: suspended user
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      summary: Login
+      tags:
+      - auth
+  /v1/logout:
+    get:
+      description: Logout a user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+        "401":
+          description: invalid token | expired token | blacklisted token | not providing
+            'refresh_token' cookie
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Logout
+      tags:
+      - auth
+  /v1/posts:
+    post:
+      consumes:
+      - application/json
+      description: Create a new post
+      parameters:
+      - description: Data to create new post
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreatePostRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.PostDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: validation error
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Create Post
+      tags:
+      - posts
+  /v1/posts/{id}:
+    delete:
+      description: Delete a post (**only admin access**)
+      parameters:
+      - description: Unique Post ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: post not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Delete Post
+      tags:
+      - posts
+    get:
+      description: Get a post by unique id
+      parameters:
+      - description: Unique Post ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.PostDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter
+        "404":
+          description: post not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Post By ID
+      tags:
+      - posts
+    put:
+      consumes:
+      - application/json
+      description: Update a post
+      parameters:
+      - description: Unique Post ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: Data to update a post
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdatePostRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: post not found
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Update Post
+      tags:
+      - posts
+  /v1/posts/{id}/associate-tags:
+    post:
+      consumes:
+      - application/json
+      description: Tag a post with some tags
+      parameters:
+      - description: Unique Post ID to Tag
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: Array of Tag IDs to Associate with Post
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.AssociatePostWithTagsRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "403":
+          description: trying to tag other's posts (each user only can tag its own
+            posts)
+        "404":
+          description: no such post to tag (trying to tag a post that not exists)
+        "406":
+          description: no such tag to associate with post (trying to tag a post with
+            non-existent tags) | the post already associated with all of these tags
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Tag Post
+      tags:
+      - posts
+  /v1/posts/{id}/comments:
+    get:
+      description: Get a list of post's comments with pagination
+      parameters:
+      - description: Unique Post ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_CommentList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CommentDetails'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any comment for this post
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Posts's Comments
+      tags:
+      - posts
+  /v1/posts/{id}/delete:
+    patch:
+      description: Delete a post at user request (change status to "deleted")
+      parameters:
+      - description: Unique Post ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: post not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Delete Post At User Request
+      tags:
+      - posts
+  /v1/posts/{id}/dissociate-tags:
+    delete:
+      consumes:
+      - application/json
+      description: Untag a post with some tags
+      parameters:
+      - description: Unique Post ID to Untag
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: Array of Tag IDs to dissociate with Post
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.DissociatePostWithTagsRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "403":
+          description: trying to untag other's posts (each user only can untag its
+            own posts)
+        "404":
+          description: no such post to untag (trying to untag a post that not exists)
+        "406":
+          description: no such tag to dissociate with post (trying to untag a post
+            with non-existent tags) | the post didn't tagged with any of these tags
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Untag Post
+      tags:
+      - posts
+  /v1/posts/{id}/like:
+    post:
+      description: Like a post
+      parameters:
+      - description: Unique Post ID to Like
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "406":
+          description: no such post to like (trying to like a post that not exists)
+            | the target post is already liked by this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Like
+      tags:
+      - posts
+  /v1/posts/{id}/likes:
+    get:
+      description: Get a list of post's likes (users who liked this post) with pagination
+      parameters:
+      - description: Unique Post ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_UsersList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any like for this post
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Posts's Likes
+      tags:
+      - posts
+  /v1/posts/{id}/lists:
+    get:
+      description: Get a list of post's lists (lists that saved this post) with pagination
+      parameters:
+      - description: Unique Post ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_ListsList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.ListBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any list that saves this post
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Posts's Lists
+      tags:
+      - posts
+  /v1/posts/{id}/privacy:
+    patch:
+      consumes:
+      - application/json
+      description: Update post's privacy
+      parameters:
+      - description: Unique Post ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: new privacy value to update Post.IsPrivate
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdatePostPrivacyRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: post not found
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Updata Post.IsPrivate
+      tags:
+      - posts
+  /v1/posts/{id}/publish:
+    patch:
+      description: |-
+        Publish a draft post (change status to "published")
+        (**NOTE :** only draft posts (status="draft") can be published)
+      parameters:
+      - description: Unique Post ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: post not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Publish Post
+      tags:
+      - posts
+  /v1/posts/{id}/reject:
+    patch:
+      description: Reject a post (change status to "rejected") (**only admin access**)
+      parameters:
+      - description: Unique Post ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: post not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Reject Post
+      tags:
+      - posts
+  /v1/posts/{id}/republish:
+    patch:
+      description: Republish a post (change status to "published") (**only admin access**)
+      parameters:
+      - description: Unique Post ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: post not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Republish Post
+      tags:
+      - posts
+  /v1/posts/{id}/save-post:
+    post:
+      consumes:
+      - application/json
+      description: Save a post
+      parameters:
+      - description: Unique Post ID to Save
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: Unique List ID to Save in
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.SavePostRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "403":
+          description: trying to save to other's lists (each user only can save posts
+            in its own lists)
+        "404":
+          description: no such list to save post in (trying to save post in a list
+            that not exists)
+        "406":
+          description: no such post to save (trying to save a post that not exists)
+            | post is already saved in this list
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Save Post
+      tags:
+      - posts
+  /v1/posts/{id}/tags:
+    get:
+      description: Get a list of post's tags with pagination
+      parameters:
+      - description: Unique Post ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_TagsList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.TagDetails'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any tag for this post
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Posts's Tags
+      tags:
+      - posts
+  /v1/posts/{id}/unlike:
+    delete:
+      description: Unlike a post
+      parameters:
+      - description: Unique Post ID to Unlike
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "406":
+          description: no such post to unlike (trying to unlike a post that not exists)
+            | the target post already isn't liked by this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Unlike
+      tags:
+      - posts
+  /v1/posts/{id}/unsave-post:
+    delete:
+      consumes:
+      - application/json
+      description: Unsave a post
+      parameters:
+      - description: Unique Post ID to Unsave
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: Unique List ID to Unsave From
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UnsavePostRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "403":
+          description: trying to unsave a post from other's lists (each user can only
+            unsave posts from its own lists)
+        "404":
+          description: no such list to unsave post from (trying to unsave a post from
+            a list that not exists)
+        "406":
+          description: the post (with entered id) already isn't saved in this list
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Unsave Post
+      tags:
+      - posts
+  /v1/register:
+    post:
+      consumes:
+      - application/json
+      description: Register (sign up) new user
+      parameters:
+      - description: User registration data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.LoginSuccessfulData'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: validation error
+        "409":
+          description: username/email already exists
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      summary: Register
+      tags:
+      - auth
+  /v1/renew-tokens:
+    get:
+      description: Get new access token (and a new refresh_token cookie will be set)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.Token'
+                details:
+                  type: object
+              type: object
+        "401":
+          description: invalid token | expired token | blacklisted token | not providing
+            'refresh_token' cookie
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: RenewTokens
+      tags:
+      - auth
+  /v1/tags:
+    post:
+      consumes:
+      - application/json
+      description: Create some tags
+      parameters:
+      - description: Array of valid tag names
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateTagsRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.TagDetails'
+                  type: array
+                details:
+                  type: object
+              type: object
+        "400":
+          description: validation error
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Create Tags
+      tags:
+      - tags
+  /v1/tags/{id}:
+    get:
+      description: Get a tag by unique id
+      parameters:
+      - description: Unique Tag ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.TagDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter
+        "404":
+          description: tag not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Tag By ID
+      tags:
+      - tags
+  /v1/tags/{id}/posts:
+    get:
+      description: Get a list of tag's posts with pagination
+      parameters:
+      - description: Unique Tag ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_PostsList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.PostBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any post for this tag
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Tag's Posts
+      tags:
+      - tags
+  /v1/tags/name/{name}:
+    get:
+      description: Get a tag by unique tag-name
+      parameters:
+      - description: Unique Tag Name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.TagDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter
+        "404":
+          description: tag not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get Tag By Name
+      tags:
+      - tags
+  /v1/users:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user (**only admin access**)
+      parameters:
+      - description: Data to create new user
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: validation error
+        "409":
+          description: username/email already exists
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Create User
+      tags:
+      - users
+  /v1/users/{id}:
+    delete:
+      description: Delete a user (**only admin access**)
+      parameters:
+      - description: Unique User ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "404":
+          description: user not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Delete User
+      tags:
+      - users
+    get:
+      description: Get a user by unique id
+      parameters:
+      - description: Unique User ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter
+        "404":
+          description: user not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User By ID
+      tags:
+      - users
+  /v1/users/{id}/all-lists:
+    get:
+      description: Get a list of user's all-lists with pagination
+      parameters:
+      - description: Unique User ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_ListsList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.ListBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any saved or created list for this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User's AllLists
+      tags:
+      - users
+  /v1/users/{id}/bio:
+    patch:
+      consumes:
+      - application/json
+      description: Update user's bio
+      parameters:
+      - description: Unique User ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: new bio to update User.Bio
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateBioRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: user not found
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Updata User.Bio
+      tags:
+      - users
+  /v1/users/{id}/comments:
+    get:
+      description: Get a list of user's comments with pagination
+      parameters:
+      - description: Unique User ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_CommentList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.CommentDetails'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any comment for this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User's Comments
+      tags:
+      - users
+  /v1/users/{id}/email:
+    patch:
+      consumes:
+      - application/json
+      description: Update user's email
+      parameters:
+      - description: Unique User ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: new email address to update User.Email
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateEmailRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: user not found
+        "409":
+          description: email already exists
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Updata User.Email
+      tags:
+      - users
+  /v1/users/{id}/enabled:
+    patch:
+      consumes:
+      - application/json
+      description: Update user's enablement (*activation* or *deactivation*) (**only
+        admin access**)
+      parameters:
+      - description: Unique User ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: new enabled value to update User.Enabled
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateEnabledRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: user not found
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Updata User.Enabled
+      tags:
+      - users
+  /v1/users/{id}/follow:
+    post:
+      description: Follow a user
+      parameters:
+      - description: Unique User ID to Follow
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "406":
+          description: no such user to follow (trying to follow a user that not exists)
+            | the target user is already followed
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Follow
+      tags:
+      - users
+  /v1/users/{id}/followers:
+    get:
+      description: Get a list of user's followers with pagination
+      parameters:
+      - description: Unique User ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_UsersList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any follower for this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User's Followers
+      tags:
+      - users
+  /v1/users/{id}/followings:
+    get:
+      description: Get a list of user's followings with pagination
+      parameters:
+      - description: Unique User ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_UsersList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any following for this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User's Followings
+      tags:
+      - users
+  /v1/users/{id}/likes:
+    get:
+      description: Get a list of user's likes with pagination
+      parameters:
+      - description: Unique User ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_PostsList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.PostBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any liked post for this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User's Likes
+      tags:
+      - users
+  /v1/users/{id}/links:
+    get:
+      description: Get a list of user's links with pagination
+      parameters:
+      - description: Unique User ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_LinksList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.LinkDetails'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any link for this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User's Links
+      tags:
+      - users
+  /v1/users/{id}/owned-lists:
+    get:
+      description: Get a list of user's owned-lists with pagination
+      parameters:
+      - description: Unique User ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_ListsList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.ListBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any created-list for this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User's OwnedLists
+      tags:
+      - users
+  /v1/users/{id}/password:
+    patch:
+      consumes:
+      - application/json
+      description: Update user's password
+      parameters:
+      - description: Unique User ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: old, new, and confirm password to update User.Password
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdatePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: user not found
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Updata User.Password
+      tags:
+      - users
+  /v1/users/{id}/posts:
+    get:
+      description: Get a list of user's posts with pagination
+      parameters:
+      - description: Unique User ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_PostsList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.PostBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any post for this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User's Posts
+      tags:
+      - users
+  /v1/users/{id}/remove-follower:
+    delete:
+      description: Remove a follower
+      parameters:
+      - description: Unique User (Follower) ID to Remove from followers
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "406":
+          description: no such user to remove from followers (trying to remove a user
+            that not exists) | the target user already is not followed current user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Remove Follower
+      tags:
+      - users
+  /v1/users/{id}/saved-lists:
+    get:
+      description: Get a list of user's saved-lists with pagination
+      parameters:
+      - description: Unique User ID to use as FK
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - default: 1
+        description: 'Page Number (default: 1)'
+        in: query
+        minimum: 1
+        name: page
+        type: integer
+      - default: 10
+        description: 'Items per Page (default: 10)'
+        in: query
+        maximum: 100
+        minimum: 1
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  allOf:
+                  - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_generics.PagedList-github_com_hamidgh01_Go-Blog-API_internal_http_dto_ListsList'
+                  - properties:
+                      items:
+                        items:
+                          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.ListBrief'
+                        type: array
+                    type: object
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter | invalid query parameters (for 'size'
+            or 'page')
+        "404":
+          description: there's no any saved-list for this user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User's SavedLists
+      tags:
+      - users
+  /v1/users/{id}/unfollow:
+    delete:
+      description: Unfollow a following
+      parameters:
+      - description: Unique User ID to Unfollow
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: invalid path parameter
+        "406":
+          description: no such user to unfollow (trying to unfollow a user that not
+            exists) | the target user already is not followed current user
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Unfollow
+      tags:
+      - users
+  /v1/users/{id}/username:
+    patch:
+      consumes:
+      - application/json
+      description: Update user's username
+      parameters:
+      - description: Unique User ID
+        in: path
+        minimum: 1
+        name: id
+        required: true
+        type: integer
+      - description: new username value to update User.Username
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UpdateUsernameRequest'
+      produces:
+      - application/json
+      responses:
+        "202":
+          description: Success
+        "400":
+          description: validation error | invalid path parameter
+        "404":
+          description: user not found
+        "409":
+          description: username already exists
+        "422":
+          description: invalid json format or json fields with invalid value type
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Updata User.Username
+      tags:
+      - users
+  /v1/users/email/{email}:
+    get:
+      description: Get a user by email
+      parameters:
+      - description: Unique User Email
+        in: path
+        name: email
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter
+        "404":
+          description: user not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User By unique Email
+      tags:
+      - users
+  /v1/users/exists/email:
+    get:
+      description: Check an email is registered before or not
+      parameters:
+      - description: a valid email address
+        in: query
+        name: q
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: invalid query parameter
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Check Email Exists
+      tags:
+      - users
+  /v1/users/exists/username:
+    get:
+      description: Check a username is taken before or not
+      parameters:
+      - description: a valid username
+        in: query
+        name: q
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: invalid query parameter
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Check Username Exists
+      tags:
+      - users
+  /v1/users/username/{username}:
+    get:
+      description: Get a user by unique username
+      parameters:
+      - description: Unique User Username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_helpers.standardResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_hamidgh01_Go-Blog-API_internal_http_dto.UserDetails'
+                details:
+                  type: object
+              type: object
+        "400":
+          description: invalid path parameter
+        "404":
+          description: user not found
+        "500":
+          description: internal server error
+      security:
+      - BearerAuth: []
+      summary: Get User By Username
+      tags:
+      - users
+securityDefinitions:
+  BearerAuth:
+    description: 'Type "Bearer" followed by a space and JWT token: "Bearer eyJhbGciOiJIUzI1Ni..."'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
+tags:
+- name: auth
+- name: users
+- name: links
+- name: posts
+- name: tags
+- name: comments
+- name: lists

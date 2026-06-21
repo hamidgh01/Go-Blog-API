@@ -17,10 +17,12 @@ func NewRouter(r *gin.RouterGroup, deps *DependencyContainer) *Router {
 }
 
 func (r *Router) RegisterRoutes() {
-	r.router.GET("/", index)
-	r.router.GET("/ping", ping)
+	v1 := r.router.Group("/v1")
 
-	auth := r.router.Group("")
+	v1.GET("/", index)
+	v1.GET("/ping", ping)
+
+	auth := v1.Group("")
 	{
 		auth.POST("/register", r.dependencies.AuthHandler.Register)
 		auth.POST("/login", r.dependencies.AuthHandler.Login)
@@ -28,7 +30,7 @@ func (r *Router) RegisterRoutes() {
 		auth.GET("/renew-tokens", r.dependencies.AuthMiddleware.Authenticate(), r.dependencies.AuthHandler.RenewTokens)
 	}
 
-	users := r.router.Group("/users")
+	users := v1.Group("/users")
 	users.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		users.POST("", r.dependencies.UserHandler.Create)
@@ -41,8 +43,8 @@ func (r *Router) RegisterRoutes() {
 		users.DELETE("/:id", r.dependencies.UserHandler.Delete)
 		// users.GET("") // list (needs filter for pagination)
 		users.GET("/:id", r.dependencies.UserHandler.GetByID)
-		users.GET("/username=:username", r.dependencies.UserHandler.GetByUsername) // ToDo: check and standardize this
-		users.GET("/email=:email", r.dependencies.UserHandler.GetByEmail)          // ToDo: check and standardize this
+		users.GET("/username/:username", r.dependencies.UserHandler.GetByUsername)
+		users.GET("/email/:email", r.dependencies.UserHandler.GetByEmail)
 		users.GET("/exists/username", r.dependencies.UserHandler.CheckUsernameExists)
 		users.GET("/exists/email", r.dependencies.UserHandler.CheckEmailExists)
 
@@ -63,17 +65,16 @@ func (r *Router) RegisterRoutes() {
 		users.GET("/:id/links", r.dependencies.UserHandler.GetLinks)
 	}
 
-	links := r.router.Group("/links")
+	links := v1.Group("/links")
 	links.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		links.POST("", r.dependencies.LinkHandler.Create)
 		links.PUT("/:id", r.dependencies.LinkHandler.Update)
 		links.DELETE("/:id", r.dependencies.LinkHandler.Delete)
 		links.GET("/:id", r.dependencies.LinkHandler.GetByID)
-		// links.GET("", r.dependencies.LinkHandler.GetList)
 	}
 
-	posts := r.router.Group("/posts")
+	posts := v1.Group("/posts")
 	posts.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		posts.POST("", r.dependencies.PostHandler.Create)
@@ -104,19 +105,19 @@ func (r *Router) RegisterRoutes() {
 		posts.GET("/:id/lists", r.dependencies.PostHandler.GetLists)
 	}
 
-	tags := r.router.Group("/tags")
+	tags := v1.Group("/tags")
 	tags.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		tags.POST("", r.dependencies.TagHandler.Create)
 		tags.GET("/:id", r.dependencies.TagHandler.GetByID)
-		tags.GET("/name=:name", r.dependencies.TagHandler.GetByName) // ToDo: check and standardize this
+		tags.GET("/name/:name", r.dependencies.TagHandler.GetByName)
 		// tags.GET("", r.dependencies.TagHandler.GetList)
 
 		// outer sources (related to Tag):
 		tags.GET("/:id/posts", r.dependencies.TagHandler.GetPosts)
 	}
 
-	comments := r.router.Group("/comments")
+	comments := v1.Group("/comments")
 	comments.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		comments.POST("", r.dependencies.CommentHandler.Create)
@@ -132,7 +133,7 @@ func (r *Router) RegisterRoutes() {
 		comments.GET("/:id/replies", r.dependencies.CommentHandler.GetReplies)
 	}
 
-	lists := r.router.Group("/lists")
+	lists := v1.Group("/lists")
 	lists.Use(r.dependencies.AuthMiddleware.Authenticate())
 	{
 		lists.POST("", r.dependencies.ListHandler.Create)
