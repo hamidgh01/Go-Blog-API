@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
+	d "github.com/hamidgh01/Go-Blog-API/internal/domain"
 	e "github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
 )
@@ -99,4 +100,26 @@ func getOwnerID(
 	}
 
 	return ownerID, nil
+}
+
+func getListOfOuterResourceByFK[TEntity e.TDBEntities, TOutputList generics.OutputListTypes](
+	ctx context.Context,
+	fk uint64,
+	page *d.PaginationQueryParams,
+	serviceName string,
+	getListOfOuterResourceByFkRepo func(
+		ctx context.Context, fk uint64, page *d.PaginationQueryParams,
+	) (*d.PagedList[TEntity], error),
+	toObjListDtoFunc func([]*TEntity) TOutputList,
+
+) (*generics.PagedList[TOutputList], *service_errors.ServiceError) {
+
+	pagedObjectList, err := getListOfOuterResourceByFkRepo(ctx, fk, page)
+	if err != nil {
+		return nil, service_errors.MapDBErrToServiceErr(
+			err, fmt.Sprintf("%s (id=%d)", serviceName, fk),
+		)
+	}
+
+	return generics.ToPagedList(pagedObjectList, toObjListDtoFunc), nil
 }

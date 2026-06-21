@@ -108,29 +108,38 @@ func (p *PostService) GetByID(
 func (p *PostService) GetComments(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.CommentList], *service_errors.ServiceError) {
-	// implement later
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get comments of post", p.repo.GetComments, dto.ToCommentList,
+	)
 }
 
 func (p *PostService) GetLikes(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
-	// implement later
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get likes of post", p.repo.GetLikes, dto.ToUsersList,
+	)
 }
 
 func (p *PostService) GetTags(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.TagsList], *service_errors.ServiceError) {
-	// implement later
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get tags of post", p.repo.GetTags, dto.ToTagsList,
+	)
 }
 
 func (p *PostService) GetLists(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
-	// implement later
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx,
+		fk,
+		page,
+		"get lists that saved this post",
+		p.repo.GetListsThatSavedThisPost,
+		dto.ToListsList,
+	)
 }
 
 // -----------------------------------------------------------------------------

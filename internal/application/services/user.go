@@ -199,53 +199,71 @@ func (u *UserService) GetByEmail(
 func (u *UserService) GetPosts(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.PostsList], *service_errors.ServiceError) {
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get posts of user", u.repo.GetPosts, dto.ToPostsList,
+	)
 }
 
 func (u *UserService) GetOwnedLists(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get owned-lists of user", u.repo.GetOwnedLists, dto.ToListsList,
+	)
 }
 
 func (u *UserService) GetSavedLists(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get saved-lists of user", u.repo.GetSavedLists, dto.ToListsList,
+	)
 }
 
 func (u *UserService) GetAllLists(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get all-lists of user", u.repo.GetAllLists, dto.ToListsList,
+	)
 }
 
 func (u *UserService) GetComments(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.CommentList], *service_errors.ServiceError) {
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get comments of user", u.repo.GetComments, dto.ToCommentList,
+	)
 }
 
 func (u *UserService) GetLikes(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.PostsList], *service_errors.ServiceError) {
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get likes of user", u.repo.GetLikes, dto.ToPostsList,
+	)
 }
 
 func (u *UserService) GetFollowers(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get followers of user", u.repo.GetFollowers, dto.ToUsersList,
+	)
 }
 
 func (u *UserService) GetFollowings(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get followings of user", u.repo.GetFollowings, dto.ToUsersList,
+	)
 }
 
 func (u *UserService) GetLinks(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.LinksList], *service_errors.ServiceError) {
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get links of user", u.repo.GetLinks, dto.ToLinksList,
+	)
 }

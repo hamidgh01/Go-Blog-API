@@ -91,15 +91,17 @@ func (l *ListService) GetByID(
 func (l *ListService) GetSavedPosts(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.PostsList], *service_errors.ServiceError) {
-	// implement later
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get saved posts of this list", l.repo.GetSavedPosts, dto.ToPostsList,
+	)
 }
 
 func (l *ListService) GetUsersWhoSaved(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.UsersList], *service_errors.ServiceError) {
-	// implement later
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get users who saved this list", l.repo.GetUsersWhoSaved, dto.ToUsersList,
+	)
 }
 
 // -----------------------------------------------------------------------------

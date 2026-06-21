@@ -88,6 +88,7 @@ func (t *TagService) GetByName(
 func (t *TagService) GetPosts(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.PostsList], *service_errors.ServiceError) {
-	// implement later
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get posts of tag", t.repo.GetPosts, dto.ToPostsList,
+	)
 }

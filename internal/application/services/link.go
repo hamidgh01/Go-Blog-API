@@ -40,8 +40,6 @@ func (l *LinkService) Delete(ctx context.Context, pk uint64) *service_errors.Ser
 	return delete(ctx, pk, "link", l.repo.Delete)
 }
 
-// func (u *LinkService) GetList() {}
-
 func (l *LinkService) GetByID(
 	ctx context.Context, pk uint64,
 ) (*dto.LinkDetails, *service_errors.ServiceError) {

@@ -75,8 +75,9 @@ func (c *CommentService) GetByID(
 func (c *CommentService) GetReplies(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.CommentList], *service_errors.ServiceError) {
-	// implement later
-	return nil, nil
+	return getListOfOuterResourceByFK(
+		ctx, fk, page, "get replies of comment", c.repo.GetReplies, dto.ToCommentList,
+	)
 }
 
 // -----------------------------------------------------------------------------
