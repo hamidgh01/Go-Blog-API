@@ -43,7 +43,7 @@ func NewUpdateListPrivacyRequest() *UpdateListPrivacyRequest {
 type ListBrief struct {
 	ID         uint64     `json:"id"`
 	Title      string     `json:"title"`
-	IsPrivate  bool       `json:"is_private,omitempty"`
+	IsPrivate  bool       `json:"is_private"`
 	CreatedAt  time.Time  `json:"created_at"`
 	ModifiedAt time.Time  `json:"modified_at,omitzero"`
 	User       *UserBrief `json:"user"`

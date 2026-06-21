@@ -1,10 +1,10 @@
 package helpers
 
 type standardResponse struct {
-	Success      bool   `json:"success"` // can be ... or ...
-	Message      string `json:"message"`
-	Data         any    `json:"data,omitempty"`    // presents only if `Success = true`
-	ErrorDetails any    `json:"details,omitempty"` // presents only if `Success = false`
+	Success      bool   `json:"success"`           // `true` for successful response and `false` for error response
+	Message      string `json:"message"`           // a message that gives more information about response
+	Data         any    `json:"data,omitempty"`    // presents only for successful response (`success=true`)
+	ErrorDetails any    `json:"details,omitempty"` // presents only for error response (`success=false`)
 }
 
 func GenerateSuccessfulResponse(message string, data any) *standardResponse {

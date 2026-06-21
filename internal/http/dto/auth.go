@@ -10,7 +10,7 @@ type LoginRequest struct {
 func NewLoginRequest() *LoginRequest { return new(LoginRequest) }
 
 type Token struct {
-	AccessToken  string `json:"access_token"`
+	AccessToken  string `json:"access_token" example:"eyJhbGciOiJIUzI1NiIsI..."`
 	ExpirationTS int64  `json:"expiration_timestamp"`
 }
 

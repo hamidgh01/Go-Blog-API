@@ -15,6 +15,11 @@ func (p *PaginationQueryParams) GetSize() int {
 	if p.Size <= 0 {
 		p.Size = 10
 	}
+
+	if p.Size >= 100 {
+		p.Size = 100
+	}
+
 	return p.Size
 }
 
