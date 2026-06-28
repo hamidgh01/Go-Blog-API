@@ -21,22 +21,25 @@ var migrateCmd = &cobra.Command{
 }
 
 var migrateUpCmd = &cobra.Command{
-	Use:   "up",
-	Short: "apply all or N up-migrations",
-	Run:   migrateUp,
+	Use:     "up",
+	Short:   "apply all or N up-migrations",
+	Example: "  go run ./cmd migrate up  # apply all up migrations \n  go run ./cmd migrate up --steps 1  # apply 1 up migration",
+	Run:     migrateUp,
 }
 
 var migrateDownCmd = &cobra.Command{
-	Use:   "down",
-	Short: "apply N down-migrations",
-	Run:   migrateDown,
+	Use:     "down",
+	Short:   "apply N down-migrations",
+	Example: "  go run ./cmd migrate down --steps 1  # apply 1 down migration \n  go run ./cmd migrate down --steps 2  # apply 2 down migrations",
+	Run:     migrateDown,
 }
 
 var migrateForceCmd = &cobra.Command{
 	Use:   "force [V]",
 	Short: "set database migration version to V (V is a positive integer)",
-	Args: cobra.ExactArgs(1),
-	Run:  forceMigrationVersion,
+	Example: "  go run ./cmd force 7  # set migration version to 7",
+	Args:  cobra.ExactArgs(1),
+	Run:   forceMigrationVersion,
 }
 
 var migrateInstance *migrate.Migrate

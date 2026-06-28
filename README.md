@@ -10,7 +10,7 @@ Go powered (clean architecture inspired) RESTful Blog API with crud operations, 
 
 - JWT based authentication (implemented [here](./internal/infra//security/jwt/) - used in [AuthMiddleware](./internal/http/middlewares/auth.go) and [AuthService](./internal/application/services/auth.go))
 
-- hybrid RBAC-Ownership access control system (implemented in [AuthMiddleware](./internal/http/middlewares/auth.go) and used in [routes](./internal/http/router.go)). <br>
+- hybrid RBAC-Ownership access control system (implemented in [AccessControlMiddleware](./internal/http/middlewares/access.go) and used in [routes](./internal/http/router.go)). <br>
 brief explanation:
   * **Admin** or **Superuser**: user with all accessibility and permissions (to manipulate everything)
   * **Owner**: only owner of each resource (posts, lists, comments, etc.) can manipulate (update or delete) that resource.
@@ -83,7 +83,7 @@ Go-Blog-API
 │   │   ├── dto/            # DTOs to handle data flow (request validation & response construction)
 │   │   ├── generics/       # generic type interfaces used in GENERIC Handlers and services
 │   │   ├── handlers/       # endpoint handlers (bind requests, call services, serialize responses)
-│   │   ├── helpers/        # helpers for generating standard responses, ..., etc.
+│   │   ├── helpers/        # helpers for generating standard responses, etc.
 │   │   ├── middlewares/    # api endpoint middlewares
 │   │   ├── validations/    # validation error handling + custom defined validations
 │   │   ├── dependencies.go # DependencyContainer includes all api endpoint dependencies (all
@@ -192,12 +192,12 @@ here's a brief description for all of the project's CLI commands
     go run ./cmd force 4 # set migration version to 4
     ```
 
-- `create-superuser`: start an interactive CLI process to create a superuser (a user with all accessibility and permissions)
+- `create-superuser`: start an interactive prompt to create a superuser (a user with all accessibility and permissions)
   ```sh
   go run ./cmd create-superuser
   ```
 
-- `delete-superuser`: start an interactive CLI process to delete a superuser
+- `delete-superuser`: start an interactive prompt to delete a superuser
   ```sh
   go run ./cmd delete-superuser
   ```
@@ -207,13 +207,13 @@ here's a brief description for all of the project's CLI commands
 ## Setup and Test
 
 - **1. Clone the repository:**
-  ```bash
+  ```sh
   git clone https://github.com/hamidgh01/Go-Blog-API.git
   ```
   or [download the zip file](https://github.com/hamidgh01/Go-Blog-API/archive/refs/heads/main.zip), and unzip
 
 - **2. Install dependencies:**
-  ```bash
+  ```sh
   cd Go-Blog-API
   go mod tidy
   ```

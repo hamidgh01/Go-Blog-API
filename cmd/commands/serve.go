@@ -14,9 +14,7 @@ import (
 
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "start api server",
-	// Long:    "...",
-	// Example: "...",
+	Short: "init and run the api server",
 	Run: func(cmd *cobra.Command, args []string) {
 		serve()
 	},
@@ -39,7 +37,8 @@ func serve() {
 	// establish redis connection
 	redisClient, err := redis.InitRedis(&cfg.Redis)
 	if err != nil {
-		log.Fatal("failed to establish redis connection. reason: ", err)
+		log.Println("failed to establish redis connection. reason:", err) // log.Fatal
+		return
 	}
 	defer redisClient.Close()
 
@@ -49,6 +48,7 @@ func serve() {
 
 	// init and run server
 	if err := http.InitServerAndRun(cfg, repositoryInjector, redisClient); err != nil {
-		log.Fatalf("failed to init and run server. reason: %v", err)
+		log.Println("failed to init and run server. reason:", err) // log.Fatal
+		return
 	}
 }

@@ -5,6 +5,7 @@ import "regexp"
 // NOTE: `email` field in User must be a valid email-address -> handle it using gin-binding-validator
 var (
 	usernamePattern = regexp.MustCompile("^[a-z0-9_]{3,64}$")
+	emailPattern    = regexp.MustCompile(`^[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+$`)
 	passwordPattern = regexp.MustCompile("^[A-Za-z0-9!@#$%&*]{8,64}$")
 	tagPattern      = regexp.MustCompile("^[ا-یa-z0-9_]{1,32}$")
 
@@ -16,6 +17,10 @@ var (
 
 func CheckUsernamePattern(username string) bool {
 	return usernamePattern.MatchString(username)
+}
+
+func CheckEmailPattern(email string) bool {
+	return emailPattern.MatchString(email)
 }
 
 func CheckPasswordPattern(password string) bool {

@@ -8,7 +8,7 @@ var rootCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(serveCmd, migrateCmd)
+	rootCmd.AddCommand(serveCmd, migrateCmd, createSuperuserCmd, deleteSuperuserCmd)
 
 	migrateCmd.AddCommand(migrateUpCmd, migrateDownCmd, migrateForceCmd)
 

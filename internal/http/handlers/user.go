@@ -188,7 +188,7 @@ func (h *UserHandler) CheckUsernameExists(c *gin.Context) {
 // @Security 	BearerAuth
 func (h *UserHandler) CheckEmailExists(c *gin.Context) {
 	email := c.Query("q")
-	if email == "" { // check email pattern
+	if email == "" || !domain.CheckEmailPattern(email) {
 		c.AbortWithStatusJSON(
 			http.StatusBadRequest,
 			helpers.GenerateErrorResponse(
@@ -302,7 +302,7 @@ func (h *UserHandler) GetByUsername(c *gin.Context) {
 // @Security 	BearerAuth
 func (h *UserHandler) GetByEmail(c *gin.Context) {
 	email := c.Param("email")
-	if email == "" { // check email
+	if email == "" || !domain.CheckEmailPattern(email) {
 		c.AbortWithStatusJSON(
 			http.StatusBadRequest,
 			helpers.GenerateErrorResponse(
