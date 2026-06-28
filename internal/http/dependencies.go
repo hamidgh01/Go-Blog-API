@@ -1,7 +1,10 @@
 package http
 
 import (
+	"context"
+
 	"github.com/hamidgh01/Go-Blog-API/config"
+	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
 	"github.com/hamidgh01/Go-Blog-API/internal/application/services"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/handlers"
@@ -9,9 +12,16 @@ import (
 	redisInfra "github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/hashing"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/jwt"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 
+	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
 )
+
+type accessControlMiddlewareSignature func(
+	accessibility constants.EndpointAccessibility,
+	getResourceOwnerIdService func(ctx context.Context, pk uint64) (uint64, *service_errors.ServiceError),
+) gin.HandlerFunc
 
 // DependencyContainer holds all application dependencies
 type DependencyContainer struct {
@@ -63,7 +73,8 @@ type DependencyContainer struct {
 	PostTagsHandler *handlers.PostTagsHandler
 
 	// Middlewares
-	AuthMiddleware *middlewares.AuthenticationMiddleware
+	AuthMiddleware          *middlewares.AuthenticationMiddleware
+	AccessControlMiddleware accessControlMiddlewareSignature
 }
 
 // NewDependencyContainer creates and wires all dependencies
@@ -165,6 +176,7 @@ func NewDependencyContainer(
 		SaveListHandler: saveListHandler,
 		PostTagsHandler: postTagsHandler,
 
-		AuthMiddleware: authMiddleware,
+		AuthMiddleware:          authMiddleware,
+		AccessControlMiddleware: middlewares.AccessControlMiddleware,
 	}
 }

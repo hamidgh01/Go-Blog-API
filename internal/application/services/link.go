@@ -48,6 +48,8 @@ func (l *LinkService) GetByID(
 
 // -----------------------------------------------------------------------------
 
-func (l *LinkService) GetOwnerID(ctx context.Context, pk uint64) (uint64, error) {
+func (l *LinkService) GetOwnerID(
+	ctx context.Context, pk uint64,
+) (uint64, *service_errors.ServiceError) {
 	return getOwnerID(ctx, pk, "link", l.repo.GetOwnerID)
 }

@@ -91,7 +91,7 @@ func getOwnerID(
 	pk uint64,
 	objectName string,
 	getOwnerIdRepository func(ctx context.Context, pk uint64) (uint64, error),
-) (uint64, error) {
+) (uint64, *service_errors.ServiceError) {
 	ownerID, err := getOwnerIdRepository(ctx, pk)
 	if err != nil {
 		return 0, service_errors.MapDBErrToServiceErr(

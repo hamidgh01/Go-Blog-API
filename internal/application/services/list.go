@@ -106,6 +106,8 @@ func (l *ListService) GetUsersWhoSaved(
 
 // -----------------------------------------------------------------------------
 
-func (l *ListService) GetOwnerID(ctx context.Context, pk uint64) (uint64, error) {
+func (l *ListService) GetOwnerID(
+	ctx context.Context, pk uint64,
+) (uint64, *service_errors.ServiceError) {
 	return getOwnerID(ctx, pk, "list", l.repo.GetOwnerID)
 }

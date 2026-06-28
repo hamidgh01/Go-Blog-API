@@ -82,6 +82,8 @@ func (c *CommentService) GetReplies(
 
 // -----------------------------------------------------------------------------
 
-func (c *CommentService) GetOwnerID(ctx context.Context, pk uint64) (uint64, error) {
+func (c *CommentService) GetOwnerID(
+	ctx context.Context, pk uint64,
+) (uint64, *service_errors.ServiceError) {
 	return getOwnerID(ctx, pk, "comment", c.repo.GetOwnerID)
 }
