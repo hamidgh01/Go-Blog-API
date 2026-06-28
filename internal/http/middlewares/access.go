@@ -18,8 +18,8 @@ func AccessControlMiddleware(
 	getResourceOwnerIdService func(ctx context.Context, pk uint64) (uint64, *service_errors.ServiceError),
 ) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userID := c.GetUint64("currentUserID")
-		isSuperuser := c.GetString("currentUserIsSuperuser") // it would be 'f' (as false) or 't' (as true)
+		userID := c.GetUint64(constants.CurrentUserID)
+		isSuperuser := c.GetString(constants.CurrentUserIsSuperuser) // it would be 'f' (as false) or 't' (as true)
 
 		switch accessibility {
 

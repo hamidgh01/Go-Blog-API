@@ -7,6 +7,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 )
 
 type SavePostService struct {
@@ -28,7 +29,7 @@ func (sp *SavePostService) Save(
 		return service_errors.MapDBErrToServiceErr(err, "get list owner id")
 	}
 
-	currentUserID := ctx.Value("currentUserID").(uint64)
+	currentUserID := ctx.Value(constants.CurrentUserID).(uint64)
 	if currentUserID != listOwnerID {
 		return service_errors.PermissionDenied
 	}
@@ -49,7 +50,7 @@ func (sp *SavePostService) Unsave(
 		return service_errors.MapDBErrToServiceErr(err, "get list owner id")
 	}
 
-	currentUserID := ctx.Value("currentUserID").(uint64)
+	currentUserID := ctx.Value(constants.CurrentUserID).(uint64)
 	if currentUserID != listOwnerID {
 		return service_errors.PermissionDenied
 	}

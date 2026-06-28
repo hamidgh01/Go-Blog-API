@@ -6,6 +6,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 )
 
 type SaveListService struct {
@@ -17,7 +18,7 @@ func NewSaveListService(r repository.SaveListRepository) *SaveListService {
 }
 
 func (sl *SaveListService) Save(ctx context.Context, targetListID uint64) *service_errors.ServiceError {
-	currentUserID := ctx.Value("currentUserID").(uint64)
+	currentUserID := ctx.Value(constants.CurrentUserID).(uint64)
 	entity := &entity.UsersSavedListsM2M{UserID: currentUserID, ListID: targetListID}
 
 	// ToDo: 2 condition to check:
@@ -28,7 +29,7 @@ func (sl *SaveListService) Save(ctx context.Context, targetListID uint64) *servi
 }
 
 func (sl *SaveListService) Unsave(ctx context.Context, targetListID uint64) *service_errors.ServiceError {
-	currentUserID := ctx.Value("currentUserID").(uint64)
+	currentUserID := ctx.Value(constants.CurrentUserID).(uint64)
 	entity := &entity.UsersSavedListsM2M{UserID: currentUserID, ListID: targetListID}
 
 	return createOrDeleteM2MRelationship(ctx, "unsave a list", entity, sl.repo.Delete)

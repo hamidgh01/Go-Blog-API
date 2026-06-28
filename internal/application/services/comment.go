@@ -10,6 +10,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 )
 
 type CommentService struct {
@@ -24,7 +25,7 @@ func (c *CommentService) Create(
 	ctx context.Context, data *dto.CreateCommentRequest,
 ) (*dto.CommentDetails, *service_errors.ServiceError) {
 	//
-	userID := ctx.Value("currentUserID").(uint64)
+	userID := ctx.Value(constants.CurrentUserID).(uint64)
 	comment := &e.Comment{Content: data.Content, UserID: userID}
 	switch data.ParentType {
 	case "post":
@@ -34,7 +35,7 @@ func (c *CommentService) Create(
 	}
 
 	//
-	username := ctx.Value("currentUserUsername").(string)
+	username := ctx.Value(constants.CurrentUserUsername).(string)
 	comment.User = &e.User{ID: userID, Username: username}
 
 	//

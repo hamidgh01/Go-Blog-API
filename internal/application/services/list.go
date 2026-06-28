@@ -10,6 +10,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 )
 
 type ListService struct {
@@ -23,7 +24,7 @@ func NewListService(r repository.ListRepository) *ListService {
 func (l *ListService) Create(
 	ctx context.Context, data *dto.CreateListRequest,
 ) (*dto.ListDetails, *service_errors.ServiceError) {
-	userID := ctx.Value("currentUserID").(uint64)
+	userID := ctx.Value(constants.CurrentUserID).(uint64)
 	list := &e.List{Title: data.Title, UserID: userID}
 
 	if data.Description == "" {
@@ -38,7 +39,7 @@ func (l *ListService) Create(
 		list.IsPrivate = *data.IsPrivate
 	}
 
-	username := ctx.Value("currentUserUsername").(string)
+	username := ctx.Value(constants.CurrentUserUsername).(string)
 	list.User = &e.User{ID: userID, Username: username}
 
 	return create(ctx, "list", list, l.repo.Create, dto.ToListDetails)

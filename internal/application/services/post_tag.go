@@ -7,6 +7,7 @@ import (
 	e "github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 )
 
 type PostTagsService struct {
@@ -28,7 +29,7 @@ func (pt *PostTagsService) Associate(
 		return service_errors.MapDBErrToServiceErr(err, "get post owner id")
 	}
 
-	currentUserID := ctx.Value("currentUserID").(uint64)
+	currentUserID := ctx.Value(constants.CurrentUserID).(uint64)
 	if currentUserID != postOwnerID {
 		return service_errors.PermissionDenied
 	}
@@ -57,7 +58,7 @@ func (pt *PostTagsService) Dissociate(
 		return service_errors.MapDBErrToServiceErr(err, "get post owner id")
 	}
 
-	currentUserID := ctx.Value("currentUserID").(uint64)
+	currentUserID := ctx.Value(constants.CurrentUserID).(uint64)
 	if currentUserID != postOwnerID {
 		return service_errors.PermissionDenied
 	}

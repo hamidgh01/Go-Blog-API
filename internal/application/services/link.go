@@ -7,6 +7,7 @@ import (
 	e "github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 )
 
 type LinkService struct {
@@ -20,10 +21,10 @@ func NewLinkService(r repository.LinkRepository) *LinkService {
 func (l *LinkService) Create(
 	ctx context.Context, data *dto.CreateLinkRequest,
 ) (*dto.LinkDetails, *service_errors.ServiceError) {
-	userID := ctx.Value("currentUserID").(uint64)
+	userID := ctx.Value(constants.CurrentUserID).(uint64)
 	link := &e.Link{Title: data.Title, Url: data.Url, UserID: userID}
 
-	username := ctx.Value("currentUserUsername").(string)
+	username := ctx.Value(constants.CurrentUserUsername).(string)
 	link.User = &e.User{ID: userID, Username: username}
 
 	return create(ctx, "link", link, l.repo.Create, dto.ToLinkDetails)

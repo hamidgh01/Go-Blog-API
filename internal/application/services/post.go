@@ -10,6 +10,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 )
 
 type PostService struct {
@@ -24,7 +25,7 @@ func (p *PostService) Create(
 	ctx context.Context, data *dto.CreatePostRequest,
 ) (*dto.PostDetails, *service_errors.ServiceError) {
 	//
-	userID := ctx.Value("currentUserID").(uint64)
+	userID := ctx.Value(constants.CurrentUserID).(uint64)
 	post := &e.Post{Title: data.Title, Status: e.PostStatus(data.Status), UserID: userID}
 
 	if data.Content == "" {
@@ -39,7 +40,7 @@ func (p *PostService) Create(
 		post.IsPrivate = *data.IsPrivate
 	}
 
-	username := ctx.Value("currentUserUsername").(string)
+	username := ctx.Value(constants.CurrentUserUsername).(string)
 	post.User = &e.User{ID: userID, Username: username}
 
 	return create(ctx, "post", post, p.repo.Create, dto.ToPostDetails)

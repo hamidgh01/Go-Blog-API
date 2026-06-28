@@ -6,6 +6,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/entity"
 	"github.com/hamidgh01/Go-Blog-API/internal/domain/repository"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 )
 
 type FollowService struct {
@@ -17,7 +18,7 @@ func NewFollowService(r repository.FollowRepository) *FollowService {
 }
 
 func (f *FollowService) Follow(ctx context.Context, targetUserID uint64) *service_errors.ServiceError {
-	currentUserID := ctx.Value("currentUserID").(uint64)
+	currentUserID := ctx.Value(constants.CurrentUserID).(uint64)
 	entity := &entity.FollowsM2M{FollowedBy: currentUserID, Followed: targetUserID}
 
 	// ToDo: condition to check:
@@ -27,14 +28,14 @@ func (f *FollowService) Follow(ctx context.Context, targetUserID uint64) *servic
 }
 
 func (f *FollowService) UnFollow(ctx context.Context, targetUserID uint64) *service_errors.ServiceError {
-	currentUserID := ctx.Value("currentUserID").(uint64)
+	currentUserID := ctx.Value(constants.CurrentUserID).(uint64)
 	entity := &entity.FollowsM2M{FollowedBy: currentUserID, Followed: targetUserID}
 
 	return createOrDeleteM2MRelationship(ctx, "unfollow a user", entity, f.repo.Delete)
 }
 
 func (f *FollowService) RemoveFollower(ctx context.Context, targetUserID uint64) *service_errors.ServiceError {
-	currentUserID := ctx.Value("currentUserID").(uint64)
+	currentUserID := ctx.Value(constants.CurrentUserID).(uint64)
 	entity := &entity.FollowsM2M{FollowedBy: targetUserID, Followed: currentUserID}
 
 	return createOrDeleteM2MRelationship(ctx, "remove a follower", entity, f.repo.Delete)

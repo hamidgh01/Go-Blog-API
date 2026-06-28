@@ -9,6 +9,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/http/helpers"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/jwt"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 
 	"github.com/gin-gonic/gin"
 )
@@ -80,10 +81,10 @@ func (m *AuthenticationMiddleware) Authenticate() gin.HandlerFunc {
 		}
 
 		// 5. set keys into gin context
-		c.Set("currentUserID", userID)
-		c.Set("currentUserUsername", userInfo.Username)
-		c.Set("currentUserEnabled", true)
-		c.Set("currentUserIsSuperuser", userInfo.IsSuperuser) // it would be 'f' (as false) or 't' (as true)
+		c.Set(constants.CurrentUserID, userID)
+		c.Set(constants.CurrentUserUsername, userInfo.Username)
+		c.Set(constants.CurrentUserEnabled, true)
+		c.Set(constants.CurrentUserIsSuperuser, userInfo.IsSuperuser) // it would be 'f' (as false) or 't' (as true)
 
 		c.Next()
 	}
