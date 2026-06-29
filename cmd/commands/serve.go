@@ -8,6 +8,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/http"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/database"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
+	"github.com/hamidgh01/Go-Blog-API/pkg/logging"
 
 	"github.com/spf13/cobra"
 )
@@ -27,6 +28,9 @@ func serve() {
 		log.Fatal("failed to init configurations. reason:", err)
 	}
 
+	// init logger
+	logging.InitLogger(cfg.Logger)
+
 	// establish database connection
 	db, err := database.InitDB(&cfg.Postgres)
 	if err != nil {
@@ -37,7 +41,7 @@ func serve() {
 	// establish redis connection
 	redisClient, err := redis.InitRedis(&cfg.Redis)
 	if err != nil {
-		log.Println("failed to establish redis connection. reason:", err) // log.Fatal
+		log.Println("failed to establish redis connection. reason:", err)
 		return
 	}
 	defer redisClient.Close()
@@ -48,7 +52,7 @@ func serve() {
 
 	// init and run server
 	if err := http.InitServerAndRun(cfg, repositoryInjector, redisClient); err != nil {
-		log.Println("failed to init and run server. reason:", err) // log.Fatal
+		log.Println("failed to init and run server. reason:", err)
 		return
 	}
 }

@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	Server   ServerConf
+	Logger   LoggerConf
 	Postgres PostgresConf
 	Jwt      JwtConf
 	Redis    RedisConf
@@ -16,6 +17,11 @@ type Config struct {
 type ServerConf struct {
 	Host string
 	Port int
+}
+
+type LoggerConf struct {
+	Level      string
+	OutputFile string
 }
 
 type PostgresConf struct {
@@ -45,9 +51,8 @@ type JwtConf struct {
 	RefreshTokenExpirationDays   int
 }
 
-var cfg *Config
-
 func Load() (*Config, error) {
+	var cfg *Config
 
 	viper.SetConfigFile("./config.yml")
 

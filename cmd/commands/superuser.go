@@ -16,6 +16,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/database/postgres_repository"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/hashing"
+	"github.com/hamidgh01/Go-Blog-API/pkg/logging"
 
 	"github.com/spf13/cobra"
 )
@@ -35,6 +36,8 @@ func createSuperuser() {
 		log.Fatal("failed to init configurations. reason:", err)
 	}
 
+	logging.InitLogger(cfg.Logger)
+
 	// establish database connection
 	db, err := database.InitDB(&cfg.Postgres)
 	if err != nil {
@@ -45,8 +48,8 @@ func createSuperuser() {
 	// establish redis connection
 	redisClient, err := redis.InitRedis(&cfg.Redis)
 	if err != nil {
-		db.Close()
-		log.Fatal("failed to establish redis connection. reason: ", err)
+		log.Println("failed to establish redis connection. reason:", err)
+		return
 	}
 	defer redisClient.Close()
 
@@ -227,6 +230,8 @@ func deleteSuperuser() {
 		log.Fatal("failed to init configurations. reason:", err)
 	}
 
+	logging.InitLogger(cfg.Logger)
+
 	// establish database connection
 	db, err := database.InitDB(&cfg.Postgres)
 	if err != nil {
@@ -237,8 +242,8 @@ func deleteSuperuser() {
 	// establish redis connection
 	redisClient, err := redis.InitRedis(&cfg.Redis)
 	if err != nil {
-		db.Close()
-		log.Fatal("failed to establish redis connection. reason: ", err)
+		log.Println("failed to establish redis connection. reason:", err)
+		return
 	}
 	defer redisClient.Close()
 

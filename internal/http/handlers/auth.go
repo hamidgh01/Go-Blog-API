@@ -7,6 +7,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/http/dto"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/helpers"
 	"github.com/hamidgh01/Go-Blog-API/internal/http/validations"
+	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
 
 	"github.com/gin-gonic/gin"
 )
@@ -129,7 +130,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 // @Router 		/v1/renew-tokens [GET]
 // @Security 	BearerAuth
 func (h *AuthHandler) RenewTokens(c *gin.Context) {
-	refreshToken, err := c.Cookie("refresh_token")
+	refreshToken, err := c.Cookie(constants.RefreshTokenCookie)
 	if err != nil {
 		c.AbortWithStatusJSON(
 			http.StatusUnauthorized,
@@ -164,7 +165,7 @@ func (h *AuthHandler) RenewTokens(c *gin.Context) {
 // @Router 		/v1/logout [GET]
 // @Security 	BearerAuth
 func (h *AuthHandler) Logout(c *gin.Context) {
-	refreshToken, err := c.Cookie("refresh_token")
+	refreshToken, err := c.Cookie(constants.RefreshTokenCookie)
 	if err != nil {
 		c.AbortWithStatusJSON(
 			http.StatusUnauthorized,

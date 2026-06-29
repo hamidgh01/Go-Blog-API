@@ -2,6 +2,10 @@ Server:
   host: 127.0.0.1
   port: 8000
 
+Logger:
+  level: info # options: 'debug', 'info', 'warning', 'error', 'fatal' (default: 'info')
+  outputFile: # path to the log file. e.g. `./app.log` (default: os.Stdout (if leave empty))
+
 Postgres:
   host: localhost
   port: 5432

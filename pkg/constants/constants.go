@@ -7,11 +7,16 @@ const (
 	ADMIN_AND_OWNER
 )
 
-type AuthKeys string
-
+// Context Keys
 const (
-	CurrentUserID          AuthKeys = "cuID"
-	CurrentUserUsername    AuthKeys = "cuUsername"
-	CurrentUserEnabled     AuthKeys = "cuEnabled"
-	CurrentUserIsSuperuser AuthKeys = "cuIsSuperuser"
+	CurrentUserID          string = "cuID"
+	CurrentUserUsername    string = "cuUsername"
+	CurrentUserEnabled     string = "cuEnabled"
+	CurrentUserIsSuperuser string = "cuIsSuperuser"
+)
+
+// Http Header Keys
+const (
+	AuthorizationHeader string = "Authorization"
+	RefreshTokenCookie  string = "refresh_token"
 )

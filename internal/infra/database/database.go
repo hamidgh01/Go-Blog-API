@@ -4,10 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/hamidgh01/Go-Blog-API/config"
+	"github.com/hamidgh01/Go-Blog-API/pkg/logging"
 
 	_ "github.com/lib/pq"
 )
@@ -16,6 +16,7 @@ var db *sql.DB
 
 func InitDB(dbConf *config.PostgresConf) (*sql.DB, error) {
 	var err error
+	logger := logging.GetLogger()
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%d",
@@ -42,6 +43,6 @@ func InitDB(dbConf *config.PostgresConf) (*sql.DB, error) {
 	// sqlDB.SetMaxOpenConns(cfg.Postgres.MaxOpenConns)
 	// sqlDB.SetConnMaxLifetime(cfg.Postgres.ConnMaxLifetime * time.Minute)
 
-	log.Println("[INFO] Database connection established successfully.") // log.Info("[INFO] [Data] [Msg]")
+	logger.Info("Database connection established successfully.")
 	return db, nil
 }

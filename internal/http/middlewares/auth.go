@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -10,6 +9,7 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/jwt"
 	"github.com/hamidgh01/Go-Blog-API/pkg/constants"
+	"github.com/hamidgh01/Go-Blog-API/pkg/logging"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,18 +17,19 @@ import (
 type AuthenticationMiddleware struct {
 	jwtMgr        *jwt.JWTManager
 	userInfoCache *redis.UserInfoCache
+	logger        *logging.Logger
 }
 
 func NewAuthenticationMiddleware(
 	j *jwt.JWTManager, uic *redis.UserInfoCache,
 ) *AuthenticationMiddleware {
-	return &AuthenticationMiddleware{jwtMgr: j, userInfoCache: uic}
+	return &AuthenticationMiddleware{jwtMgr: j, userInfoCache: uic, logger: logging.GetLogger()}
 }
 
 func (m *AuthenticationMiddleware) Authenticate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 1. get authorization header
-		authHeader := c.GetHeader("Authorization")
+		authHeader := c.GetHeader(constants.AuthorizationHeader)
 		if authHeader == "" {
 			sendUnauthorizedResponse(c, "missing Authorization header")
 			return
@@ -57,7 +58,7 @@ func (m *AuthenticationMiddleware) Authenticate() gin.HandlerFunc {
 		// 3. fetch essential user info from cache
 		userInfo, redisErr := m.userInfoCache.GetAllInfo(c, claims.GetUserID())
 		if redisErr != nil {
-			fmt.Println(redisErr) // log.Error
+			m.logger.Error(redisErr.Error())
 
 			c.AbortWithStatusJSON(
 				service_errors.InternalServerError.Code(),

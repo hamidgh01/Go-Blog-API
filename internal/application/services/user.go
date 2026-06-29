@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hamidgh01/Go-Blog-API/internal/application/service_errors"
 	d "github.com/hamidgh01/Go-Blog-API/internal/domain"
@@ -12,18 +11,20 @@ import (
 	"github.com/hamidgh01/Go-Blog-API/internal/http/generics"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/redis"
 	"github.com/hamidgh01/Go-Blog-API/internal/infra/security/hashing"
+	"github.com/hamidgh01/Go-Blog-API/pkg/logging"
 )
 
 type UserService struct {
 	repo          repository.UserRepository
 	pswHasher     *hashing.PasswordHasher
 	userInfoCache *redis.UserInfoCache
+	logger        *logging.Logger
 }
 
 func NewUserService(
 	r repository.UserRepository, p *hashing.PasswordHasher, uic *redis.UserInfoCache,
 ) *UserService {
-	return &UserService{repo: r, pswHasher: p, userInfoCache: uic}
+	return &UserService{repo: r, pswHasher: p, userInfoCache: uic, logger: logging.GetLogger()}
 }
 
 func (u *UserService) Create(
@@ -31,7 +32,7 @@ func (u *UserService) Create(
 ) (*dto.UserDetails, *service_errors.ServiceError) {
 	hashedPassword, err := u.pswHasher.Hash(data.Password)
 	if err != nil {
-		fmt.Println("failed to hash password. reason:", err) // log.Error
+		u.logger.Errorf("failed to hash password. reason: %s", err.Error())
 		return nil, service_errors.InternalServerError
 	}
 
@@ -41,10 +42,11 @@ func (u *UserService) Create(
 		return nil, service_errors.MapDBErrToServiceErr(err, "create user")
 	}
 
+	// save user info in cache
 	// NOTE: when a user first created (here by this service) --> superuser=false, enabled=true
 	redisErr := u.userInfoCache.SetAllInfo(ctx, createdUser.ID, createdUser.Username, false, true)
 	if redisErr != nil {
-		fmt.Println(redisErr) // log.Error
+		u.logger.Error(redisErr.Error())
 	}
 
 	return dto.ToUserDetails(createdUser), nil
@@ -60,7 +62,7 @@ func (u *UserService) UpdateUsername(
 
 	redisErr := u.userInfoCache.UpdateUsername(ctx, pk, data.Username)
 	if redisErr != nil {
-		fmt.Println(redisErr) // log.Error
+		u.logger.Error(redisErr.Error())
 	}
 
 	return nil
@@ -100,7 +102,7 @@ func (u *UserService) UpdatePassword(
 
 	newHashedPsw, err := u.pswHasher.Hash(data.Password)
 	if err != nil {
-		fmt.Println("failed to hash password. reason:", err) // log.Error
+		u.logger.Errorf("failed to hash password. reason: %s", err.Error())
 		return service_errors.InternalServerError
 	}
 
@@ -122,7 +124,7 @@ func (u *UserService) UpdateEnabled(
 
 	redisErr := u.userInfoCache.UpdateEnabled(ctx, pk, *data.Enabled)
 	if redisErr != nil {
-		fmt.Println(redisErr) // log.Error
+		u.logger.Error(redisErr.Error())
 	}
 
 	return nil
@@ -136,7 +138,7 @@ func (u *UserService) Delete(ctx context.Context, pk uint64) *service_errors.Ser
 
 	redisErr := u.userInfoCache.DeleteUserInfo(ctx, pk)
 	if redisErr != nil {
-		fmt.Println(redisErr) // log.Error
+		u.logger.Error(redisErr.Error())
 	}
 
 	return nil

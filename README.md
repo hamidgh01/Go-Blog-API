@@ -106,8 +106,10 @@ Go-Blog-API
 │           ├── hashing/    # hashing features to improve security (like: PasswordHasher, etc.)
 │           └── jwt/        # jwt service implementation
 │
-├── pkg/                    # ...
 ├── migrations/             # database migrations (table and column definitions using raw SQL)
+├── pkg/
+│   ├── constants/          # includes commonly used keys as constants
+│   └── logging/            # logger setup
 ├── tests/                  # ...
 ├── .gitignore
 ├── config.sample.yml

@@ -3,10 +3,10 @@ package redis
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/hamidgh01/Go-Blog-API/config"
+	"github.com/hamidgh01/Go-Blog-API/pkg/logging"
 
 	"github.com/redis/go-redis/v9"
 )
@@ -14,6 +14,8 @@ import (
 var client *redis.Client
 
 func InitRedis(cfg *config.RedisConf) (*redis.Client, error) {
+	logger := logging.GetLogger()
+
 	client = redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%d", cfg.Host, cfg.Port),
 		Password: cfg.Password,
@@ -28,6 +30,6 @@ func InitRedis(cfg *config.RedisConf) (*redis.Client, error) {
 		return nil, fmt.Errorf("redis ping failed: %w", err)
 	}
 
-	log.Println("[INFO] Redis connection established successfully.") // log.Info("[INFO] [Data] [Msg]")
+	logger.Info("Redis connection established successfully.")
 	return client, nil
 }
