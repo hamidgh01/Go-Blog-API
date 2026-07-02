@@ -36,6 +36,34 @@ const (
 	`
 
 	getListOwnerIDQuery = "SELECT userID FROM lists WHERE id = $1"
+
+	// get other sources that has FK to `List`
+	countSavedPostsQuery    = "SELECT COUNT(post_id) FROM saved_posts_m2m WHERE list_id = $1"
+	countUsersWhoSavedQuery = "SELECT COUNT(user_id) FROM users_saved_lists_m2m WHERE list_id = $1"
+
+	getSavedPostsQuery = `
+		SELECT
+		p.id, p.title, p.isPrivate, p.userID, p.createdAt, p.modifiedAt, p.firstPublishedAt,
+		u.id, u.username
+		FROM posts as p
+		JOIN users as u ON p.userID = u.id
+		WHERE p.id IN (
+			SELECT sp.post_id FROM saved_posts_m2m as sp
+			WHERE sp.list_id = $1
+			ORDER BY sp.saved_at DESC
+			LIMIT %d OFFSET %d
+		) AND p.status = 'published' AND p.isPrivate = false
+	`
+	getUsersWhoSavedQuery = `
+		SELECT u.id, u.username
+		FROM users as u
+		WHERE u.id IN (
+			SELECT usl.user_id FROM users_saved_lists_m2m as usl
+			WHERE usl.list_id = $1
+			ORDER BY usl.saved_at DESC
+			LIMIT %d OFFSET %d
+		) AND enabled = true
+	`
 )
 
 var (

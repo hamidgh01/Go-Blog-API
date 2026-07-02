@@ -46,6 +46,19 @@ var (
 	`
 
 	getCommentOwnerIDQuery = "SELECT userID FROM comments WHERE id = $1"
+
+	// get other sources that has FK to `Comment` (just replies -self referenced-)
+	countRepliesQuery = "SELECT COUNT(id) FROM comments WHERE commentParentID = $1 AND status = 'published'"
+	getRepliesQuery   = `
+		SELECT
+		c.id, c.content, c.status, c.postParentID, c.commentParentID, c.userID, c.createdAt, c.modifiedAt,
+		u.id, u.username
+		FROM comments as c
+		JOIN users as u ON c.userID = u.id
+		WHERE c.commentParentID = $1 AND c.status = 'published'
+		ORDER BY c.createdAt DESC
+		LIMIT %d OFFSET %d
+	`
 )
 
 var (

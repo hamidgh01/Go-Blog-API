@@ -97,6 +97,40 @@ func (r *tagRepository) GetListOfTagsByNames(ctx context.Context, tags []*e.Tag)
 func (r *tagRepository) GetPosts(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.Post], error) {
-	// implement later
-	return nil, nil
+	rows, totalRows, pageNum, pageSize, totalPages, err := getListOfOuterResourceByFK(
+		ctx, r.DB, fk, page,
+		countAssociatedPostsQuery,
+		getAssociatedPostsQuery,
+		"GetTagPosts",
+		"there is not any associated post with this tag",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var taggedPosts []*e.Post
+	for rows.Next() {
+		taggedPost := &e.Post{User: &e.User{}}
+		err := rows.Scan(
+			&taggedPost.ID,
+			&taggedPost.Title,
+			&taggedPost.IsPrivate,
+			&taggedPost.UserID,
+			&taggedPost.CreatedAt,
+			&taggedPost.ModifiedAt,
+			&taggedPost.FirstPublishedAt,
+			&taggedPost.User.ID,
+			&taggedPost.User.Username,
+		)
+		if err != nil {
+			return nil, dbErrors.GetDBError(err)
+		}
+
+		taggedPosts = append(taggedPosts, taggedPost)
+	}
+
+	pagedTaggedPosts := d.Paginate(taggedPosts, totalRows, pageNum, pageSize, totalPages)
+
+	return pagedTaggedPosts, nil
 }

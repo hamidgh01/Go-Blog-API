@@ -65,7 +65,7 @@ var (
 			WHERE f.followed = $1
 			ORDER BY f.followed_at DESC
 			LIMIT %d OFFSET %d
-		)
+		) AND enabled = true
 	`
 	getFollowingsByUserIdFkQuery = `
 		SELECT u.id, u.username
@@ -75,7 +75,7 @@ var (
 			WHERE f.followed_by = $1
 			ORDER BY f.followed_at DESC
 			LIMIT %d OFFSET %d
-		)
+		) AND enabled = true
 	`
 	getPostsByUserIdFkQuery = `
 		SELECT

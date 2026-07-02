@@ -138,7 +138,7 @@ func getListOfOuterResourceByFK(
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, 0, 0, 0, 0, dbErrors.NewRecordNotFoundError(
-				fmt.Sprintf("%s with id='%d'", notFoundMessage, fk),
+				fmt.Sprintf("%s (id='%d')", notFoundMessage, fk),
 			)
 		}
 		return nil, 0, 0, 0, 0, dbErrors.GetDBError(err)
@@ -146,7 +146,7 @@ func getListOfOuterResourceByFK(
 
 	if totalRows == 0 {
 		return nil, 0, 0, 0, 0, dbErrors.NewRecordNotFoundError(
-			fmt.Sprintf("%s with id='%d'", notFoundMessage, fk),
+			fmt.Sprintf("%s (id='%d')", notFoundMessage, fk),
 		)
 	}
 

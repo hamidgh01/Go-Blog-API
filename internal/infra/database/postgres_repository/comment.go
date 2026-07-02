@@ -94,8 +94,43 @@ func (r *commentRepository) GetByID(ctx context.Context, pk uint64) (*e.Comment,
 func (r *commentRepository) GetReplies(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.Comment], error) {
-	// implement later
-	return nil, nil
+	rows, totalRows, pageNum, pageSize, totalPages, err := getListOfOuterResourceByFK(
+		ctx, r.DB, fk, page,
+		countRepliesQuery,
+		getRepliesQuery,
+		"GetCommentReplies",
+		"there is not any reply for this comment",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var replies []*e.Comment
+	for rows.Next() {
+		reply := &e.Comment{User: &e.User{}}
+		err := rows.Scan(
+			&reply.ID,
+			&reply.Content,
+			&reply.Status,
+			&reply.PostParentID,
+			&reply.CommentParentID,
+			&reply.UserID,
+			&reply.CreatedAt,
+			&reply.ModifiedAt,
+			&reply.User.ID,
+			&reply.User.Username,
+		)
+		if err != nil {
+			return nil, dbErrors.GetDBError(err)
+		}
+
+		replies = append(replies, reply)
+	}
+
+	pagedReplies := d.Paginate(replies, totalRows, pageNum, pageSize, totalPages)
+
+	return pagedReplies, nil
 }
 
 // -----------------------------------------------------------------------------

@@ -83,15 +83,73 @@ func (r *listRepository) GetByID(ctx context.Context, pk uint64) (*e.List, error
 func (r *listRepository) GetSavedPosts(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.Post], error) {
-	// implement later
-	return nil, nil
+	rows, totalRows, pageNum, pageSize, totalPages, err := getListOfOuterResourceByFK(
+		ctx, r.DB, fk, page,
+		countSavedPostsQuery,
+		getSavedPostsQuery,
+		"GetSavedPosts",
+		"there is not any post in this list",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var savedPosts []*e.Post
+	for rows.Next() {
+		post := &e.Post{User: &e.User{}}
+		err := rows.Scan(
+			&post.ID,
+			&post.Title,
+			&post.IsPrivate,
+			&post.UserID,
+			&post.CreatedAt,
+			&post.ModifiedAt,
+			&post.FirstPublishedAt,
+			&post.User.ID,
+			&post.User.Username,
+		)
+		if err != nil {
+			return nil, dbErrors.GetDBError(err)
+		}
+
+		savedPosts = append(savedPosts, post)
+	}
+
+	pagedSavedPosts := d.Paginate(savedPosts, totalRows, pageNum, pageSize, totalPages)
+
+	return pagedSavedPosts, nil
 }
 
 func (r *listRepository) GetUsersWhoSaved(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.User], error) {
-	// implement later
-	return nil, nil
+	rows, totalRows, pageNum, pageSize, totalPages, err := getListOfOuterResourceByFK(
+		ctx, r.DB, fk, page,
+		countUsersWhoSavedQuery,
+		getUsersWhoSavedQuery,
+		"GetUsersWhoSaved",
+		"this list isn't saved by any user.",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var usersList []*e.User
+	for rows.Next() {
+		user := &e.User{}
+		err := rows.Scan(&user.ID, &user.Username)
+		if err != nil {
+			return nil, dbErrors.GetDBError(err)
+		}
+
+		usersList = append(usersList, user)
+	}
+
+	pagedUsers := d.Paginate(usersList, totalRows, pageNum, pageSize, totalPages)
+
+	return pagedUsers, nil
 }
 
 // -----------------------------------------------------------------------------
