@@ -28,7 +28,6 @@ type UserRepository interface {
 	getterByID[e.User]
 	GetByUsername(ctx context.Context, username string) (*e.User, error)
 	GetByEmail(ctx context.Context, email string) (*e.User, error)
-	getterByIDWithCountOfAllReferencedObjects[e.User]
 
 	// get list of other sources (have FK to a `User`)
 	GetPosts(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)
@@ -62,7 +61,6 @@ type PostRepository interface {
 	deleter
 
 	getterByID[e.Post]
-	getterByIDWithCountOfAllReferencedObjects[e.Post]
 
 	// get list of other sources (have FK to a `Post`)
 	GetComments(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Comment], error)
@@ -79,8 +77,6 @@ type TagRepository interface {
 	getterByID[e.Tag]
 	GetByName(ctx context.Context, name string) (*e.Tag, error)
 	GetListOfTagsByNames(ctx context.Context, tags []*e.Tag) ([]*e.Tag, error)
-	getterByIDWithCountOfAllReferencedObjects[e.Tag]
-	GetByNameWithCountOfAllReferencedObjects(ctx context.Context, name string) (*e.DBEntityWithCountOfReferencedObjects[e.Tag], error)
 
 	// `Tag` is only referenced by `Post` (via `PostTagsM2M`)
 	GetPosts(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)
@@ -95,7 +91,6 @@ type CommentRepository interface {
 	deleter
 
 	getterByID[e.Comment]
-	getterByIDWithCountOfAllReferencedObjects[e.Comment]
 
 	// `Comment` is only referenced by itself (its Replies)
 	GetReplies(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Comment], error)
@@ -112,7 +107,6 @@ type ListRepository interface {
 	deleter
 
 	getterByID[e.List]
-	getterByIDWithCountOfAllReferencedObjects[e.List]
 
 	// get list of other sources (have FK to a `List`) (`Post` via `SavedPostsM2M`, `User` via `UsersSavedListsM2M`)
 	GetSavedPosts(ctx context.Context, fk uint64, page *d.PaginationQueryParams) (*d.PagedList[e.Post], error)

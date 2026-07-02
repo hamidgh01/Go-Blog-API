@@ -91,20 +91,6 @@ func (r *tagRepository) GetListOfTagsByNames(ctx context.Context, tags []*e.Tag)
 	return getOrCreateBulkTags(ctx, r.DB, getListOfTagsByNamesQuery, tags)
 }
 
-func (r *tagRepository) GetByIDWithCountOfAllReferencedObjects(
-	ctx context.Context, pk uint64,
-) (*e.DBEntityWithCountOfReferencedObjects[e.Tag], error) {
-	// implement later
-	return nil, nil
-}
-
-func (r *tagRepository) GetByNameWithCountOfAllReferencedObjects(
-	ctx context.Context, name string,
-) (*e.DBEntityWithCountOfReferencedObjects[e.Tag], error) {
-	// implement later
-	return nil, nil
-}
-
 // -----------------------------------------------------------------------------
 // other sources that has FK to `Tag`
 

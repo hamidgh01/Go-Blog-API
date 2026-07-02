@@ -109,13 +109,6 @@ func (r *postRepository) GetByID(ctx context.Context, pk uint64) (*e.Post, error
 	return post, nil
 }
 
-func (r *postRepository) GetByIDWithCountOfAllReferencedObjects(
-	ctx context.Context, pk uint64,
-) (*e.DBEntityWithCountOfReferencedObjects[e.Post], error) {
-	// implement later
-	return nil, nil
-}
-
 // -----------------------------------------------------------------------------
 // other sources that has FK to `Post`
 

@@ -77,13 +77,6 @@ func (r *listRepository) GetByID(ctx context.Context, pk uint64) (*e.List, error
 	return list, nil
 }
 
-func (r *listRepository) GetByIDWithCountOfAllReferencedObjects(
-	ctx context.Context, pk uint64,
-) (*e.DBEntityWithCountOfReferencedObjects[e.List], error) {
-	// implement later
-	return nil, nil
-}
-
 // -----------------------------------------------------------------------------
 // other sources that has FK to `List`
 

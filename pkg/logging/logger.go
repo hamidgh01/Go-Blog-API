@@ -57,6 +57,12 @@ func InitLogger(cfg config.LoggerConf) {
 		file, err := os.OpenFile(cfg.OutputFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err == nil {
 			output = file
+		} else {
+			log.Printf(
+				"[Error/Info] logger output is set to 'os.Stdout', because there was a problem at opening this file: '%s'. error message: %s \n",
+				cfg.OutputFile,
+				err.Error(),
+			)
 		}
 	}
 

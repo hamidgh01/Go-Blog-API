@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS post_likes_m2m (
     PRIMARY KEY (post_id, user_id)
 );
 
+-- note: the INDEX idx_post_likes_m2m_user_id added in migration 9
 
 CREATE TABLE IF NOT EXISTS follows_m2m (
     followed_by BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,

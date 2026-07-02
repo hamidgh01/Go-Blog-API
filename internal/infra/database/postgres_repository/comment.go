@@ -88,12 +88,6 @@ func (r *commentRepository) GetByID(ctx context.Context, pk uint64) (*e.Comment,
 	return comment, nil
 }
 
-func (r *commentRepository) GetByIDWithCountOfAllReferencedObjects(
-	ctx context.Context, pk uint64,
-) (*e.DBEntityWithCountOfReferencedObjects[e.Comment], error) {
-	return nil, nil
-}
-
 // -----------------------------------------------------------------------------
 // other sources that has FK to `Comment`
 

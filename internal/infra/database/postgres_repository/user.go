@@ -123,12 +123,6 @@ func (r *userRepository) GetByEmail(ctx context.Context, email string) (*e.User,
 	return fillUserEntityForDetailsResponse(row, &e.User{})
 }
 
-func (r *userRepository) GetByIDWithCountOfAllReferencedObjects(
-	ctx context.Context, pk uint64,
-) (*e.DBEntityWithCountOfReferencedObjects[e.User], error) {
-	return nil, nil
-}
-
 // -----------------------------------------------------------------------------
 // other sources that has FK to `User`
 
