@@ -115,29 +115,144 @@ func (r *postRepository) GetByID(ctx context.Context, pk uint64) (*e.Post, error
 func (r *postRepository) GetComments(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.Comment], error) {
-	// implement later
-	return nil, nil
+	rows, totalRows, pageNum, pageSize, totalPages, err := getListOfOuterResourceByFK(
+		ctx, r.DB, fk, page,
+		countPostCommentsQuery,
+		getPostCommentsQuery,
+		"GetPostComments",
+		"there is not any comment for this post",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var comments []*e.Comment
+	for rows.Next() {
+		comment := &e.Comment{User: &e.User{}}
+		err := rows.Scan(
+			&comment.ID,
+			&comment.Content,
+			&comment.Status,
+			&comment.PostParentID,
+			&comment.UserID,
+			&comment.CreatedAt,
+			&comment.ModifiedAt,
+			&comment.User.ID,
+			&comment.User.Username,
+		)
+		if err != nil {
+			return nil, dbErrors.GetDBError(err)
+		}
+
+		comments = append(comments, comment)
+	}
+
+	pagedComments := d.Paginate(comments, totalRows, pageNum, pageSize, totalPages)
+
+	return pagedComments, nil
 }
 
 func (r *postRepository) GetLikes(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.User], error) {
-	// implement later
-	return nil, nil
+	rows, totalRows, pageNum, pageSize, totalPages, err := getListOfOuterResourceByFK(
+		ctx, r.DB, fk, page,
+		countPostLikesQuery,
+		getPostLikesQuery,
+		"GetPostLikes",
+		"this post isn't liked by any user.",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var usersList []*e.User
+	for rows.Next() {
+		user := &e.User{}
+		err := rows.Scan(&user.ID, &user.Username)
+		if err != nil {
+			return nil, dbErrors.GetDBError(err)
+		}
+
+		usersList = append(usersList, user)
+	}
+
+	pagedUsers := d.Paginate(usersList, totalRows, pageNum, pageSize, totalPages)
+
+	return pagedUsers, nil
 }
 
 func (r *postRepository) GetListsThatSavedThisPost(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.List], error) {
-	// implement later
-	return nil, nil
+	rows, totalRows, pageNum, pageSize, totalPages, err := getListOfOuterResourceByFK(
+		ctx, r.DB, fk, page,
+		countListsThatSavedThisPostQuery,
+		getListsThatSavedThisPostQuery,
+		"GetListsThatSavedThisPost",
+		"this post is not saved in any list.",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var lists []*e.List
+	for rows.Next() {
+		list := &e.List{User: &e.User{}}
+		err := rows.Scan(
+			&list.ID,
+			&list.Title,
+			&list.IsPrivate,
+			&list.UserID,
+			&list.CreatedAt,
+			&list.ModifiedAt,
+			&list.User.ID,
+			&list.User.Username,
+		)
+		if err != nil {
+			return nil, dbErrors.GetDBError(err)
+		}
+
+		lists = append(lists, list)
+	}
+
+	pagedLists := d.Paginate(lists, totalRows, pageNum, pageSize, totalPages)
+
+	return pagedLists, nil
 }
 
 func (r *postRepository) GetTags(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*d.PagedList[e.Tag], error) {
-	// implement later
-	return nil, nil
+	rows, totalRows, pageNum, pageSize, totalPages, err := getListOfOuterResourceByFK(
+		ctx, r.DB, fk, page,
+		countPostTagsQuery,
+		getPostTagsQuery,
+		"GetPostTags",
+		"this post is not tagged by any tag.",
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var tags []*e.Tag
+	for rows.Next() {
+		tag := &e.Tag{}
+		err := rows.Scan(&tag.ID, &tag.Name)
+		if err != nil {
+			return nil, dbErrors.GetDBError(err)
+		}
+
+		tags = append(tags, tag)
+	}
+
+	pagedTagsList := d.Paginate(tags, totalRows, pageNum, pageSize, totalPages)
+
+	return pagedTagsList, nil
 }
 
 // -----------------------------------------------------------------------------

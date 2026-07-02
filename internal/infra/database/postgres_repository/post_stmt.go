@@ -54,6 +54,55 @@ var (
 	getDraftByIDQuery = `` // add later (and implement other layers) access: admin_or_owner
 
 	getPostOwnerIDQuery = "SELECT userID FROM posts WHERE id = $1"
+
+	// get other sources that has FK to `Post`
+	countPostCommentsQuery = "SELECT COUNT(id) FROM comments WHERE postParentID = $1 AND status = 'published'"
+	countPostLikesQuery    = "SELECT COUNT(user_id) FROM post_likes_m2m WHERE post_id = $1"
+	countPostTagsQuery     = "SELECT COUNT(tag_id) FROM posts_tags_m2m WHERE post_id = $1"
+
+	countListsThatSavedThisPostQuery = "SELECT COUNT(list_id) FROM saved_posts_m2m WHERE post_id = $1"
+
+	getPostCommentsQuery = `
+		SELECT
+		c.id, c.content, c.status, c.postParentID, c.userID, c.createdAt, c.modifiedAt,
+		u.id, u.username
+		FROM comments as c
+		JOIN users as u ON c.userID = u.id
+		WHERE c.postParentID = $1 AND c.status = 'published'
+		ORDER BY c.createdAt DESC
+		LIMIT %d OFFSET %d
+	`
+	getPostLikesQuery = `
+		SELECT u.id, u.username
+		FROM users as u
+		WHERE u.id IN (
+			SELECT pl.user_id FROM post_likes_m2m as pl
+			WHERE pl.post_id = $1
+			ORDER BY pl.liked_at DESC
+			LIMIT %d OFFSET %d
+		) AND enabled = true
+	`
+	getPostTagsQuery = `
+		SELECT id, name FROM tags
+		WHERE id IN (
+			SELECT pt.tag_id FROM posts_tags_m2m as pt
+			WHERE pt.post_id = $1
+			LIMIT %d OFFSET %d
+		)
+	`
+	getListsThatSavedThisPostQuery = `
+		SELECT
+		l.id, l.title, l.isPrivate, l.userID, l.createdAt, l.modifiedAt,
+		u.id, u.username
+		FROM lists as l
+		JOIN users as u ON l.userID = u.id
+		WHERE l.id IN (
+			SELECT sp.list_id FROM saved_posts_m2m as sp
+			WHERE sp.post_id = $1
+			ORDER BY sp.saved_at DESC
+			LIMIT %d OFFSET %d
+		) AND l.isPrivate = false
+	`
 )
 
 var (

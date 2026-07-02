@@ -113,7 +113,6 @@ func (r *commentRepository) GetReplies(
 			&reply.ID,
 			&reply.Content,
 			&reply.Status,
-			&reply.PostParentID,
 			&reply.CommentParentID,
 			&reply.UserID,
 			&reply.CreatedAt,

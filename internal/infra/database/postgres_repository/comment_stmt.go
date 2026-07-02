@@ -51,7 +51,7 @@ var (
 	countRepliesQuery = "SELECT COUNT(id) FROM comments WHERE commentParentID = $1 AND status = 'published'"
 	getRepliesQuery   = `
 		SELECT
-		c.id, c.content, c.status, c.postParentID, c.commentParentID, c.userID, c.createdAt, c.modifiedAt,
+		c.id, c.content, c.status, c.commentParentID, c.userID, c.createdAt, c.modifiedAt,
 		u.id, u.username
 		FROM comments as c
 		JOIN users as u ON c.userID = u.id
