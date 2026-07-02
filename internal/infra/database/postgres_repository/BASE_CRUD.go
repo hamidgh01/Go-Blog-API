@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	d "github.com/hamidgh01/Go-Blog-API/internal/domain"
 	dbErrors "github.com/hamidgh01/Go-Blog-API/internal/infra/database/errors"
 )
 
@@ -120,4 +121,64 @@ func getOwnerID(
 	// }
 
 	return
+}
+
+func getListOfOuterResourceByFK(
+	ctx context.Context,
+	db *sql.DB,
+	fk uint64,
+	page *d.PaginationQueryParams,
+	countQuery string,
+	mainQuery string,
+	operationName string,
+	notFoundMessage string,
+) (rows *sql.Rows, totalRows, pageNum, pageSize, totalPages int, err error) {
+
+	err = db.QueryRowContext(ctx, countQuery, fk).Scan(&totalRows)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, 0, 0, 0, 0, dbErrors.NewRecordNotFoundError(
+				fmt.Sprintf("%s with id='%d'", notFoundMessage, fk),
+			)
+		}
+		return nil, 0, 0, 0, 0, dbErrors.GetDBError(err)
+	}
+
+	if totalRows == 0 {
+		return nil, 0, 0, 0, 0, dbErrors.NewRecordNotFoundError(
+			fmt.Sprintf("%s with id='%d'", notFoundMessage, fk),
+		)
+	}
+
+	totalPages = max((totalRows+page.GetSize()-1)/page.GetSize(), 1)
+	// e.g. totalRows=30, Size = 10 ->  max(39 / 10, 1) ->  max (3, 1) ->  TotalPages=3
+	// e.g. totalRows=31, Size = 10 ->  max(40 / 10, 1) ->  max (4, 1) ->  TotalPages=4
+	// e.g. totalRows=8, Size = 10  ->  max(17 / 10, 1) ->  max (1, 1) ->  TotalPages=1
+
+	// if page-number is greater than total pages -> set it to last page
+	if page.GetPage() > totalPages {
+		page.Page = totalPages
+	}
+
+	query := fmt.Sprintf(mainQuery, page.GetSize(), page.GetOffset())
+
+	stmt, err := db.PrepareContext(ctx, query)
+	if err != nil {
+		return nil, 0, 0, 0, 0, fmt.Errorf(
+			"failed to prepare %s stmt. origin: %w", operationName, err,
+		)
+	}
+	defer stmt.Close()
+
+	rows, err = stmt.QueryContext(ctx, fk)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, 0, 0, 0, 0, dbErrors.NewRecordNotFoundError(
+				fmt.Sprintf("%s (id='%d')", notFoundMessage, fk),
+			)
+		}
+		return nil, 0, 0, 0, 0, dbErrors.GetDBError(err)
+	}
+
+	return rows, totalRows, page.GetPage(), page.GetSize(), totalPages, nil
 }

@@ -1,27 +1,19 @@
 package postgres_repository
 
-import (
-	"database/sql"
-	"fmt"
-)
-
-const (
-	BRIEF_POST_FIELDS    string = "id, title, userID, createdAt, modifiedAt, firstPublishedAt"
-	DETAILED_POST_FIELDS string = "id, title, content, status, isPrivate, userID, createdAt, modifiedAt, firstPublishedAt"
-)
+import "database/sql"
 
 var (
 	// create
-	createDraftPostQuery = fmt.Sprintf(
-		`INSERT INTO posts (title, content, isPrivate, userID) VALUES ($1, $2, $3, $4)
-		RETURNING %s`, DETAILED_POST_FIELDS,
-	)
+	createDraftPostQuery = `
+		INSERT INTO posts (title, content, isPrivate, userID) VALUES ($1, $2, $3, $4)
+		RETURNING id, title, content, status, isPrivate, userID, createdAt, modifiedAt, firstPublishedAt
+	`
 
-	createPublishedPostQuery = fmt.Sprintf(
-		`INSERT INTO posts (title, content, status, isPrivate, firstPublishedAt, userID)
+	createPublishedPostQuery = `
+		INSERT INTO posts (title, content, status, isPrivate, firstPublishedAt, userID)
 		VALUES ($1, $2, 'published', $3, CURRENT_TIMESTAMP, $4)
-		RETURNING %s`, DETAILED_POST_FIELDS,
-	)
+		RETURNING id, title, content, status, isPrivate, userID, createdAt, modifiedAt, firstPublishedAt
+	`
 
 	// update
 	updatePostQuery = `
@@ -56,8 +48,10 @@ var (
 		FROM posts as p
 		JOIN users as u
 		ON p.userID = u.id
-		WHERE p.id = $1
+		WHERE p.id = $1 AND status = 'published'
 	`
+
+	getDraftByIDQuery = `` // add later (and implement other layers) access: admin_or_owner
 
 	getPostOwnerIDQuery = "SELECT userID FROM posts WHERE id = $1"
 )

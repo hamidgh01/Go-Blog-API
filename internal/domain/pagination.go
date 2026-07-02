@@ -44,28 +44,21 @@ type PagedList[TEntity entity.TDBEntities] struct {
 	Items           []*TEntity `json:"items"`
 }
 
-func Paginate[TEntity entity.TDBEntities](items []*TEntity, totalRows int, page int, size int) *PagedList[TEntity] {
+func Paginate[TEntity entity.TDBEntities](items []*TEntity, totalRows, page, size, totalPages int) *PagedList[TEntity] {
 	pl := &PagedList[TEntity]{
-		Page:      page,
-		Size:      size,
-		TotalRows: totalRows,
-		Items:     items,
+		Page:       page,
+		Size:       size,
+		TotalRows:  totalRows,
+		TotalPages: totalPages,
+		Items:      items,
 	}
 
-	pl.TotalPages = max((totalRows+size-1)/size, 1)
-	// e.g. totalRows=30, Size = 10 ->  max(39 / 10, 1) ->  max (3, 1) ->  TotalPages=3
-	// e.g. totalRows=31, Size = 10 ->  max(40 / 10, 1) ->  max (4, 1) ->  TotalPages=4
-	// e.g. totalRows=8, Size = 10  ->  max(17 / 10, 1) ->  max (1, 1) ->  TotalPages=1
-	// e.g. totalRows=0, Size = 10  ->  max(9 / 10, 1)  ->  max (0, 1) ->  TotalPages=0
-
-	pl.HasPreviousPage = pl.Page > 1
-	if pl.HasPreviousPage {
+	if pl.HasPreviousPage = pl.Page > 1; pl.HasPreviousPage {
 		pl.PreviousPage = pl.Page - 1
 	}
 
-	pl.HasNextPage = pl.Page < pl.TotalPages
-	if pl.HasPreviousPage {
-		pl.PreviousPage = pl.Page + 1
+	if pl.HasNextPage = pl.Page < pl.TotalPages; pl.HasNextPage {
+		pl.NextPage = pl.Page + 1
 	}
 
 	return pl

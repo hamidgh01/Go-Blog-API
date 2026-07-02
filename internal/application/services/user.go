@@ -225,9 +225,10 @@ func (u *UserService) GetSavedLists(
 func (u *UserService) GetAllLists(
 	ctx context.Context, fk uint64, page *d.PaginationQueryParams,
 ) (*generics.PagedList[dto.ListsList], *service_errors.ServiceError) {
-	return getListOfOuterResourceByFK(
-		ctx, fk, page, "get all-lists of user", u.repo.GetAllLists, dto.ToListsList,
-	)
+	// return getListOfOuterResourceByFK(
+	// 	ctx, fk, page, "get all-lists of user", u.repo.GetAllLists, dto.ToListsList,
+	// )
+	return nil, service_errors.NotImplemented
 }
 
 func (u *UserService) GetComments(

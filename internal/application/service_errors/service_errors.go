@@ -36,5 +36,6 @@ var (
 	PermissionDenied   = newServiceError(http.StatusForbidden, "permission denied")
 
 	// server
+	NotImplemented = newServiceError(http.StatusNotImplemented, "this endpoint is not implemented yet!")
 	InternalServerError = newServiceError(http.StatusInternalServerError, "internal server error")
 )
